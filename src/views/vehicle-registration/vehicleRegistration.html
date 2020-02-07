@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    <!-- Bootstrap JavaScript -->
+    <meta charset="UTF-8">
+    <title>Vehicle Registration</title>
+    <div class="container">
+        <h1>Vehicle Registration</h1>
+        <form>
+            <div class="row">
+                <div class="col">
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <label for="inputOwnerDID">Owner DID</label>
+                            <input type="text" class="form-control" id="inputOwnerDID" placeholder="did:io:0x583031D1113aD414...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <label for="inputEmailDID">Vehicle DID</label>
+                            <input type="text" class="form-control" id="inputEmailDID" placeholder="did:io:0xCA35b7d915458EV...">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <label for="lockTime">Lock Time</label>
+                            <div class="input-group">
+                                <input id="lockTime" type="text" class="form-control" placeholder="1" aria-label="Text input with dropdown button">
+                                <div class="input-group-append">
+                                    <select class="custom-select" required>
+                                        <option value="1">Minutes</option>
+                                        <option value="60">Hours</option>
+                                        <option value="1440">Days</option>
+                                        <option value="10080">Weeks</option>
+                                        <option value="43800">Months</option>
+                                        <option value="525600">Years</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="proof">Proof</label>
+                        <textarea rows='8' type="text" class="form-control" id="proof" placeholder="0xeb327129a2a38141d275f4d68e...6edc9be437eed250ba6f71be05620ea1a3c971367bc1c"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="registerVehicle()">Register</button>
+        </form>
+    </div>
+</head>
+
+<body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src='bundle.js'></script>
+</body>
+</html>
