@@ -21,4 +21,5 @@ Needed:
 * Populate forms for jurisdiction registration and interaction (John?)
 * If there are multiple jurisdictions perhaps we should have a map for each one, or just 4 maps on one page if it looks good
 * General styling of forms and pages to look nicer
+* Login page so you only need to sign in with private key or keystore file once instead of repeatedly entering (see iotex web wallet implementation for inspiration (anyone)
 * UNIT TESTS! (Someone, please)
