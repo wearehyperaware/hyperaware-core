@@ -64,7 +64,7 @@ function translateAlong(path, j, did) {
           current_car.ever = true;
           car.classed('enter', true);
           increment('total');
-          // slash("did:io:0x478fb9cfc04a792f32655912d3cb9851b6e047f0")
+          slash(did)
         }
       } else if (current_car.inside && !turf.inside(p, zone)) {
         addNotification(current_car.color, j, 'exit', did);
@@ -122,7 +122,7 @@ function truncateDID(did) {
 
 async function slash(did) {
   let antenna = new Antenna("http://api.testnet.iotex.one:80");
-  let vehicleRegContract = new Contract(VehicleRegABI,'io1s3eflxnjpteqspnp3xs5nj9rwyu9cac7a5qjek',{provider: antenna.iotx});
+  let vehicleRegContract = new Contract(VehicleRegABI,'io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q',{provider: antenna.iotx});
 
   // Get vehicle's document
   let uri = await antenna.iotx.readContractByMethod({
@@ -132,7 +132,6 @@ async function slash(did) {
     method: "getURI"
     }, did);
     let res = await axios.get(uri)
-    console.log(res.data.creator)
 
   // Read owner from vehicle
   let vehicleOwner = res.data.creator
@@ -142,14 +141,13 @@ async function slash(did) {
       "eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8"
   );
   try {
-    let actionHash = await vehicleRegContract.methods.registerVehicle(toRau("0.1", "iotx"), vehicleOwner, did, {
-      amount: toRau("0.1", "iotx"),
-      account: admin,
-      gasLimit: "1000000",
-      gasPrice: toRau("1", "Qev")
-    });
-    console.log(actionHash);
-
+    // let actionHash = await vehicleRegContract.methods.slash(0.15, vehicleOwner, did, {
+    //   account: admin,
+    //   gasLimit: "1000000",
+    //   gasPrice: toRau("1", "Qev")
+    // });
+    // console.log("Slashing action hash: ", actionHash);
+   console.log("Slash occurs now on: ", vehicleOwner, "who owns", did)
   } catch (err) {
     console.log(err);
   }

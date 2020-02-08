@@ -4,6 +4,8 @@ import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
 import zones from "./zones.json"
+import {ABI} from "../vehicle-registration/ABI";
+import Antenna from 'iotex-antenna'
 export var map
 export var zone
 
@@ -11,7 +13,8 @@ var buffered = turf.buffer(zones, 200, 'feet');
 
 export class Dashboard extends React.Component {
 
-    componentDidMount() {
+    async componentDidMount() {
+        let antenna = new Antenna("http://api.testnet.iotex.one:80");
         mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
         zone = turf.merge(buffered);
 
@@ -35,7 +38,7 @@ export class Dashboard extends React.Component {
             //maxBounds: bounds
         });
 
-        map.on('style.load', function() {
+        map.on('style.load', async function() {
             // initialize the congestion zone data and layer
             map.addSource('zone', {
                 type: 'geojson',
@@ -64,14 +67,21 @@ export class Dashboard extends React.Component {
             closeMobileNotifications.on('click', function () {
                 mobileTicker.classed("show", false);
             })
-            // allRegisteredDIDs should be retrieved programatically - someone should add a method to VehicleRegistry contract which loops through all owners and returns all vehicles as a string array of DIDs.
-            let allRegisteredDIDs = ["did:io:0x478fb9cfc04a792f32655912d3cb9851b6e047f0", "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e", "did:io:0xf8a74256b4de4d2091624fc4ceebdebaa11929b5"]
+            // Doesn't seem like we are able to decode the below properly on iotex, may need a different solution? But someone else can try to fix
+            // let allRegisteredDIDs = await antenna.iotx.readContractByMethod({
+            //     from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+            //     contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
+            //     abi: ABI,
+            //     method: "getEveryRegisteredVehicle"
+            // });
+            // console.log(allRegisteredDIDs)
+            let allRegisteredDIDs = ["did:io:0xb9006455c064207da1c613d8448efff729977f72", "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4", "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"]
             let did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
             makeCar(1, did);
             setInterval(function() {
                 did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
                 makeCar(1, did);
-            }, 2000);
+            }, 3000);
         }) // closes on('style.load') event listener
 
     }
@@ -83,11 +93,11 @@ export class Dashboard extends React.Component {
                 <div ref={this.overlay} className='overlay' id='overlay'/>
                 <div id='topbar' className='fill-light show-mobile topbar'>
                     <div className="clearfix">
-                        <div className='col-md-7'>
+                        <div className='mobile-col4'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles in zone</div>
                             <div className='metric current-vehicles'>0</div>
                         </div>
-                        <div className='col-md-7'>
+                        <div className='mobile-col4'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Total traffic</div>
                             <div className='metric total-vehicles'>0</div>
                         </div>

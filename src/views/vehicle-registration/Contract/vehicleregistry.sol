@@ -21,14 +21,17 @@ contract VehicleRegistry is Ownable {
         uint256 expires;
     }
 
+    string[] allVehicles;
+
     mapping(string => StakeInfo) stakeholders;
 
     event RegisterEvent(string ownerDid, string vehicleDid, bool success);
     event WithdrawEvent(uint256 withdrawAmount, bool success);
     event SlashEvent(string slashedhDid, uint256 slashAmount);
     event GetVehiclesEvent(string[] ids, uint256[] amounts, uint256[] expires);
+    event IncreaseStakeEvent(uint256 newStakeAmount, uint256 newExpiry);
 
-    function lockCoins(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint8 lockTime) public payable {
+    function lockCoins(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint8 lockTime) internal {
         require(lockAmount > MIN_STAKE, "You need to stake more than 100 tokens.");
         StakeInfo storage userInfo = stakeholders[ownerDID];
         if (compareStrings(userInfo.vehicles[userInfo.vehicles.length - 1].id, vehicleDID)) {
@@ -37,6 +40,19 @@ contract VehicleRegistry is Ownable {
         } else {
             revert("Could not lock coins, can't find correct vehicleDID");
         }
+    }
+
+    function increaseStake(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint8 lockTime) public payable {
+        StakeInfo storage userInfo = stakeholders[ownerDID];
+        for (uint i = 0; i < userInfo.vehicles.length; i++) {
+            if (compareStrings(userInfo.vehicles[i].id, vehicleDID)) {
+                userInfo.vehicles[i].expires = block.timestamp + lockTime * 1 minutes;
+                userInfo.vehicles[i].amount += lockAmount;
+                emit IncreaseStakeEvent(userInfo.vehicles[i].amount, userInfo.vehicles[i].expires);
+                return;
+            }
+        }
+        revert("You do not own a vehicle with this DID");
     }
 
     function withdraw(string memory ownerDID, string memory vehicleDID, uint256 withdrawAmount) public {
@@ -77,9 +93,9 @@ contract VehicleRegistry is Ownable {
         for (uint i = 0; i < stakeholders[ownerDID].vehicles.length; i++) {
             require(!compareStrings(stakeholders[ownerDID].vehicles[i].id, vehicleDID), "This device is already registered!");
         }
-
+        allVehicles.push(vehicleDID);
         stakeholders[ownerDID].vehicles.push(Vehicle(vehicleDID, 0, 0));
-        this.lockCoins(ownerDID, vehicleDID, msg.value, lockTime);
+        lockCoins(ownerDID, vehicleDID, msg.value, lockTime);
         emit RegisterEvent(ownerDID, vehicleDID, true);
 
     }
@@ -106,6 +122,11 @@ contract VehicleRegistry is Ownable {
         emit GetVehiclesEvent(ids, amounts, expires);
         return (ids, amounts, expires);
     }
+
+    function getEveryRegisteredVehicle() public view returns (string[] memory) {
+        return allVehicles;
+    }
+
 
     function compareStrings (string memory a, string memory b) internal pure returns (bool) {
         return (keccak256(abi.encodePacked((a))) == keccak256(abi.encodePacked((b))));
@@ -159,5 +180,6 @@ contract VehicleRegistry is Ownable {
 
         return _b1;
     }
+
 
 }

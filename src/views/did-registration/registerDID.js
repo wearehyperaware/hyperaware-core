@@ -155,7 +155,7 @@ createDID = async (e, entity, privateKey) => {
 
         try {
             let actionHash = await contract.methods.createDID(docHash, arweaveURL, imei, {
-                account: unlockedWallet,
+                account: pebbleWallet,
                 gasLimit: "1000000",
                 gasPrice: "1000000000000"
             });
@@ -346,7 +346,7 @@ getDocUriFromImei = async (imei) => {
                                 </div>
                                 <div className="col">
                                     <div className="form-group">
-                                        <label>Private Key</label>
+                                        <label>Vehicle Private Key</label>
                                         <textarea rows='7' type="text" className="form-control" id="proof"
                                                   placeholder="0xeb327129a2a38141d275f4d68e...6edc9be437eed250ba6f71be05620ea1a3c971367bc1c" onChange={e => this.setState({pebblePrivateKey: e.target.value})}></textarea>
                                     </div>
