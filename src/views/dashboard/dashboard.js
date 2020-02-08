@@ -83,11 +83,11 @@ export class Dashboard extends React.Component {
                 <div ref={this.overlay} className='overlay' id='overlay'/>
                 <div id='topbar' className='fill-light show-mobile topbar'>
                     <div className="clearfix">
-                        <div className='mobile-col4'>
+                        <div className='col-md-7'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles in zone</div>
                             <div className='metric current-vehicles'>0</div>
                         </div>
-                        <div className='mobile-col4'>
+                        <div className='col-md-7'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Total traffic</div>
                             <div className='metric total-vehicles'>0</div>
                         </div>
@@ -121,12 +121,12 @@ export class Dashboard extends React.Component {
                                     <div>in zone</div>
                                     <div className='metric current-vehicles denim'>0</div>
                                 </div>
-                                <div className='col-md-6'>
-                                    <div className='metriclabel small quiet space-top2 space-bottom2'>Total daily
-                                        <div>traffic</div>
-                                        <div className='metric total-vehicles'>0</div>
-                                    </div>
-                        </div>
+                            </div>
+                            <div className='col-md-6'>
+                                <div className='metriclabel small quiet space-top2 space-bottom2'>Total daily
+                                    <div>traffic</div>
+                                    <div className='metric total-vehicles'>0</div>
+                                </div>
                             </div>
                     </div>
                         <div>
