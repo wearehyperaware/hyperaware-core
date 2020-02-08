@@ -14,12 +14,17 @@ Current working routes are:
 
 Needed:
 
-* Finish implementing vehicle registration and assign a DID to vehicles on the map, and have slashing when boundaries are crossed (Jason)
-* Add read, update and delete functionality to the registerdid page (Tony). 'Create' aspect is already complete.
-* Error messages/error handling (anyone)
-* Implement loading spinners when waiting for results (Tony?)
-* Populate forms for jurisdiction registration and interaction (John?)
-* If there are multiple jurisdictions perhaps we should have a map for each one, or just 4 maps on one page if it looks good
-* General styling of forms and pages to look nicer
-* Login page so you only need to sign in with private key or keystore file once instead of repeatedly entering (see iotex web wallet implementation for inspiration (anyone)
+* Add a method to VehicleRegistry.sol which returns every single registered vehicle (see line 67 in dashboard.js)
+* General styling of forms and pages to look nicer (Tony?)
 * UNIT TESTS! (Someone, please)
+* Error messages/error handling (anyone)
+* Populate forms for jurisdiction registration and interaction and have a dashboard for each one? (John?)
+* Add enclave code instead of checking in node server (will add this at the end so as to not affect anyone's dev environment)
+
+
+Nice to have:
+
+* A bulk did creation function for more rapid testing
+* Add read, update and delete functionality to the registerdid page (Tony?)
+* Implement loading spinners when waiting for results
+* Login page so you only need to sign in with private key or keystore file once instead of repeatedly entering (see iotex web wallet implementation for inspiration) (anyone)

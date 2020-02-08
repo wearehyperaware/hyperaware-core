@@ -240,7 +240,7 @@ getHash = async (didString) => {
 
 //given the didstring, returns hash
 getURI = async (didString) => {
-    let uri = await antenna.iotx.executeContract({
+    let uri = await antenna.iotx.readContractByMethod({
         from: unlockedWallet.address,
         contractAddress: contractInfo.contractAddress,
         abi: contractInfo.abi,

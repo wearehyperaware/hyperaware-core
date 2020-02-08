@@ -64,16 +64,17 @@ export class Dashboard extends React.Component {
             closeMobileNotifications.on('click', function () {
                 mobileTicker.classed("show", false);
             })
-
-            makeCar(3);
+            // allRegisteredDIDs should be retrieved programatically - someone should add a method to VehicleRegistry contract which loops through all owners and returns all vehicles as a string array of DIDs.
+            let allRegisteredDIDs = ["did:io:0x478fb9cfc04a792f32655912d3cb9851b6e047f0", "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e", "did:io:0xf8a74256b4de4d2091624fc4ceebdebaa11929b5"]
+            let did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            makeCar(1, did);
             setInterval(function() {
-                makeCar(3);
+                did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+                makeCar(1, did);
             }, 2000);
         }) // closes on('style.load') event listener
 
     }
-
-
 
     render() {
 
