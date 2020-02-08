@@ -14,7 +14,7 @@ Current working routes are:
 
 Needed:
 
-* Add a method to VehicleRegistry.sol which returns every single registered vehicle (see line 67 in dashboard.js)
+* Add a method to VehicleRegistry.sol which returns every registered vehicle (see line 67 in dashboard.js)
 * General styling of forms and pages to look nicer (Tony?)
 * UNIT TESTS! (Someone, please)
 * Error messages/error handling (anyone)
