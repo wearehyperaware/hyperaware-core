@@ -6,26 +6,37 @@ import { Contract } from "iotex-antenna/lib/contract/contract";
 import { ABI } from './ABI'
 import Web3 from 'web3'
 import contractInfo from "../did-registration/did-contract-details";
-import eventABI from "../did-registration/did-event-abis";
+import eventABI from "./vehicleEventABIs";
+import {toRau} from "iotex-antenna/lib/account/utils";
+import AnimateHeight from 'react-animate-height'
 
-let CONTRACT_ADDRESS = 'io1ftqh5ra9sder46nug7ed6g39azejwa2q520083';
-let unlockedWallet;
+let CONTRACT_ADDRESS = 'io1s3eflxnjpteqspnp3xs5nj9rwyu9cac7a5qjek';
 let contract;
 let antenna
+let unlockedWallet
+
 export class VehicleRegistration extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            ownerIotexAddress: '',
             vehiclePrivateKey: '',
-            signedMessage: {}
+            ownerPrivateKey: '',
+            proofOwnerDID: '',
+            signedMessage: {},
+            lockTime: 1,
+            timeUnit: 1,
+            ownerDID: '',
+            vehicleDID: '',
+            proof: '',
+            getVehiclesOwnerDID: '',
+            vehicles: [],
+            height: 0
         };
     }
 
     async componentDidMount() {
         antenna = new Antenna("http://api.testnet.iotex.one:80");
 
-        unlockedWallet = await antenna.iotx.accounts.privateKeyToAccount("eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8")
         contract = new Contract(
             ABI,
             CONTRACT_ADDRESS,
@@ -35,7 +46,7 @@ export class VehicleRegistration extends React.Component {
         );
     }
 
-    signProof = async (e, ownerAddress, vehiclePK) => {
+    signProof = async (e, ownerDID, vehiclePK) => {
         e.preventDefault()
         let web3 = new Web3()
         let did
@@ -53,28 +64,33 @@ export class VehicleRegistration extends React.Component {
         } catch (err) {
             console.log(err);
         }
-        let message = `${ownerAddress.toLowerCase()} is the owner of the device ${did.toLowerCase()}`
+        let message = `${ownerDID.split(":")[2].toLowerCase()} is the owner of the device ${did.toLowerCase()}`
         let signedMessage = await web3.eth.accounts.sign(message, vehiclePK);
+        let signed = await wallet.sign(message, vehiclePK)
+        console.log(Buffer.from(signed).toString('hex'))
+
         console.log(signedMessage)
         this.setState({signedMessage})
     }
 
-    registerVehicle = async (ownerDID, vehicleDID, lockTime, proof) => {
+    registerVehicle = async (e, ownerDID, vehicleDID, lockTime) => {
+        e.preventDefault()
+        let wallet = await antenna.iotx.accounts.privateKeyToAccount(
+                    this.state.ownerPrivateKey
+                );
         try {
-            let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, proof, {
-                account: unlockedWallet,
+            let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, {
+                amount: toRau("0.1", "iotx"),
+                account: wallet,
                 gasLimit: "1000000",
-                gasPrice: "1000000000000"
+                gasPrice: toRau("1", "Qev")
             });
             console.log(actionHash);
             //wait till the block is mined
             window.setTimeout(async () => {
-                //READ LOG
-                //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
-                let log = await readLog(eventABI.createEvent, actionHash, antenna);
-                console.log("LOG when new did is created: ", log);
+                let log = await readLog(eventABI.RegisterEvent, actionHash, antenna);
+                console.log(log);
                 //this.setState({didResult: {id: did, uri: arweaveURL, doc}});
-                return log.didString;
 
             }, 11000)
 
@@ -83,7 +99,38 @@ export class VehicleRegistration extends React.Component {
         }
     };
 
+    getVehicles = async (e) => {
+        e.preventDefault()
+        try {
+            let res = await antenna.iotx.readContractByMethod({
+                from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
+                contractAddress: CONTRACT_ADDRESS,
+                abi: ABI,
+                method: "getVehicles"
+            }, this.state.getVehiclesOwnerDID);
+
+            let vehicles = []
+            // Output dids are mangled, need to find their locations inside the output string and extract them
+            let regex = /did:io:/gi, result, dids = [];
+            while ( (result = regex.exec(res[0][0])) ) {
+                dids.push(res[0][0].substr(result.index, 49));
+            }
+            // Prepare info for table
+            for (let i = 0; i < res[0].length ; i++) {
+                let tmp = {}
+                tmp['did'] = dids[i]
+                tmp['amount'] = res[1][i].toString()
+                tmp['expiry'] = res[2][i].toString()
+                vehicles.push(tmp)
+            }
+            this.setState({vehicles, height:'auto'})
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     withdrawStake = async (ownerDID, vehicleDID, withdrawAmount) => {
+
         try {
             let actionHash = await contract.methods.updateHash(ownerDID, vehicleDID, withdrawAmount, {
                 account: unlockedWallet.address,
@@ -112,28 +159,31 @@ export class VehicleRegistration extends React.Component {
     render() {
         return (
             <div className='container'>
+                {/*<div className='card my-3'>*/}
+                {/*    <div className='card-header'>Sign message to get proof of registration</div>*/}
+                {/*    <div className='card-body'>*/}
+                {/*        <div className="form-row">*/}
+                {/*            <div className="form-group col-md">*/}
+                {/*                <label htmlFor="inputOwnerDID">Owner DID</label>*/}
+                {/*                <input type="text" className="form-control" id="inputOwnerDID"*/}
+                {/*                       placeholder="did:io:0x9fdh74hkjfd..." onChange={(e) => this.setState({proofOwnerDID: e.target.value})}/>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className="form-row">*/}
+                {/*            <div className="form-group col-md">*/}
+                {/*                <label htmlFor="inputOwnerDID">Vehicle Private Key</label>*/}
+                {/*                <input type="text" className="form-control" id="inputOwnerDID"*/}
+                {/*                       placeholder="a5fg83031D1113aD414..." onChange={(e) => this.setState({vehiclePrivateKey: e.target.value})}/>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div ><pre ><code placeholder='I authorize 0x03f3030fkdmklsd... to register the device did:io:0xfk4j389dslkfd...' aria-readonly='true'></code>{this.state.signedMessage.signature}</pre></div>*/}
+                {/*        <button className='button' onClick = {e => this.signProof(e, this.state.proofOwnerDID, this.state.vehiclePrivateKey)}>Sign</button>*/}
+                {/*    </div>*/}
+                {/*</div>*/}
                 <div className='card my-3'>
-                    <div className='card-header'>Sign message to get proof of registration</div>
-                    <div className='card-body'>
-                        <div className="form-row">
-                            <div className="form-group col-md">
-                                <label htmlFor="inputOwnerDID">Owner IoTeX Address</label>
-                                <input type="text" className="form-control" id="inputOwnerDID"
-                                       placeholder="io1flfje583031D1113aD414..." onChange={(e) => this.setState({ownerIotexAddress: e.target.value})}/>
-                            </div>
-                        </div>
-                        <div className="form-row">
-                            <div className="form-group col-md">
-                                <label htmlFor="inputOwnerDID">Vehicle Private Key</label>
-                                <input type="text" className="form-control" id="inputOwnerDID"
-                                       placeholder="did:io:0x583031D1113aD414..." onChange={(e) => this.setState({vehiclePrivateKey: e.target.value})}/>
-                            </div>
-                        </div>
-                        <div ><pre ><code placeholder='I authorize 0x03f3030fkdmklsd... to register the device did:io:0xfk4j389dslkfd...' aria-readonly='true'></code>{this.state.signedMessage.signature}</pre></div>
-                        <button className='button' onClick = {e => this.signProof(e, this.state.ownerIotexAddress, this.state.vehiclePrivateKey)}>Sign</button>
+                    <div className='card-header'>
+                        Register a new vehicle
                     </div>
-                </div>
-                <div className='card'>
                     <div className='card-body'>
                         <form>
                             <div className="row">
@@ -142,14 +192,14 @@ export class VehicleRegistration extends React.Component {
                                         <div className="form-group col-md">
                                             <label htmlFor="inputOwnerDID">Owner DID</label>
                                             <input type="text" className="form-control" id="inputOwnerDID"
-                                                   placeholder="did:io:0x583031D1113aD414..."/>
+                                                   placeholder="did:io:0x583031D1113aD414..." onChange={e => this.setState({ownerDID: e.target.value})}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group col-md">
                                             <label htmlFor="inputEmailDID">Vehicle DID</label>
                                             <input type="text" className="form-control" id="inputEmailDID"
-                                                   placeholder="did:io:0xCA35b7d915458EV..."/>
+                                                   placeholder="did:io:0xCA35b7d915458EV..." onChange={e => this.setState({vehicleDID: e.target.value})}/>
                                         </div>
                                     </div>
                                     <div className="form-row">
@@ -157,9 +207,9 @@ export class VehicleRegistration extends React.Component {
                                             <label htmlFor="lockTime">Lock Time</label>
                                             <div className="input-group">
                                                 <input id="lockTime" type="text" className="form-control" placeholder="1"
-                                                       aria-label="Text input with dropdown button"/>
+                                                       aria-label="Text input with dropdown button" onChange={e => this.setState({lockTime: e.target.value})}/>
                                                 <div className="input-group-append">
-                                                    <select className="custom-select" required>
+                                                    <select className="custom-select" required onChange={e => this.setState({timeUnit: e.target.value})}>
                                                         <option value="1">Minutes</option>
                                                         <option value="60">Hours</option>
                                                         <option value="1440">Days</option>
@@ -173,19 +223,64 @@ export class VehicleRegistration extends React.Component {
                                     </div>
                                 </div>
                                 <div className="col">
-                                    <div className="form-group">
-                                        <label htmlFor="proof">Proof</label>
-                                        <textarea rows='7' type="text" className="form-control" id="proof"
-                                                  placeholder="0xeb327129a2a38141d275f4d68e...6edc9be437eed250ba6f71be05620ea1a3c971367bc1c"></textarea>
+                                    <div className="form-row">
+                                        <div className="form-group col-md">
+                                            <label htmlFor="inputEmailDID">Owner Private Key</label>
+                                            <input type="text" className="form-control" id="inputEmailDID"
+                                                   placeholder="35b7d915458EVLkjdFK6Lp5f434..." onChange={e => this.setState({ownerPrivateKey: e.target.value})}/>
+                                        </div>
                                     </div>
+                                    {/*<div className="form-group">*/}
+                                    {/*    <label htmlFor="proof">Proof of authorisation</label>*/}
+                                    {/*    <textarea rows='4' type="text" className="form-control" id="proof"*/}
+                                    {/*              placeholder="eb327129a2a38141d275f4d68e...6edc9be437eed250ba6f71be05620ea1a3c971367bc1c" onChange={e => this.setState({proof: e.target.value})}></textarea>*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
-                            <button type="submit" className="btn btn-primary" onClick="registerVehicle()">Register</button>
+                            <button type="submit" className="btn btn-primary" onClick={e => this.registerVehicle(e, this.state.ownerDID, this.state.vehicleDID, this.state.lockTime * this.state.timeUnit, this.state.proof)}>Register</button>
                         </form>
                     </div>
                 </div>
+                <div className='card my-3'>
+                    <div className='card-header'>View registered vehicles</div>
+                    <div className='card-body'>
+                    <AnimateHeight duration={500} height={this.state.height}>
+                        {
+                            <table className="table">
+                                <thead className="thead-dark">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Vehicle DID</th>
+                                    <th scope="col">Stake Amount</th>
+                                    <th scope="col">Expiry Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.vehicles.map((currentElement, i) => (
+                                    <tr>
+                                        <th scope="row">{i + 1}</th>
+                                        <td>{currentElement.did}</td>
+                                        <td>{currentElement.amount / 1e18} IOTX</td>
+                                        <td>{new Date(currentElement.expiry * 1000).toLocaleString()}</td>
+                                    </tr>
+                                ))
+                                }
+                                </tbody>
+                            </table>
+                        }
+                    </AnimateHeight>
+                        <div className="form-row">
+                            <div className="form-group col-md">
+                                <label htmlFor="inputOwnerDID">Owner DID</label>
+                                <input type="text" className="form-control" id="inputOwnerDID"
+                                       placeholder="did:io:0x583031D1113aD414..." onChange={e => this.setState({getVehiclesOwnerDID: e.target.value})}/>
+                            </div>
+                        </div>
+                        <button type="submit" className="btn btn-primary" onClick={this.getVehicles}>Submit</button>
+                    </div>
+                </div>
 
-            </div>
+                </div>
         );
     }
 }
