@@ -1,6 +1,10 @@
 ## Available Scripts
 
-`npm run start` - This starts and opens up the server. Run `npm install` before the first time you run this.
+`npm run start` then, in a separate terminal (still in this project directory), run `node server` - 
+This starts and opens up the dashboard with websocket connection. If you don't use a separate terminal you'll see a connection error to the websocket in the browser console.
+Run `npm install` before the first time you run this.
+
+
 
 This should be a working repo. Please don't introduce any breaking changes. Submit pull requests when you want to commit code.
 

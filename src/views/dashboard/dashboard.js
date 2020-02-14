@@ -6,6 +6,8 @@ import makeCar from './createCar'
 import zones from "./zones.json"
 import {ABI} from "../vehicle-registration/ABI";
 import Antenna from 'iotex-antenna'
+import { subscribeToTimer } from '../../websocket_api/timerExample';
+
 export var map
 export var zone
 
@@ -14,6 +16,11 @@ var buffered = turf.buffer(zones, 200, 'feet');
 export class Dashboard extends React.Component {
 
     async componentDidMount() {
+        subscribeToTimer((err, timestamp) => {
+            console.log(timestamp)
+            }
+        );
+
         let antenna = new Antenna("http://api.testnet.iotex.one:80");
         mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
         zone = turf.merge(buffered);
@@ -77,11 +84,19 @@ export class Dashboard extends React.Component {
             // console.log(allRegisteredDIDs)
             let allRegisteredDIDs = ["did:io:0xb9006455c064207da1c613d8448efff729977f72", "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4", "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"]
             let did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            let did2
+            let did3
             makeCar(1, did);
             setInterval(function() {
                 did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+                did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+                did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+
                 makeCar(1, did);
-            }, 3000);
+                makeCar(1, did);
+                makeCar(1, did);
+
+            }, 2000);
         }) // closes on('style.load') event listener
 
     }
