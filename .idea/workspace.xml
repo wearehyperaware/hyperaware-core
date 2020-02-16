@@ -1,9 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="Vehicle Registration complete,">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/setupProxy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1XRjeDUMDuYI9RMagmcYIoNNqO7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="nodejs_interpreter_path" value="node" />
+    <property name="nodejs_package_manager_path" value="npm" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Slashing">
+      <created>1581197487134</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1581197487134</updated>
+    </task>
+    <task id="LOCAL-00002" summary="updated dash implemented slashing">
+      <created>1581197927684</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1581197927684</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="Vehicle Registration complete," />
+      <created>1581198079972</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1581198079972</updated>
+      <workItem from="1581198081803" duration="377000" />
+      <workItem from="1581199048970" duration="417000" />
+      <workItem from="1581456212668" duration="106000" />
+      <workItem from="1581457523660" duration="685000" />
+      <workItem from="1581502326492" duration="34000" />
+      <workItem from="1581624293834" duration="888000" />
+      <workItem from="1581625202784" duration="14000" />
+      <workItem from="1581627706178" duration="205000" />
+      <workItem from="1581628106058" duration="457000" />
+      <workItem from="1581715674418" duration="1012000" />
+      <workItem from="1581763842732" duration="604000" />
+      <workItem from="1581866568777" duration="1516000" />
+    </task>
+    <task id="LOCAL-00003" summary="added websocket integration example">
+      <created>1581716666640</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1581716666640</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Slashing" />
+    <MESSAGE value="updated dash implemented slashing" />
+    <MESSAGE value="added websocket integration example" />
+    <option name="LAST_COMMIT_MESSAGE" value="added websocket integration example" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716355680" />
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1581716665658">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716665658" />
+    <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="2027" height="285" key="GridCell.Tab.0.bottom/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
+    <state width="2027" height="285" key="GridCell.Tab.0.center" timestamp="1581197961643">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="2027" height="285" key="GridCell.Tab.0.center/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
+    <state width="2027" height="285" key="GridCell.Tab.0.left" timestamp="1581197961642">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="2027" height="285" key="GridCell.Tab.0.left/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961642" />
+    <state width="2027" height="285" key="GridCell.Tab.0.right" timestamp="1581197961643">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1581716669373">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716669373" />
   </component>
 </project>
