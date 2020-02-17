@@ -25,3 +25,8 @@ io.on('connection', (client) => {
 server.get('/api/ping', async (req, res) => {
     res.send("pong")
 });
+
+
+
+// Example get request to express server
+server.use('/', express.static(path.join(__dirname, 'public/home')));
