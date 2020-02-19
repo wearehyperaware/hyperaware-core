@@ -1,6 +1,9 @@
 ## Available Scripts
 
-`npm run start` - This starts and opens up the server. Run `npm install` before the first time you run this.
+`npm run dev` to start the backend and front end. Both will listen for changes in code and automatically reload.
+
+Run `npm install` before the first time you run this.
+
 
 This should be a working repo. Please don't introduce any breaking changes. Submit pull requests when you want to commit code.
 

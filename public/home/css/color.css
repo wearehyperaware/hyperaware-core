@@ -1,0 +1,64 @@
+
+/* Change the color values to your color */
+
+a,
+.dropdown-menu > li > a:focus,
+.dropdown-menu > li > a:hover,
+.overlay-menu ul li.active > a,
+.overlay-menu ul li a:hover,
+.icon-effect-1 .hi-icon,
+.contact-icon i,
+.owl-prev:hover i,
+.owl-next:hover i,
+.works-grid.titles .work-description a:hover,
+#owl-related-works .work-description a:hover,
+.portfolio-description ul > li a:hover {
+	color: #bfa67a;
+}
+
+.socials a:hover i,
+.meter .progress-bar,
+.project-icons a:hover,
+.best-price,
+.related-projects .customNavigation a:hover,
+.highlight,
+.btn.btn-color,
+.btn:hover,
+.socials.footer-socials a:hover i {
+	background-color: #bfa67a;
+}
+
+
+.navbar-nav > li > a:hover,
+.navbar-nav > .active > a,
+.navbar-nav > .active > a:focus,
+.navbar-nav > .active > a:hover,
+.menu-socials li > a:hover {
+	color: #bfa67a !important;
+}
+
+
+.menu-socials li > a:hover,
+.icon-effect-1 .hi-icon,
+.contact-icon,
+input.searchbox:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="time"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+	border-color: #bfa67a;
+}
+
+.dropdown-menu {
+	border-top-color: #bfa67a;
+}

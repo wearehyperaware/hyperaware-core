@@ -1,0 +1,450 @@
+/*-------------------------------------------------------*/
+/* Shortcodes
+/*-------------------------------------------------------*/
+
+/* Accordions
+-------------------------------------------------------*/
+
+.accordion {
+
+  & > .panel-content {
+    padding: 10px 0 10px 20px;
+  }
+
+  & > .acc-panel > a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 13px 20px;
+    background-color: #fff;
+    color: $text-color;
+    margin-bottom: 10px;
+    border: 3px solid #d1d1d1;
+    @include border-radius (0);
+    font-family: $heading-font;
+    text-transform: uppercase;
+    font-weight: 700;
+    @include transition ($all);
+  }
+
+  & > .acc-panel > a.active {
+    color: $heading-color;
+    background-color: #fff;
+    border-color: #333;
+  }
+
+  & > .acc-panel > a:after {
+    font-family: "ElegantIcons";
+    position: absolute;
+    right: 10px;
+    top: 2px;
+    color: $text-color;
+    font-weight: normal;
+    font-size: 26px;
+  }
+
+  & > .acc-panel > a:after {
+    content: "\35";
+  }
+
+  & > .acc-panel > a.active:after {
+    content: "\33";
+    color: #333;
+  }
+
+  & > .acc-panel > a:hover {
+    color: #fff;
+    background-color: #333;
+    border-color: #333;
+  }
+
+  & > .acc-panel > a:hover:after {
+    color: #fff;
+  }
+
+}
+
+
+/* Tabs
+-------------------------------------------------------*/
+
+.nav.nav-tabs {
+  border-bottom: none;
+
+  & > li {
+    margin-bottom: 0;
+  }
+
+  & > li.active > a {
+    border: 3px solid #333;
+    background-color: #fff;
+    padding: 13px 20px;
+    color: #333;
+  }
+
+  & > li > a {
+    padding: 13px 20px;
+    background-color: #fff;
+    border: 3px solid #d1d1d1;
+    @include border-radius (0);
+    margin-right: 10px;
+    font-family: $heading-font;
+    color: $text-color;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 700;
+    @include transition ($all);
+  }
+
+  & > li > a:hover {
+    color: #fff;
+    background-color: #333;
+    border-color: $heading-color;
+  }
+}
+
+.tab-content {
+  padding: 20px 0;
+
+  & > .tab-pane > p {
+    margin-bottom: 20px;
+  }
+}
+
+
+/* Buttons
+-------------------------------------------------------*/
+
+.section-buttons .btn { margin-bottom: 20px; }
+
+.btn {
+  font-family: $heading-font;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  letter-spacing: 0.02em;
+  @include border-radius (0);
+  border: 3px solid transparent;
+  @include transition (all .2s ease-in-out);
+  color: #fff;
+  background-color: $heading-color;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+
+  &.btn-color {
+    background-color: $main-color;
+  }
+
+  &.btn-transparent {
+    background-color: transparent;
+    border: 3px solid #fff;
+  }
+
+  &.btn-stroke {
+    color: $heading-color;
+    border: 3px solid $heading-color;
+    background-color: transparent;
+  }
+
+  &.btn-dark {
+    background-color: #333;
+  }
+
+  &.btn-white {
+    background-color: #fff;
+    color: $heading-color;
+  }
+
+  &.btn-light {
+    background-color: #f5f5f5;
+    color: $heading-color;
+  }
+
+  &:hover {
+    @include transition (all .2 ease-in-out);
+    color: #fff;
+    background-color: $main-color;
+    border-color: transparent;
+  }
+
+  &:focus {
+    outline: none;
+    color: #fff;
+  }
+
+  &.btn-white:focus {
+    color: $heading-color;
+  }
+
+  &.btn-color:hover {
+    background-color: $heading-color;
+  }
+}
+
+.btn-lg {
+  font-size: 14px;
+  padding: 13px 34px;
+}
+
+.btn-md {
+  font-size: 11px;
+  padding: 10px 25px;
+}
+
+.btn-sm {
+  font-size: 10px;
+  padding: 8px 22px;
+}
+
+
+/* Pie Charts
+-------------------------------------------------------*/
+
+.pie-chart {
+  margin-bottom: 40px;
+}
+
+.chart {
+  position: relative;
+  display: inline-block;
+  width: 174px;
+  height: 174px;
+  text-align: center;
+
+  & canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
+.percent {
+  display: inline-block;
+  line-height: 174px;
+  z-index: 2;
+  font-size: 24px;
+  font-family: $heading-font;
+  color: $heading-color;
+
+  &:after {
+    content: '%';
+    margin-left: 0.1em;
+    font-size: .9em;
+  }
+}
+
+
+/* Alert Boxes
+-------------------------------------------------------*/
+
+.alert {
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  border: none;
+  @include border-radius (0);
+  color: #fff;
+}
+
+.alert-dismissible .close {
+  right: 0;
+  top: 0;
+  color: inherit;
+  position: relative;
+}
+
+.close {
+  opacity: 1;
+  text-shadow: none;
+}
+
+.alert-success { background-color: #aec2a1; }
+.alert-info { background-color: #a0b7cb; }
+.alert-warning { background-color: #ccbfa9; }
+.alert-danger { background-color: #cba0a0; }
+
+
+/*-------------------------------------------------------*/
+/* Form Elements
+/*-------------------------------------------------------*/
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="search"],
+select,
+textarea {
+  position: relative;
+  height: 47px;
+  line-height: 47px;
+  border: 2px solid #e3e3e3;
+  background-color: transparent;
+  width: 100%;
+  margin-bottom: 16px;
+  padding: 0 16px;
+  color: $text-color;
+  @include transition (border-color 0.3s ease-in-out);
+}
+
+textarea#comment {
+  height: 190px;
+  padding: 0 16px;
+  margin-bottom: 25px;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="month"]:focus,
+input[type="week"]:focus,
+input[type="email"]:focus,
+input[type="number"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="time"]:focus,
+input[type="url"]:focus,
+textarea:focus {
+  border-color: $main-color;
+  outline: none;
+  box-shadow: none;
+}
+
+textarea {
+  height: auto;
+  padding: 0px 16px;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: $text-color;
+}
+
+input:-moz-placeholder,
+textarea:-moz-placeholder {
+  color: $text-color;
+  opacity: 1;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: $text-color;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: $text-color;
+}
+
+select {
+  line-height: 1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  position: relative;
+  cursor: pointer;
+
+  & i {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    pointer-events: none;
+    font-size: 18px;
+  }
+}
+
+
+/* Checkboxes & Radio Buttons
+-------------------------------------------------------*/
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"] + label:before {
+  width: 22px;
+  height: 22px;
+  background-color: #e3e3e3;
+  content: "";
+  display: inline-block;
+  font-size: 13px;
+  margin: -4px 12px 0 0;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked + label:before {
+  content: "\f00c";
+  font-family: "FontAwesome";
+  color: $heading-color;
+}
+
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+  cursor: pointer;
+  margin-bottom: 0;
+  font-family: $alt-font;
+  text-transform: none;
+  letter-spacing: normal;
+  color: $text-color;
+  font-size: 15px;
+}
+
+.radio-buttons > li,
+.checkboxes > li {
+  padding: 7px 0;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label:before {
+  display: inline-block;
+  content: "";
+  width: 22px;
+  height: 22px;
+  background-color: #e3e3e3;
+  border-radius: 40px;
+  margin: -3px 10px 0 0;
+  outline: none;
+  vertical-align: middle;
+  cursor: pointer;  margin-bottom: 0;
+}
+
+input[type="radio"]:checked + label:before  {
+  width: 22px;
+  height: 22px;
+  background-color: $heading-color;
+  border: 6px solid #e3e3e3;
+}
+
+input[type="radio"]:focus {
+  outline: none;
+}
+
+label {
+  font-weight: normal;
+  color: $heading-color;
+  font-size: 12px;
+  font-family: $heading-font;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+}
