@@ -1,0 +1,217 @@
+/*-------------------------------------------------------*/
+/* Footer
+/*-------------------------------------------------------*/
+
+.footer {
+
+  &.minimal {
+    padding: 120px 0;
+    text-align: center;
+  }
+
+  &.minimal .copyright {
+    display: block;
+    margin-top: 70px;
+    font-size: 10px;
+    font-family: $heading-font;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &.minimal .copyright a {
+    color: #909090;
+  }
+
+}
+
+.socials {
+
+  &.footer-socials a {
+    margin: 0 2px;
+
+    &:hover i {
+      color: #fff;
+      background-color: $main-color;
+    }
+  }
+
+  &.footer-socials i {
+    width: 37px;
+    height: 37px;
+    @include border-radius (50%);
+    background-color: #1b1b1b;
+    color: #dbdbdb;
+    line-height: 37px;
+    text-align: center;
+    font-size: 14px;
+    @include transition ($all);
+  }
+
+}
+
+
+/*-------------------------------------------------------*/
+/* Footer Type-2
+/*-------------------------------------------------------*/
+
+.footer.footer-type-2 {
+  background-color: $heading-color;
+}
+
+.footer-widgets {
+  padding: 100px 0;
+
+  & h5 {
+    margin-bottom: 24px;
+    font-size: 16px;
+    color: #fff;
+  }
+
+  & a {
+    color: $text-color;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+
+.footer-links {
+
+  & ul > li {
+    padding: 13px 0;
+    border-bottom: 1px solid #292929;
+    line-height: 24px;
+  }
+
+  & li {
+    padding-bottom: 7px;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+  }
+}
+
+
+.footer-get-in-touch p {
+  margin-bottom: 7px;
+}
+
+p.footer-address {
+  margin-bottom: 24px;
+}
+
+.footer-entry {
+  padding: 9px 0 14px;
+  border-bottom: 1px solid #292929;
+
+  & p {
+    margin-bottom: 1px;
+  }
+
+  & span {
+    color: #4c4c4c;
+    font-size: 12px;
+  }
+}
+
+.footer-entry:first-child,
+.footer-links li:first-child {
+  padding-top: 0;
+}
+
+.footer-entry:last-child,
+.footer-links li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.footer-socials .social-icons a {
+  margin-right: 3px;
+  float: left;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  background-color: transparent;
+  color: $text-color;
+  line-height: 32px;
+  text-align: center;
+  font-size: 13px;
+  @include transition ($all);
+}
+
+.social-icons {
+
+  &.light a {
+    background-color: $bg-light;
+  } 
+
+  & i {
+    display: block;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    position: relative;
+
+  }
+
+  & a:hover {
+    color: #fff;
+  }
+
+}
+
+
+.bottom-footer {
+  background-color: #0c0c0c;
+  padding: 34px 0;
+}
+
+.copyright span {
+  font-size: 13px;
+  line-height: 32px;
+
+  & a {
+    color: $text-color;
+
+    &:hover {
+      color: #fff;
+    }
+  }  
+}
+
+
+/*-------------------------------------------------------*/
+/* Footer Type-3
+/*-------------------------------------------------------*/
+
+.footer-type-3 {
+  padding: 100px 0;
+  font-size: 13px;
+  line-height: 37px;
+
+  & .footer-socials {
+    text-align: right;
+  }
+
+  & .footer-socials i {
+    background-color: transparent;
+    color: $text-color;
+  }
+
+  & .footer-socials a:hover i {
+    background-color: transparent;
+    color: $heading-color;
+  }
+
+  & a {
+    color: $text-color;
+
+    &:hover {
+      color: $heading-color;
+    }
+  }
+}
