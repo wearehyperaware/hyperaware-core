@@ -3,23 +3,42 @@ import turf from 'turf'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
-import zones from "./zones.json"
+import zones from "./samplePolygons.json";
+// import zones from "./zones.json";
 import {ABI} from "../vehicle-registration/ABI";
 import Antenna from 'iotex-antenna'
-import { subscribeToTimer } from '../../websocket_api/timerExample';
+// import { subscribeToTimer } from '../../websocket_api/timerExample';
+import { subscribeToPointUpdates } from '../../websocket_api/subscribeToPointUpdates';
+import { setDashboardState } from '../../websocket_api/setDashboardState';
 
 export var map
 export var zone
 
-var buffered = turf.buffer(zones, 200, 'feet');
+var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
 
 export class Dashboard extends React.Component {
 
     async componentDidMount() {
-        subscribeToTimer((err, timestamp) => {
-            console.log(timestamp)
-            }
-        );
+        // subscribeToTimer((err, timestamp) => {
+        //     console.log(timestamp)
+        //     }
+        // );
+
+        setDashboardState((err, state) => {
+          console.log(state);
+        })
+
+        subscribeToPointUpdates((err, i, point) =>{
+          // Logs point in the browser ...
+          console.log(i, point);
+
+
+          // point will have to include vehicle ID, status and position.
+
+        });
+
+
+
 
         let antenna = new Antenna("http://api.testnet.iotex.one:80");
         mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
@@ -86,17 +105,19 @@ export class Dashboard extends React.Component {
             let did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
             let did2
             let did3
-            makeCar(1, did);
-            setInterval(function() {
-                did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-                did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-                did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
 
-                makeCar(1, did);
-                makeCar(1, did);
-                makeCar(1, did);
 
-            }, 2000);
+            // makeCar(1, did);
+            // setInterval(function() {
+            //     did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            //     did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            //     did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            //
+            //     makeCar(1, did);
+            //     makeCar(1, did);
+            //     makeCar(1, did);
+            //
+            // }, 2000);
         }) // closes on('style.load') event listener
 
     }

@@ -1,0 +1,56 @@
+[
+  {
+    "coords": [
+      -0.10797500610351562,
+      51.541957962722606
+    ],
+    "inZone": false,
+    "zoneOwner": null,
+    "vehicleID": "abcd"
+  },
+  {
+    "coords": [
+      -0.10625839233398438,
+      51.53512459785485
+    ],
+    "inZone": false,
+    "zoneOwner": null,
+    "vehicleID": "abcd"
+  },
+  {
+    "coords": [
+      -0.098876953125,
+      51.52391138610547
+    ],
+    "inZone": true,
+    "zoneOwner": "0x25bd",
+    "vehicleID": "abcd"
+  },
+  {
+    "coords": [
+      -0.08394241333007812,
+      51.52092072985822
+    ],
+    "inZone": true,
+    "zoneOwner": "0x25bd",
+    "vehicleID": "abcd"
+  },
+  {
+    "coords": [
+      -0.06832122802734375,
+      51.53149395545341
+    ],
+    "inZone": false,
+    "zoneOwner": null,
+    "vehicleID": "abcd"
+  },
+  {
+    "coords": [
+      -0.04514694213867187,
+      51.53640593191922
+    ],
+    "inZone": false,
+    "zoneOwner": null,
+    "vehicleID": "abcd"
+  }
+]
