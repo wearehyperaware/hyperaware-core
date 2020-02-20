@@ -92,7 +92,7 @@ circle {
 
 circle.inzone,
 circle.enter {
-  /*fill: #E8BE50;*/
+  fill: red;
   r: 9px;
 }
 

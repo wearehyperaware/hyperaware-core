@@ -23,7 +23,7 @@ var cars = {},
 export default function(position, vehicleDID) {
 
 
-  let color = 'green'; // color based on vehicleDID creator ID?
+  let color = vehicleDID.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
   return createCar(position, htmlIDFromDID(vehicleDID.id), color);
 
 

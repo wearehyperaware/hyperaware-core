@@ -71,13 +71,13 @@ export class Dashboard extends React.Component {
         this.state.vehicles = dashboardState.vehicles;
         this.state.positions = dashboardState.positions;
 
-        this.state.buffered = turf.buffer(dashboardState.zones.length > 1 ? dashboardState.zones[1] : dashboardState.zones, 200, 'feet')
+        // this.state.buffered = turf.buffer(dashboardState.zones.length > 1 ? dashboardState.zones[1] : dashboardState.zones, 200, 'feet')
         // ^^ convert to take FeatureCollection or array of polygons?
         // ^^ We will want to zoom the map to the full extent of all registered zones I expect ...
 
         console.log(this.state)
 
-        zone = turf.merge(this.state.buffered);
+        // zone = turf.merge(this.state.buffered);
 
 
         let buffered = this.state.buffered;
@@ -88,25 +88,44 @@ export class Dashboard extends React.Component {
 
 
           // initialize the congestion zone data and layer
-          map.addSource('zone', {
-            type: 'geojson',
-            data: turf.merge(buffered)
-          });
-          //map.setCenter(center);
+          dashboardState.zones.forEach(function (zone) {
+            console.log('ZONE', zone)
+            let zoneName = zone.features[0].properties.name,
+              zoneAddress = zone.features[0].properties.tezosAddress,
+              zoneType = zone.features[0].properties.type
 
-          map.addLayer({
-            id: 'zone-line',
-            source: 'zone',
-            type: 'line',
-            paint: {
-              'line-width': 5,
-              'line-opacity': .5,
-              'line-color': '#C96F16'
-            }
-          });
+            map.addSource('zone-' + zoneName.toLowerCase(), {
+              type: 'geojson',
+              data: zone
+            });
+            //map.setCenter(center);
+
+            map.addLayer({
+              id: 'zone-border-' + zoneName.toLowerCase(),
+              source: 'zone-' + zoneName.toLowerCase(),
+              type: 'line',
+              paint: {
+                'line-width': 5,
+                'line-opacity': .5,
+                'line-color': zoneType == 'maritime' ? 'blue' : 'orange'
+              }
+            });
+
+            map.addLayer({
+              id: 'zone-fill-' + zoneName.toLowerCase(),
+              source: 'zone-' + zoneName.toLowerCase(),
+              type: 'fill',
+              paint: {
+                // 'line-width': 5,
+                'fill-opacity': .1,
+                'fill-color': zoneType == 'maritime' ? 'blue' : 'orange'
+              }
+            });
+
+          })
 
           function initializeVehicles(vehicleArray, positions) {
-
+            console.log(vehicleArray, positions);
             // set up svg canvas
             let svg = d3.select('#overlay').append('svg');
 
@@ -188,6 +207,7 @@ export class Dashboard extends React.Component {
 
       d3.select('#advance')
         .on('click', () => {
+          console.log('fetching points');
           socket.emit('fetchNewPositionsFromServer');
           // updatePositions(this.state.positions[this.state.currentPos % 6]);
           // this.state.currentPos += 1;
