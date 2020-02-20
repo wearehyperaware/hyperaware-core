@@ -1,1 +1,28 @@
-[]
+[{
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:0xb9006455c064207da1c613d8448efff729977f72",
+    "created": "2020-02-08T20:19:06.388Z",
+    "entity": "Device",
+    "creator": "did:io:0xb700007938f39018f6a7031f78e45151bcb276e2",
+    "vehicleType": "Car (petrol)",
+    "imei": "351756051523999"
+  },
+  {
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4",
+    "created": "2020-02-08T20:20:21.825Z",
+    "entity": "Device",
+    "creator": "did:io:0x8bedf00a67fc9c935097a39de4d3238ae0c83885",
+    "vehicleType": "Car (electric)",
+    "imei": "156056051523999"
+  },
+  {
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce",
+    "created": "2020-02-08T20:21:47.149Z",
+    "entity": "Device",
+    "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
+    "vehicleType": "Car (diesel)",
+    "imei": "156022051523629"
+  }
+]

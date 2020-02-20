@@ -1,56 +1,143 @@
 [
-  {
-    "coords": [
-      -0.10797500610351562,
-      51.541957962722606
-    ],
-    "inZone": false,
-    "zoneOwner": null,
-    "vehicleID": "abcd"
-  },
-  {
-    "coords": [
-      -0.10625839233398438,
-      51.53512459785485
-    ],
-    "inZone": false,
-    "zoneOwner": null,
-    "vehicleID": "abcd"
-  },
-  {
-    "coords": [
-      -0.098876953125,
-      51.52391138610547
-    ],
-    "inZone": true,
-    "zoneOwner": "0x25bd",
-    "vehicleID": "abcd"
-  },
-  {
-    "coords": [
-      -0.08394241333007812,
-      51.52092072985822
-    ],
-    "inZone": true,
-    "zoneOwner": "0x25bd",
-    "vehicleID": "abcd"
-  },
-  {
-    "coords": [
-      -0.06832122802734375,
-      51.53149395545341
-    ],
-    "inZone": false,
-    "zoneOwner": null,
-    "vehicleID": "abcd"
-  },
-  {
-    "coords": [
-      -0.04514694213867187,
-      51.53640593191922
-    ],
-    "inZone": false,
-    "zoneOwner": null,
-    "vehicleID": "abcd"
-  }
+  [{
+      "coords": [
+        -0.10797500610351562,
+        51.541957962722606
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.0940704345703125,
+        51.454648722710076
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.0940704345703125,
+        51.454648722710076
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+
+
+  ],
+  [{
+      "coords": [
+        -0.10625839233398438,
+        51.53512459785485
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.102996826171875,
+        51.463205362481744
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.102996826171875,
+        51.463205362481744
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+  ],
+  [{
+      "coords": [
+        -0.098876953125,
+        51.52391138610547
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.11844635009765626,
+        51.47539580264131
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.11844635009765626,
+        51.47539580264131
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+
+  ],
+  [{
+      "coords": [
+        -0.08394241333007812,
+        51.52092072985822
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.12531280517578122,
+        51.486941636341456
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.12531280517578122,
+        51.486941636341456
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+  ],
+  [{
+      "coords": [
+        -0.06832122802734375,
+        51.53149395545341
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.15380859375,
+        51.49314097030879
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.15380859375,
+        51.49314097030879
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+  ],
+  [{
+      "coords": [
+        -0.04514694213867187,
+        51.53640593191922
+      ],
+      "vehicleID": "did:io:0xb9006455c064207da1c613d8448efff729977f72"
+    },
+    {
+      "coords": [
+        -0.212860107421875,
+        51.49057583090478
+      ],
+      "vehicleID": "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4"
+    },
+    {
+      "coords": [
+        -0.212860107421875,
+        51.49057583090478
+      ],
+      "vehicleID": "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"
+    }
+
+  ]
 ]

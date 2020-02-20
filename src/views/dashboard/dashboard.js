@@ -3,50 +3,58 @@ import turf from 'turf'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
-import zones from "./samplePolygons.json";
+// import zones from "./samplePolygons.json";
 // import zones from "./zones.json";
 import {ABI} from "../vehicle-registration/ABI";
 import Antenna from 'iotex-antenna'
 // import { subscribeToTimer } from '../../websocket_api/timerExample';
-import { subscribeToPointUpdates } from '../../websocket_api/subscribeToPointUpdates';
-import { setDashboardState } from '../../websocket_api/setDashboardState';
+// import { subscribeToPointUpdates } from '../../websocket_api/subscribeToPointUpdates';
+// import { setDashboardState } from '../../websocket_api/setDashboardState';
+
+import openSocket from 'socket.io-client';
+const socket = openSocket('http://localhost:3001');
 
 export var map
 export var zone
 
-var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
+// var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
 
 export class Dashboard extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            zones: [],
+            vehicles: [],
+            antenna: new Antenna("http://api.testnet.iotex.one:80"),
+            buffered: null
+        };
+    }
+
     async componentDidMount() {
-        // subscribeToTimer((err, timestamp) => {
-        //     console.log(timestamp)
-        //     }
-        // );
-
-        setDashboardState((err, state) => {
-          console.log(state);
-        })
-
-        subscribeToPointUpdates((err, i, point) =>{
-          // Logs point in the browser ...
-          console.log(i, point);
+      // subscribeToTimer((err, timestamp) => {
+      //     console.log(timestamp)
+      //     }
+      // );
 
 
-          // point will have to include vehicle ID, status and position.
+      socket.on('setDashboardState', (dashboardState) => {
 
-        });
+        // Set up state:
+        this.state.zones = dashboardState.zones;
+        this.state.vehicles = dashboardState.vehicles;
+        this.state.buffered = turf.buffer(dashboardState.zones.length > 1 ? dashboardState.zones[1] : dashboardState.zones, 200, 'feet')
+        // ^^ convert to take FeatureCollection or array of polygons?
+        // ^^ We will want to zoom the map to the full extent of all registered zones I expect ...
 
+        console.log(this.state)
 
-
-
-        let antenna = new Antenna("http://api.testnet.iotex.one:80");
         mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
-        zone = turf.merge(buffered);
+        zone = turf.merge(this.state.buffered);
 
         var bounds = [
-            0.248565673828125,51.33146969705743, // Southwest coordinates
-            -0.5005645751953125, 51.65211086156918, // Northeast coordinates
+          0.248565673828125, 51.33146969705743, // Southwest coordinates
+          -0.5005645751953125, 51.65211086156918, // Northeast coordinates
         ];
 
         var screenWidth = document.documentElement.clientWidth;
@@ -54,71 +62,115 @@ export class Dashboard extends React.Component {
 
         // map loads with different zoom / center depending on the type of device
         var zoom = screenWidth < 700 ? 10.5 : screenHeight <= 600 || screenWidth < 1000 ? 11.5 : 12;
-        var center = screenWidth < 700 ? [-0.149688720703125,51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
 
         map = new mapboxgl.Map({
-            container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/light-v10',
-            zoom,
-            center,
-            //maxBounds: bounds
+          container: this.mapContainer,
+          style: 'mapbox://styles/mapbox/light-v10',
+          zoom,
+          center,
+          //maxBounds: bounds
         });
 
-        map.on('style.load', async function() {
-            // initialize the congestion zone data and layer
-            map.addSource('zone', {
-                type: 'geojson',
-                data: turf.merge(buffered)
-            });
-            //map.setCenter(center);
+        let buffered = this.state.buffered;
+        let vehicles = this.state.vehicles;
 
-            map.addLayer({
-                id: 'zone-line',
-                source: 'zone',
-                type: 'line',
-                paint: {
-                    'line-width': 5,
-                    'line-opacity': .5,
-                    'line-color': '#C96F16'
-                }
-            });
+        map.on('style.load', async function() {
+          // Why can't I access the this.state object in here?
+
+
+          // initialize the congestion zone data and layer
+          map.addSource('zone', {
+            type: 'geojson',
+            data: turf.merge(buffered)
+          });
+          //map.setCenter(center);
+
+          map.addLayer({
+            id: 'zone-line',
+            source: 'zone',
+            type: 'line',
+            paint: {
+              'line-width': 5,
+              'line-opacity': .5,
+              'line-color': '#C96F16'
+            }
+          });
+
+          function initializeVehicles(vehicleArray, positions) {
+
             // set up svg canvas
             let svg = d3.select('#overlay').append('svg');
+
+            // Set up right panel
             var openMobileNotifications = d3.select(".notifications-button-mobile");
             var closeMobileNotifications = d3.select(".icon.big.close");
             var mobileTicker = d3.select(".mobile-notifications-container");
-            openMobileNotifications.on('click', function () {
-                mobileTicker.classed('show', true);
+            openMobileNotifications.on('click', function() {
+              mobileTicker.classed('show', true);
             });
-            closeMobileNotifications.on('click', function () {
-                mobileTicker.classed("show", false);
+            closeMobileNotifications.on('click', function() {
+              mobileTicker.classed("show", false);
             })
-            // Doesn't seem like we are able to decode the below properly on iotex, may need a different solution? But someone else can try to fix
-            // let allRegisteredDIDs = await antenna.iotx.readContractByMethod({
-            //     from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-            //     contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
-            //     abi: ABI,
-            //     method: "getEveryRegisteredVehicle"
-            // });
-            // console.log(allRegisteredDIDs)
-            let allRegisteredDIDs = ["did:io:0xb9006455c064207da1c613d8448efff729977f72", "did:io:0xfe32d7d3acf635038747a7dbee8181c859eceea4", "did:io:0x3b79515be7ed816c45fa62b8a902c949e092e8ce"]
-            let did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-            let did2
-            let did3
 
 
-            // makeCar(1, did);
-            // setInterval(function() {
-            //     did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-            //     did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-            //     did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+            // Add to map ... get id, get position, put circle on.
+
             //
-            //     makeCar(1, did);
-            //     makeCar(1, did);
-            //     makeCar(1, did);
-            //
-            // }, 2000);
+
+            let allRegisteredDIDs = [];
+
+            vehicleArray.forEach(function (vehicle) {
+
+              allRegisteredDIDs.push(vehicle.id);
+
+              let pos = positions.find((position) => {
+                return position.vehicleID == vehicle.id;
+              });
+
+              // addCar(vehicle, pos.coords);
+
+              // dashboardState.positions.forEach(function (position) {
+              //   if (position.vehicleId == vehicle.id) {
+              //     pos = position.coords
+              //   }
+              // })
+              // test if there is a position
+
+                // if yes, add to map at position
+
+                // else, pass for now - but later add to
+                // righthand panel with indication that there's no position
+
+            })
+
+
+          }
+          console.log("WITHIN MAP", dashboardState);
+          // console.log('vehicles', vehicles);
+
+          initializeVehicles(dashboardState.vehicles, dashboardState.positions);
+
+          // makeCar(1, did);
+          // setInterval(function() {
+          //     did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+          //     did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+          //     did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
+          //
+          //     makeCar(1, did);
+          //     makeCar(1, did);
+          //     makeCar(1, did);
+          //
+          // }, 2000);
         }) // closes on('style.load') event listener
+
+
+      });
+
+
+      socket.on('updatePoints', (v) => {
+        console.log(v)
+      })
 
     }
 
