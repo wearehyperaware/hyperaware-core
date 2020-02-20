@@ -39,46 +39,24 @@ io.on('connection', (client) => {
     });
 
 
-    // setTimeout(function () {
-    //   client.emit('updatePositions', samplePoints[1]);
-    // }, 5000)
-
-    // client.on('subscribeToTimer', (interval) => {
-    //
-    //   // vvv this is running on the server
-    //     console.log('client is subscribing to timer with interval ', interval);
-    //     setInterval(() => {
-    //
-    //         client.emit('timer', new Date());
-    //         client.emit('updatePoint', new Date());
-    //
-    //     }, interval);
-    // });
-
-    console.log('Client connected!')
-
 
     let counter = 1;
 
-    client.emit('updatePoints', "test")
+    // This functionality lets us test in browser -
+    // updatePositions event will actually be emitted when
+    // we fetch new data from the S3 bucket ...
+    client.on('fetchNewPositionsFromServer', function () {
+      console.log("Fetch request received")
 
-    //
-    //
-    // client.on('updatePoint', (interval) => {
-    //     console.log('client is subscribing to point updates with interval ', interval);
-    //     setInterval(() => {
-    //
-    //         let point = samplePoints[counter % 6];
-    //
-    //         // let within = t
-    //         client.emit('point', counter,  samplePoints[counter % 6]);
-    //         counter += 1;
-    //
-    //         // client.emit('updatePoint', [0,0]);
-    //
-    //
-    //     }, interval);
-    // });
+      // TEST points inside enclave
+
+      // Attach status to points
+
+      // transmit points to browser to visualize
+      client.emit('updatePositions', samplePoints[counter % 6]);
+      counter += 1;
+    })
+
 
     client.on('disconnect', function () {
       console.log('user disconnected');

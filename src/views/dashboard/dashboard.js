@@ -177,7 +177,8 @@ export class Dashboard extends React.Component {
 
 
       socket.on('updatePositions', (newPositions) => {
-        console.log('NEW POSITIONS!')
+        console.log(newPositions)
+        updatePositions(newPositions);
 
       })
 
@@ -187,8 +188,9 @@ export class Dashboard extends React.Component {
 
       d3.select('#advance')
         .on('click', () => {
-          updatePositions(this.state.positions[this.state.currentPos % 6]);
-          this.state.currentPos += 1;
+          socket.emit('fetchNewPositionsFromServer');
+          // updatePositions(this.state.positions[this.state.currentPos % 6]);
+          // this.state.currentPos += 1;
         })
 
       const renderMap = () => {
@@ -252,7 +254,7 @@ export class Dashboard extends React.Component {
                 <div id='sidebar' className='sidebar fill-light'>
                     <div className='clearfix'>
                     <div className="mobile-col-4">
-                      <button id="advance" class='btn-outline-primary mt-3'>ADVANCE</button>
+                      <button id="advance" className='btn-outline-primary mt-3'>ADVANCE</button>
                     </div>
                         <div className='row'>
                             <div className='col-md-6'>
