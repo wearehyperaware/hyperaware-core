@@ -3,6 +3,8 @@ import turf from 'turf'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
+import updatePositions from './updatePositions'
+
 // import zones from "./samplePolygons.json";
 // import zones from "./zones.json";
 import {ABI} from "../vehicle-registration/ABI";
@@ -27,7 +29,9 @@ export class Dashboard extends React.Component {
             zones: [],
             vehicles: [],
             antenna: new Antenna("http://api.testnet.iotex.one:80"),
-            buffered: null
+            buffered: null,
+            positions: [],
+            currentPos: 1
         };
     }
 
@@ -36,41 +40,45 @@ export class Dashboard extends React.Component {
       //     console.log(timestamp)
       //     }
       // );
+      // let map;
 
+      mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
+
+      var bounds = [
+        0.448565673828125, 50.33146969705743, // Southwest coordinates
+        -1.5005645751953125, 52.65211086156918, // Northeast coordinates
+      ];
+
+      var screenWidth = document.documentElement.clientWidth;
+      var screenHeight = document.documentElement.clientHeight;
+
+      // map loads with different zoom / center depending on the type of device
+      var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
+      var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+
+      map = new mapboxgl.Map({
+        container: this.mapContainer,
+        style: 'mapbox://styles/mapbox/light-v10',
+        zoom,
+        center,
+        //maxBounds: bounds
+      });
 
       socket.on('setDashboardState', (dashboardState) => {
 
         // Set up state:
         this.state.zones = dashboardState.zones;
         this.state.vehicles = dashboardState.vehicles;
+        this.state.positions = dashboardState.positions;
+
         this.state.buffered = turf.buffer(dashboardState.zones.length > 1 ? dashboardState.zones[1] : dashboardState.zones, 200, 'feet')
         // ^^ convert to take FeatureCollection or array of polygons?
         // ^^ We will want to zoom the map to the full extent of all registered zones I expect ...
 
         console.log(this.state)
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
         zone = turf.merge(this.state.buffered);
 
-        var bounds = [
-          0.248565673828125, 51.33146969705743, // Southwest coordinates
-          -0.5005645751953125, 51.65211086156918, // Northeast coordinates
-        ];
-
-        var screenWidth = document.documentElement.clientWidth;
-        var screenHeight = document.documentElement.clientHeight;
-
-        // map loads with different zoom / center depending on the type of device
-        var zoom = screenWidth < 700 ? 10.5 : screenHeight <= 600 || screenWidth < 1000 ? 11.5 : 12;
-        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
-
-        map = new mapboxgl.Map({
-          container: this.mapContainer,
-          style: 'mapbox://styles/mapbox/light-v10',
-          zoom,
-          center,
-          //maxBounds: bounds
-        });
 
         let buffered = this.state.buffered;
         let vehicles = this.state.vehicles;
@@ -128,7 +136,9 @@ export class Dashboard extends React.Component {
                 return position.vehicleID == vehicle.id;
               });
 
-              // addCar(vehicle, pos.coords);
+
+              // JUST ADD THE CAR TO THE MAP
+              makeCar(pos.coords, vehicle);
 
               // dashboardState.positions.forEach(function (position) {
               //   if (position.vehicleId == vehicle.id) {
@@ -146,10 +156,8 @@ export class Dashboard extends React.Component {
 
 
           }
-          console.log("WITHIN MAP", dashboardState);
-          // console.log('vehicles', vehicles);
 
-          initializeVehicles(dashboardState.vehicles, dashboardState.positions);
+          initializeVehicles(dashboardState.vehicles, dashboardState.positions[0]);
 
           // makeCar(1, did);
           // setInterval(function() {
@@ -168,11 +176,40 @@ export class Dashboard extends React.Component {
       });
 
 
-      socket.on('updatePoints', (v) => {
-        console.log(v)
+      socket.on('updatePositions', (newPositions) => {
+        console.log('NEW POSITIONS!')
+
       })
 
+      map.on('move', () => {
+        renderMap();
+      })
+
+      d3.select('#advance')
+        .on('click', () => {
+          updatePositions(this.state.positions[this.state.currentPos % 6]);
+          this.state.currentPos += 1;
+        })
+
+      const renderMap = () => {
+        // d3Projection = getD3();
+        // path.projection(d3Projection)
+
+        d3.selectAll('circle')
+          // here we could have a radius scaling factor based on map zoom ...
+          .attr('transform', function () {
+            let pixelCoords = map.project(
+              d3.select(this)
+                .attr('data-coords')
+                .split(',')
+                .map(Number)
+              );
+
+            return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+          })
+
     }
+  }
 
     render() {
 
@@ -181,6 +218,7 @@ export class Dashboard extends React.Component {
                 <div ref={this.overlay} className='overlay' id='overlay'/>
                 <div id='topbar' className='fill-light show-mobile topbar'>
                     <div className="clearfix">
+
                         <div className='mobile-col4'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles in zone</div>
                             <div className='metric current-vehicles'>0</div>
@@ -213,6 +251,9 @@ export class Dashboard extends React.Component {
 
                 <div id='sidebar' className='sidebar fill-light'>
                     <div className='clearfix'>
+                    <div className="mobile-col-4">
+                      <button id="advance" class='btn-outline-primary mt-3'>ADVANCE</button>
+                    </div>
                         <div className='row'>
                             <div className='col-md-6'>
                                 <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles

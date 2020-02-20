@@ -35,8 +35,13 @@ io.on('connection', (client) => {
     client.emit('setDashboardState', {
       zones: samplePolygons,
       vehicles: sampleVehicles,
-      positions: samplePoints[0]
+      positions: samplePoints
     });
+
+
+    // setTimeout(function () {
+    //   client.emit('updatePositions', samplePoints[1]);
+    // }, 5000)
 
     // client.on('subscribeToTimer', (interval) => {
     //
