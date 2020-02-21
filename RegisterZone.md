@@ -35,15 +35,15 @@ On submit
 	6. If we have time we can add functionality that could update the zones or transferownership    
 	    
 	   		
- 
-			mapping(Address -> Array<DID>) governmentToZoneDIDs
+                        Fields on smart contract
+			mapping(Address -> Array<DID>) zoneRegisteration
 			
 			struct DID {
-						zoneID: (hash of Tezos public key and nonce?),
-						exists: Boolean indicating if a polygon is active or not,
-						hash: hash of the content of the document_url
-						uri: document_url	
-					} 
+					zoneID: (hash of Tezos public key and nonce?),
+					exists: Boolean indicating if a polygon is active or not,
+					hash: hash of the content of the document_url
+					uri: document_url	
+				   } 
 	
 
 		
@@ -56,14 +56,16 @@ Tezos smart contract specification
 Check out Tezos developer protocol.  (for writing smart contract, we can either use FI(JS based) or Smartpy(python based) and to interact with the contract ConseilJS can be used)
 
 
-		MUST
-			create/add
+	MUST
+		1)create/add
 				-simple functionality to create a new polygon and add it to the array of DID, we 	            
 				assume that the new polygon doesn’t overlap the previous polygones registered. 
 
-		Optional
-			update
-				this will alter the pre existing polygon registered on blockchain. It should first delete the old polygone(by setting ‘exists’ to false) and create/add the new one.
+	OPTIONAL
+		2)update
+				this will alter the pre existing polygon registered on blockchain. 
+				It should first delete the old polygone(by setting ‘exists’ to false) and create/add the new one.
 			
-			transferOwnership 
-				this will transfer ownership of the polygone. Not sure how to implement it without the recipient’s private key. (we can manually have the sender delete it and ask the recipient to create one)
+		3)transferOwnership 
+				this will transfer ownership of the polygone. Not sure how to implement it without the recipient’s private key. 
+				(we can manually have the sender delete it and ask the recipient to create one)
