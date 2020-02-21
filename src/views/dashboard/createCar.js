@@ -7,7 +7,7 @@ import { ABI as VehicleRegABI } from '../vehicle-registration/ABI'
 import DIDRegDetails from "../did-registration/did-contract-details";
 import {toRau} from "iotex-antenna/lib/account/utils";
 import axios from 'axios'
-import {readLog} from "../helperFunctions";
+import {readLog, htmlIDFromDID} from "../helperFunctions";
 import eventABI from "../vehicle-registration/vehicleEventABIs";
 
 var d3 = require('d3');
@@ -20,27 +20,38 @@ var cars = {},
   total = 0,
   current = 0;
 
-export default function(num, did) {
-  for (var i = 0; i < num; i++) {
-    getPath().then(function(path_info) {
-      cars[++j] = { inside: false, ever: false, color: getRandomColor() };
-      var route = turf.linestring(path_info.routes[0].geometry.coordinates);
-      createCar(path_info.origin, cars[j].color)
-        .transition()
-        .duration(15000)
-        .attrTween('transform', translateAlong(route, j, did))
-        .remove();
-    });
-  };
+export default function(position, vehicleDID) {
+
+
+  let color = vehicleDID.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
+  return createCar(position, htmlIDFromDID(vehicleDID.id), color);
+
+
+  //
+  //
+  // for (var i = 0; i < num; i++) {
+  //   getPath().then(function(path_info) {
+  //     cars[++j] = { inside: false, ever: false, color: getRandomColor() };
+  //     var route = turf.linestring(path_info.routes[0].geometry.coordinates);
+  //     createCar(path_info.origin, cars[j].color)
+  //       .transition()
+  //       .duration(15000)
+  //       .attrTween('transform', translateAlong(route, j, did))
+  //       .remove();
+  //   });
+  // };
 }
 
-function createCar(origin, color) {
+function createCar(coords, id, color) {
+  // console.log(map, position, color)
   var new_car = d3.select('svg')
     .append('circle')
+    .attr('id', id)
+    .attr('data-coords', coords.toString())
     .attr('fill', color)
     .attr('r', 5)
     .attr('transform', function() {
-      var pixelCoords = map.project(origin.geometry.coordinates);
+      var pixelCoords = map.project(coords);
       return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
     });
   return new_car;

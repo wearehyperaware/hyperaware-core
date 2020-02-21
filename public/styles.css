@@ -21,7 +21,7 @@ body {
 }
 
 #overlay {
-  position: relative;
+  /* position: relative; */
   z-index: 99;
   height: 100vh;
   width: 100%;
@@ -92,7 +92,7 @@ circle {
 
 circle.inzone,
 circle.enter {
-  /*fill: #E8BE50;*/
+  fill: red;
   r: 9px;
 }
 

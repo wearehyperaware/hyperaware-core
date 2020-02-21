@@ -28,6 +28,14 @@ export const readLog = async (abi, actionHash, antenna) => {
 
 };
 
+export const htmlIDFromDID = ( DID ) => {
+  return DID.replace(/:/g, '-');
+}
+
+export const didFromHTMLID = ( htmlID ) => {
+  return htmlID.replace(/-/g, ':');
+}
+
 //Creates did document
 export const generateDocument = (entity, creator = "", imei = "", vehicleType = "", id) => {
     let document
