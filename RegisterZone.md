@@ -14,12 +14,14 @@ Required fields
 Back end
 
 On submit
+
 	1. Geo json file will be saved to Arweave -> url will be returned, say geo_url
 	2. Query smart contract on Tezos and get the nonce back (number of exclusion zones the 			  
              government registered  so far)
 	3. Creates DID document, simple json/txt and generate hash of it.
-
-		DID document on areweave
+	4. Save it to Arweave -> url will be returned, say document_url
+		
+			DID document on areweave
 			{
 				zoneID: (hash of Tezos public key and nonce?),
 				owner:  public key, address of the owner,(msg.sender)
@@ -27,13 +29,12 @@ On submit
 				Congestion charges: from input field 
 				uri : geo_url	
 			}
-
-	4. Save it to Arweave -> url will be returned, say document_url
-
 	5. Invoke smart contract and append DID containing the document_url to an array of struct DID.
 	    Smart contract will have a mapping from government’s address to array containing exclusion 			     
-	    zones. We automatically create did for each zone in the backend. Below are the fields in the 			
-	    smart contract. 
+	    zones. 
+	6. If we have time we can add functionality that could update the zones or transferownership    
+	    
+	   		
  
 			mapping(Address -> Array<DID>) governmentToZoneDIDs
 			
@@ -45,7 +46,7 @@ On submit
 					} 
 	
 
-		6. If we have time we can add functionality that could update the zones or transferownership
+		
 
 	
 
@@ -62,7 +63,7 @@ Check out Tezos developer protocol.  (for writing smart contract, we can either 
 
 		Optional
 			update
-				this will alter the pre existing polygon registered on blockchain. It should first 				    	      				delete the old polygone(by setting ‘exists’ to false) and create/add the new one.
+				this will alter the pre existing polygon registered on blockchain. It should first delete the old polygone(by setting ‘exists’ to false) and create/add the new one.
 			
 			transferOwnership 
 				this will transfer ownership of the polygone. Not sure how to implement it without the recipient’s private key. (we can manually have the sender delete it and ask the recipient to create one)
