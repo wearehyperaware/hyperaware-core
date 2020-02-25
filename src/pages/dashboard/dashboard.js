@@ -242,12 +242,10 @@ export class Dashboard extends React.Component {
 
         return (
             <div>
-                <Topbar />
 
                 <div ref={this.overlay} className='overlay' id='overlay'/>
                 <div id='topbar' className='fill-light show-mobile topbar'>
                     <div className="clearfix">
-
                         <div className='mobile-col4'>
                             <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles in zone</div>
                             <div className='metric current-vehicles'>0</div>
@@ -280,9 +278,9 @@ export class Dashboard extends React.Component {
 
                 <div id='sidebar' className='sidebar fill-light'>
                     <div className='clearfix'>
-                    <div className="mobile-col-4">
-                      <button id="advance" className='btn btn-outline-primary mt-3'>ADVANCE</button>
-                    </div>
+                        <div className="mobile-col-4">
+                            <button id="advance" className='btn btn-outline-primary mt-3'>ADVANCE</button>
+                        </div>
                         <div className='row'>
                             <div className='col-md-6'>
                                 <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles
@@ -318,11 +316,15 @@ export class Dashboard extends React.Component {
                         </div>
                         <div className='home'></div>
                         <div className='bottom-bar'></div>
+
                     </div>
+
                         </div>
                     </div>
                 </div>
-                <div ref={el => this.mapContainer = el} className='map' id='map'/>
+                <div ref={el => this.mapContainer = el} className='map' id='map'>
+                    <Topbar />
+                </div>
             </div>
         )
     }
