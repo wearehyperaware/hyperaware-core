@@ -218,6 +218,24 @@ export class Dashboard extends React.Component {
           // this.state.currentPos += 1;
         })
 
+        socket.on('fetchNewPositionsFromServerResponse', (message) => {
+            addNotification("enter", message.slashedDID)
+        })
+
+    function addNotification(type, did) {
+            var color = "red"
+            var ticker = d3.selectAll('#ticker');
+            var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
+
+            var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + truncateDID(did) + ' is <strong>' + notification_types[type].message + '</strong> congestion zone.'
+            html = type === 'enter' ? html + 'You will incur a £5 fee.' : html;
+            ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+        }
+
+        function truncateDID(did) {
+            return did.substr(0, 15) + "..." + did.substr(42, 8)
+        }
+
       const renderMap = () => {
         // d3Projection = getD3();
         // path.projection(d3Projection)

@@ -85,6 +85,7 @@ io.on('connection', (client) => {
               newPosition.vehicleID,
               samplePolygons[i].features[0].properties.tezosAddress
             );
+            client.emit('fetchNewPositionsFromServerResponse', {slashedDID: newPosition.vehicleID, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress })
 
             newPosition.within = within;
             newPosition.owner = samplePolygons[i].features[0].properties.name;

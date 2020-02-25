@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -93,7 +94,7 @@
       <workItem from="1582317191110" duration="4234000" />
       <workItem from="1582579839232" duration="7414000" />
       <workItem from="1582627066993" duration="537000" />
-      <workItem from="1582639499684" duration="2555000" />
+      <workItem from="1582639499684" duration="4928000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -123,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582640613862</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Restore Advance button on dash">
+      <created>1582642604202</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1582642604202</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -143,7 +151,8 @@
     <MESSAGE value="added express server and websocket" />
     <MESSAGE value="Visual overhaul and overall website" />
     <MESSAGE value="Update readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update readme" />
+    <MESSAGE value="Restore Advance button on dash" />
+    <option name="LAST_COMMIT_MESSAGE" value="Restore Advance button on dash" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -154,10 +163,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582640613108">
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582642603358">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582640613108" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582642603358" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -178,10 +187,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582152127924" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582640614931">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582642605725">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582640614931" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582642605725" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582642100005">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
