@@ -1,15 +1,485 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="Vehicle Registration complete,">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/setupProxy.js" afterDir="false" />
+    <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/public/work/1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/16.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/work/9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Apps.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/Footer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/FooterLight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/FooterWithoutMenu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/FooterWithoutMenuLight.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/FooterWithoutMenuLightSocialOnly.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/Topbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Layout/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/Faq.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/Feature.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/HowItWorks.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/Partner.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/Pricing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Shared/Testi.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/css/carousel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/css/flexslider.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/css/materialdesignicons.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/css/materialdesignicons.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/Pe-icon-7-stroke.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/Pe-icon-7-stroke.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/Pe-icon-7-stroke.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/Pe-icon-7-stroke.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/ajax-loader.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-brands-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-brands-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-brands-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-brands-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-brands-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-regular-400.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-regular-400.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-regular-400.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-regular-400.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-regular-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-solid-900.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-solid-900.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-solid-900.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-solid-900.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/fa-solid-900.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/materialdesignicons-webfont.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/materialdesignicons-webfont.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/materialdesignicons-webfont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/materialdesignicons-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/materialdesignicons-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/slick.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/fonts/slick.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/404.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/about.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/busi01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/comingsoon.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/contact.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/drone_photo.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/enterprise-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/24-hours.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/Email.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/ai.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/bed.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/big.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/bitcoin.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/calendar.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/calendar_b.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/camera.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/cardiogram.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/cloud.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/code.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/coffee-cup.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/computer.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/database.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/desk.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/device.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/game-controller.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/game.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/graduation-hat.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/insurance.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/intellectual.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/lightbulb.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/location.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/low-battery.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/mail.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/membership.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/pen.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/printer.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/question.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/refresh.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/sand-clock.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/server.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/serving-dish.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/speedometer.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/stairs.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/star.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/start-up.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/table.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/ticket1.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/ticket2.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/ticket3.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/user.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/video.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/weightlifter.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/wifi.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/laptop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/london_bg2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/londonbg3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/maintenance.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/maritime_photo.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/modern01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/portfolio.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/rocket.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/services.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/arrow-bottom.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/curve-dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/curve-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/curve-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/host-shape.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/round-dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/round-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/round-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/shape-dark.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/shape-light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/shapes/shape-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/trucking_photo.jpeg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/usefull-link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/ArweaveKey.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/Documentation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/landing/Cta.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/landing/Feature.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/landing/Price.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_blog.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_bootstrap-custom.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_components.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_contact.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_countdown.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_cta.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_features.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_footer.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_general.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_helper.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_home.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_menu.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_price.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_team.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_testi.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_user.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_variables.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scss/_work.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/3d-city/3d-london.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/london_3d.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/3d-city/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/3d-city/london.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/3d-city/vehicles.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/central-node/dev.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/central-node/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/design/central-node/pseudoserver.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/404.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/about-us.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/blog-single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/blog-standard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/contact.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/contact.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/animate.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/bootstrap.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/color.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/font-icons.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/magnific-popup.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/owl-carousel/AjaxLoader.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/owl-carousel/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/owl-carousel/grabbing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/responsive.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/responsive.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/rev-slider.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_footer.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_general.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_layout.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_mixins.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_navigation.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_shortcodes.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/_variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/responsive.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sass/style.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/sliders.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/spacings.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/style.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/css/style.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/drones.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/ElegantIcons.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/ElegantIcons.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/ElegantIcons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/ElegantIcons.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/FontAwesome.otf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/Stroke-Gap-Icons.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/Stroke-Gap-Icons.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/Stroke-Gap-Icons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/Stroke-Gap-Icons.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/fontawesome-webfont.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/fontawesome-webfont.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/fontawesome-webfont.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/fontawesome-webfont.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/fonts/fontawesome-webfont.woff2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/apple-touch-icon-144x144.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/apple-touch-icon-72x72.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/blog_title_bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/comment_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/comment_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/comment_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/comment_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/gallery_post_img_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/gallery_post_img_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/gallery_post_img_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/latest_posts_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/latest_posts_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/latest_posts_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/post_img_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog/single_post_img.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_gallery_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_gallery_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/blog_gallery_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/client_logo_6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/cta_bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/3d-london-labelled.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/3d-london.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/arweave-square.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/arweave.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/drone.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/iotex-iotx-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/ship.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/tezos-xtz-logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/custom/trucking.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/hero_img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/intro_logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/ipad_promo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/logo_dark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/logo_light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/map_pin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/owl/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/owl/slide_1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/enterprise.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/owl/slide_2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/work/bg-portfolio.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/owl/slide_3.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/contact-detail.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/me.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_1_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_2_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_3_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_4_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_5_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/portfolio/project_6_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/process_bg.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/public/work/single.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_10.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_10_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_11.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_11_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_12.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_12_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_1_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_2_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_3_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_4.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_4_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_5.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_5_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_6.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_6_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_7.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_7_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_8.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_8_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_9.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/project_9_big.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/promo_img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/promo_img_2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/promo_img_3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/results_bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/hero_img_1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/ken_slide_1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/images/1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/ken_slide_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/mp_slide_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/mp_slide_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/mp_slide_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/onepage_slide_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/onepage_slide_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/onepage_slide_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/sidenav_slide_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/sidenav_slide_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/sidenav_slide_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/revolution/vimeobg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/team_1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/team_2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/team_3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/testimonials_bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/text_rotator_slide.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/img/video_bg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-angles.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-mp.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-owl-slider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-portfolio.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-revolution-slider.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-side-nav.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-video-bg.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-vimeo-bg.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index-youtube-bg.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/bootstrap.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/gmap3.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/jquery.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/plugins.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/rev-slider.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/js/scripts.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-about-me.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-contact.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/portfolio-single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/closedhand.cur" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/layers.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/ares.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/custom.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/dione.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/erinyen.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/gyges.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/hades.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/hebe.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/hephaistos.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/hermes.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/hesperiden.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/metis.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/persephone.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/uranus.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation-skins/zeus.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/navigation.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/openhand.cur" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/settings-source.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/settings.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/css/tp-color-picker.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/revicons/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/revicons/revicons.eot" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/revicons/revicons.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/revicons/revicons.ttf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/fonts/revicons/revicons.woff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/info.cfg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.actions.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.carousel.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.kenburn.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.layeranimation.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.migration.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.navigation.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.parallax.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.slideanims.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/revolution.extension.video.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.carousel.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.kenburn.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.layeranimation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.migration.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.navigation.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.parallax.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.slideanims.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/extensions/source/revolution.extension.video.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/jquery.themepunch.enablelog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/jquery.themepunch.revolution.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/jquery.themepunch.tools.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/source/index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/source/jquery.themepunch.enablelog.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/source/jquery.themepunch.revolution.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/source/jquery.themepunch.tools.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/source/tp-color-picker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/js/tp-color-picker.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/facebook/class-facebook.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/flickr/class-flickr.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/instagram/class-instagram.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/twitter/RestApi.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/twitter/class-twitter.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/twitter/connection/Application.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/twitter/connection/ConnectionAbstract.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/twitter/connection/User.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/vimeo/class-vimeo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/revolution/php/youtube/class-youtube.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/services.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/shipping.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/shortcodes.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/trucking.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/typography.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/video/Thumbs.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/video/video.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/video/video.mp4" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/video/video.ogv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/home/video/video.webm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register-zone/geo-messed.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register-zone/geo.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register-zone/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register-zone/js/drop.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/register-zone/js/map.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.test.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/serviceWorker.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/serviceWorker.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/setupTests.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/getPath.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/getPath.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/map.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/samplePolygons.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/samplePolygons.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/sample_path.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/sample_path.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/updatePositions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/zones.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/zones.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/did-registration/did-contract-details.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/did-contract-details.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/did-registration/did-event-abis.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/did-event-abis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/did-registration/registerDID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/helperFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/helperFunctions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/jurisdiction-registry/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/jurisdiction-registry/jurisdictionRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/jurisdictionRegistration.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle-registration/Contract/vehicleregistry.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregistry.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle-registration/Contract/vehicleregwithproof.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregwithproof.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle-registration/vehicleEventABIs.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleEventABIs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,11 +507,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
     </key>
   </component>
@@ -80,7 +560,16 @@
       <workItem from="1581628106058" duration="457000" />
       <workItem from="1581715674418" duration="1012000" />
       <workItem from="1581763842732" duration="604000" />
-      <workItem from="1581866568777" duration="1516000" />
+      <workItem from="1581866568777" duration="1811000" />
+      <workItem from="1581979843484" duration="21000" />
+      <workItem from="1582138930907" duration="2835000" />
+      <workItem from="1582152008479" duration="202000" />
+      <workItem from="1582301412557" duration="1421000" />
+      <workItem from="1582303950409" duration="1563000" />
+      <workItem from="1582317191110" duration="4234000" />
+      <workItem from="1582579839232" duration="7414000" />
+      <workItem from="1582627066993" duration="537000" />
+      <workItem from="1582639499684" duration="266000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -89,27 +578,46 @@
       <option name="project" value="LOCAL" />
       <updated>1581716666640</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added express server and websocket">
+      <created>1581868273996</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1581868273996</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/index.d.js" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Slashing" />
     <MESSAGE value="updated dash implemented slashing" />
     <MESSAGE value="added websocket integration example" />
-    <option name="LAST_COMMIT_MESSAGE" value="added websocket integration example" />
+    <MESSAGE value="added express server and websocket" />
+    <option name="LAST_COMMIT_MESSAGE" value="added express server and websocket" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716355680" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1581716665658">
+    <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582324717285">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716665658" />
+    <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582639915540">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582639915540" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -126,9 +634,17 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1581716669373">
+    <state x="567" y="134" key="SettingsEditor" timestamp="1582152127924">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716669373" />
+    <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582152127924" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1581868276428">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581868276428" />
+    <state x="644" y="237" width="759" height="638" key="find.popup" timestamp="1582580976445">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="644" y="237" width="759" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582580976445" />
   </component>
 </project>
