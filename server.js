@@ -71,9 +71,9 @@ io.on('connection', (client) => {
 
       // TEST points inside enclave
       for (var j = 0; j < newPositions.length; j++) {
-
         for (var i = 0; i < turfPolygons.length; i++) {
 
+          // Check within bounding box for efficiency
           let turfPolygon = turfPolygons[i];
           let newPosition = newPositions[j];
 
