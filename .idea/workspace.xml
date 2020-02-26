@@ -95,7 +95,7 @@
       <workItem from="1582579839232" duration="7414000" />
       <workItem from="1582627066993" duration="537000" />
       <workItem from="1582639499684" duration="16670000" />
-      <workItem from="1582714565516" duration="7065000" />
+      <workItem from="1582714565516" duration="7308000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -160,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582719188123</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added notifications stream on dashboard">
+      <created>1582722892150</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1582722892150</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +191,8 @@
     <MESSAGE value="Push slash notifications back to client from socket and display" />
     <MESSAGE value="Dashboard UI update" />
     <MESSAGE value="Dashboard UI update on card overflow" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dashboard UI update on card overflow" />
+    <MESSAGE value="Added notifications stream on dashboard" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added notifications stream on dashboard" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -195,10 +203,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582719183424">
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582722887096">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582719183424" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722887096" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -219,10 +227,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582152127924" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582719191263">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582722893137">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582719191263" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722893137" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582716126059">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
