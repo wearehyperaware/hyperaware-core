@@ -17,6 +17,7 @@ import Typist from "react-typist";
 import contact from "../../images/contact.png";
 import Topbar from "../../components/Layout/Topbar";
 import FooterLight from "../../components/Layout/FooterLight";
+import analyzeReport4 from '../../images/analyze_report_4.svg';
 
 class Index extends Component {
 
@@ -126,9 +127,25 @@ class Index extends Component {
                     </div>
                 </section>
 
-
                 {/* Feature */}
                 <Feature />
+
+                {/* FAQ */}
+                {/*<div className="container">*/}
+                {/*    <Row className="align-items-center">*/}
+                {/*        <Col md={6}>*/}
+                {/*            <img src={analyzeReport4} className="mr-md-4" alt="" />*/}
+                {/*        </Col>*/}
+
+                {/*        <Col md={6} className="mt-4 mt-sm-0 pt-2 pt-sm-0">*/}
+                {/*            <div className="section-title mr-lg-5">*/}
+                {/*                <h4 className="title mb-4">Clean And Modern Code</h4>*/}
+                {/*                <p className="text-muted">This prevents repetitive patterns from impairing the overall visual impression and facilitates the comparison of different typefaces. Furthermore, it is advantageous when the dummy text is relatively realistic.</p>*/}
+                {/*                <Link to="#" className="btn btn-outline-primary">Start Now <i className="mdi mdi-chevron-right"></i></Link>*/}
+                {/*            </div>*/}
+                {/*        </Col>*/}
+                {/*    </Row>*/}
+                {/*</div>*/}
 
                 {/* Price */}
                 <Price />

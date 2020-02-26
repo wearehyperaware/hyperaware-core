@@ -20,11 +20,11 @@ var cars = {},
   total = 0,
   current = 0;
 
-export default function(position, vehicleDID) {
+export default function(position, vehicleInfo) {
 
 
-  let color = vehicleDID.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
-  return createCar(position, htmlIDFromDID(vehicleDID.id), color);
+  let color = vehicleInfo.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
+  return createCar(position, htmlIDFromDID(vehicleInfo.id), getRandomColor(), vehicleInfo.isPrivate);
 
 
   //
@@ -42,18 +42,34 @@ export default function(position, vehicleDID) {
   // };
 }
 
-function createCar(coords, id, color) {
-  // console.log(map, position, color)
-  var new_car = d3.select('svg')
-    .append('circle')
-    .attr('id', id)
-    .attr('data-coords', coords.toString())
-    .attr('fill', color)
-    .attr('r', 5)
-    .attr('transform', function() {
-      var pixelCoords = map.project(coords);
-      return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
-    });
+function createCar(coords, id, color, isPrivate) {
+  let new_car
+  if (isPrivate === 'true') {
+     new_car = d3.select('svg')
+        .append('circle')
+        .attr('id', id)
+        .attr('isPrivate', isPrivate)
+        .attr('data-coords', coords.toString())
+        .attr('fill', 'transparent')
+        .attr('stroke', 'transparent')
+        .attr('r', 5)
+        .attr('transform', function() {
+          var pixelCoords = map.project(coords);
+          return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+        });
+  } else {
+    new_car = d3.select('svg')
+        .append('circle')
+        .attr('id', id)
+        .attr('isPrivate', isPrivate)
+        .attr('data-coords', coords.toString())
+        .attr('fill', color)
+        .attr('r', 5)
+        .attr('transform', function () {
+          var pixelCoords = map.project(coords);
+          return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+        });
+  }
   return new_car;
 }
 

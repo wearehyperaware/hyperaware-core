@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/images/analyze_report_4.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sampleVehicles.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sampleVehicles.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/landing/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,22 +36,23 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/images" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -95,7 +100,8 @@
       <workItem from="1582579839232" duration="7414000" />
       <workItem from="1582627066993" duration="537000" />
       <workItem from="1582639499684" duration="16670000" />
-      <workItem from="1582714565516" duration="7308000" />
+      <workItem from="1582714565516" duration="9939000" />
+      <workItem from="1582744454845" duration="6313000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -167,7 +173,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582722892150</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Added notifications stream on dashboard">
+      <created>1582723114737</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1582723114737</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -203,10 +216,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582722887096">
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582750999925">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722887096" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582750999925" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -223,18 +236,18 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="567" y="134" key="SettingsEditor" timestamp="1582152127924">
+    <state x="567" y="134" key="SettingsEditor" timestamp="1582745147807">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582152127924" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582722893137">
+    <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582745147807" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582723119352">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722893137" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582716126059">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582723119352" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582727207820">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582716126059" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582727207820" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

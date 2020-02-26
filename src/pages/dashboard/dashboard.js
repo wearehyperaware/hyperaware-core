@@ -41,8 +41,8 @@ export class Dashboard extends React.Component {
             heightZonesCard: '0',
             heightVehiclesCard: '0',
             zonesChevron: "mdi-chevron-double-down",
-            vehiclesChevron: "mdi-chevron-double-down"
-
+            vehiclesChevron: "mdi-chevron-double-down",
+            isPrivacyMode: true
         };
     }
 
@@ -210,7 +210,7 @@ export class Dashboard extends React.Component {
 
 
     const addNotification = (type, did) => {
-            var color = "red"
+            var color = "#2f55d4 !important"
             var ticker = d3.selectAll('#ticker');
             var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
 
@@ -242,9 +242,36 @@ export class Dashboard extends React.Component {
 
     }
   }
+    togglePrivacyMode = async (e) => {
+        e.preventDefault()
+        await this.setState({isPrivacyMode: this.state.isPrivacyMode === true ? false : true})
+
+        if (this.state.isPrivacyMode) {
+            let circles = d3.selectAll('circle')
+            circles[0].forEach((circle) => {
+                if (circle.attributes['isPrivate'].value === 'true') {
+                    d3.select(circle).attr('fill', 'transparent').attr('stroke', 'transparent')
+                }
+            })
+        } else {
+            let circles = d3.selectAll('circle')
+            circles[0].forEach((circle) => {
+                if (circle.attributes['isPrivate'].value === 'true') {
+                    d3.select(circle).attr('fill', this.getRandomColor()).attr('stroke', '#fff')
+                }
+            })
+        }
+
+    }
+
+     getRandomColor = () => {
+        var colors = d3.scale.category10().range();
+        var max = colors.length;
+        return colors[Math.floor(Math.random() * max)];
+    }
 
      handleAdvance = (e) => {
-        e.preventDefault()
+         e.preventDefault()
         console.log('fetching points');
         socket.emit('fetchNewPositionsFromServer');
         // updatePositions(this.state.positions[this.state.currentPos % 6]);
@@ -287,10 +314,13 @@ export class Dashboard extends React.Component {
                     <Topbar/>
                 </div>
 
-                    <Col lg={7} style={{width:'550px', marginTop: '80px', marginLeft: '71%'}}>
+                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '71%'}}>
                         <div className='d-flex justify-content-center'>
-                            <button className='btn btn-primary' onClick={this.handleAdvance}>ADVANCE</button>
+                            <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
+                            <button className='btn btn-primary mx-2' onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
+
                         </div>
+
                         <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'4px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>
