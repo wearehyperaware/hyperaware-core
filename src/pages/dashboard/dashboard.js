@@ -4,6 +4,7 @@ import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
 import updatePositions from './updatePositions'
+import arrowBottom from '../../images/shapes/arrow-bottom.png';
 
 // import zones from "./samplePolygons.json";
 // import zones from "./zones.json";
@@ -15,6 +16,10 @@ import Antenna from 'iotex-antenna'
 
 import openSocket from 'socket.io-client';
 import Topbar from "../../components/Layout/Topbar";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import AnimateHeight from "react-animate-height";
+import {Link} from "react-router-dom";
 const socket = openSocket('http://localhost:3001');
 
 export var map
@@ -32,16 +37,16 @@ export class Dashboard extends React.Component {
             antenna: new Antenna("http://api.testnet.iotex.one:80"),
             buffered: null,
             positions: [],
-            currentPos: 1
+            currentPos: 1,
+            heightZonesCard: '0',
+            heightVehiclesCard: '0',
+            zonesChevron: "mdi-chevron-double-down",
+            vehiclesChevron: "mdi-chevron-double-down"
+
         };
     }
 
     async componentDidMount() {
-      // subscribeToTimer((err, timestamp) => {
-      //     console.log(timestamp)
-      //     }
-      // );
-      // let map;
 
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
@@ -182,19 +187,7 @@ export class Dashboard extends React.Component {
           }
 
           initializeVehicles(dashboardState.vehicles, dashboardState.positions[0]);
-
-          // makeCar(1, did);
-          // setInterval(function() {
-          //     did = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-          //     did2 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-          //     did3 = allRegisteredDIDs[Math.floor(Math.random() * allRegisteredDIDs.length)]
-          //
-          //     makeCar(1, did);
-          //     makeCar(1, did);
-          //     makeCar(1, did);
-          //
-          // }, 2000);
-        }) // closes on('style.load') event listener
+        })
 
 
       });
@@ -210,19 +203,13 @@ export class Dashboard extends React.Component {
         renderMap();
       })
 
-      d3.select('#advance')
-        .on('click', () => {
-          console.log('fetching points');
-          socket.emit('fetchNewPositionsFromServer');
-          // updatePositions(this.state.positions[this.state.currentPos % 6]);
-          // this.state.currentPos += 1;
-        })
-
         socket.on('fetchNewPositionsFromServerResponse', (message) => {
             addNotification("enter", message.slashedDID)
         })
 
-    function addNotification(type, did) {
+
+
+    const addNotification = (type, did) => {
             var color = "red"
             var ticker = d3.selectAll('#ticker');
             var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
@@ -256,93 +243,147 @@ export class Dashboard extends React.Component {
     }
   }
 
+     handleAdvance = (e) => {
+        e.preventDefault()
+        console.log('fetching points');
+        socket.emit('fetchNewPositionsFromServer');
+        // updatePositions(this.state.positions[this.state.currentPos % 6]);
+        // this.state.currentPos += 1;
+    }
+
+    expandZonesCard = (e) => {
+        e.preventDefault()
+        let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
+        let height = this.state.heightZonesCard === 'auto' ? '0' : 'auto'
+        this.setState({heightZonesCard: height, zonesChevron: chevronIcon})
+    }
+
+    expandVehiclesCard = (e) => {
+        e.preventDefault()
+        let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
+        let height = this.state.heightVehiclesCard === 'auto' ? '0' : 'auto'
+        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon})
+    }
+
     render() {
 
         return (
             <div>
 
                 <div ref={this.overlay} className='overlay' id='overlay'/>
-                <div id='topbar' className='fill-light show-mobile topbar'>
-                    <div className="clearfix">
-                        <div className='mobile-col4'>
-                            <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles in zone</div>
-                            <div className='metric current-vehicles'>0</div>
-                        </div>
-                        <div className='mobile-col4'>
-                            <div className='metriclabel small quiet space-top2 space-bottom2'>Total traffic</div>
-                            <div className='metric total-vehicles'>0</div>
-                        </div>
-                        <div className='mobile-col4'>
-                            <div className='metriclabel small quiet space-top2 space-bottom2'>Total Revenue</div>
-                            <div className='metric space-bottom2'>£<span className='total-revenue'>0</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div className='notifications-button-mobile show-mobile'>
-                    <p className='icon big bell'></p>
-                </div>
-
-                <div className='mobile-notifications-container'>
-                    <div className='clearfix'>
-                        <div className="notifications-button-mobile">
-                            <p className='icon big close'></p>
-                        </div>
-                        <div className='metriclabel small quiet space-top4 space-bottom2'>Notifications</div>
-                    </div>
-
-                    <div className='ticker dark small text-left' id='ticker'>
-                    </div>
-                </div>
-
-                <div id='sidebar' className='sidebar fill-light'>
-                    <div className='clearfix'>
-                        <div className="mobile-col-4">
-                            <button id="advance" className='btn btn-outline-primary mt-3'>ADVANCE</button>
-                        </div>
-                        <div className='row'>
-                            <div className='col-md-6'>
-                                <div className='metriclabel small quiet space-top2 space-bottom2'>Vehicles
-                                    <div>in zone</div>
-                                    <div className='metric current-vehicles denim'>0</div>
-                                </div>
-                            </div>
-                            <div className='col-md-6'>
-                                <div className='metriclabel small quiet space-top2 space-bottom2'>Total daily
-                                    <div>traffic</div>
-                                    <div className='metric total-vehicles'>0</div>
-                                </div>
-                            </div>
-                    </div>
-                        <div>
-                    <div className='metriclabel small quiet space-bottom2' style={{paddingTop:'30'}}>Total Revenue</div>
-                    <div className='metric space-bottom2'>£<span className='total-revenue'>0</span></div>
-
-                    <div className='dark small text-left pad2 space-top7 blurb hidden'>
-                        <p>This is a map showing an application of Mapbox tools for geofencing purposes. Specifically,
-                            this visualizes the London congestion charge zone. </p>
-                    </div>
-
-                    <div className='pad2y block center'></div>
-                    <div className='marvel-device iphone5s gold'>
-                        <div className='camera'></div>
-                        <div className='sensor'></div>
-                        <div className='speaker'></div>
-                        <div className='screen'>
-                            <div className='metriclabel small quiet space-top2 space-bottom2'>Notifications</div>
-                            <div className='ticker dark small text-left' id='ticker'>
-                            </div>
-                        </div>
-                        <div className='home'></div>
-                        <div className='bottom-bar'></div>
-
-                    </div>
-
-                        </div>
-                    </div>
-                </div>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
-                    <Topbar />
+                    <Topbar/>
                 </div>
+
+                    <Col lg={7} style={{width:'550px', marginTop: '150px', marginLeft: '70%'}}>
+                        <div className='my-3 d-flex justify-content-center'>
+                            <button className='btn btn-primary mt-3' onClick={this.handleAdvance}>ADVANCE</button>
+                        </div>
+                        <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
+                            <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
+                            <div className='row d-flex justify-content-center'>
+                                <div className='col-6'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        7
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Jurisdictions.
+                                    </div>
+                                </div>
+                                <div className='col-6 text-center'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        51
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Vehicles in zones.
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='col-6'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        19
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Policy Zones.
+                                    </div>
+                                </div>
+                                <div className='col-6'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        £1945
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Charges Collected Today.
+                                    </div>
+                                </div>
+                            </div>
+                            <AnimateHeight duration={500} height={this.state.heightZonesCard}>
+                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center">
+                                    <h2 className="title text-uppercase mb-4">United Kingdom</h2>
+                                    <div className="d-flex justify-content-center mb-4">
+                                        <p>io1dsfkjsndalmsa</p>
+                                    </div>
+                                </div>
+                            </AnimateHeight>
+                        </div>
+                        <div className="container-fluid">
+                            <Row>
+                                <div className="home-shape-arrow">
+                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
+                                    <a className="mouse-down" onClick={this.expandZonesCard}><i className={`mdi ${this.state.zonesChevron} arrow-icon mover text-dark h5`}></i></a>
+                                </div>
+                            </Row>
+                        </div>
+                    </Col>
+                    <Col lg={7} style={{width:'550px', marginLeft: '70%'}}>
+                        <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
+                            <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
+                            <div className='row d-flex justify-content-center'>
+                                <div className='col-6'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        157
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Vehicles Registered.
+                                    </div>
+                                </div>
+                                <div className='col-6 text-center'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        47
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Entities.
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='row'>
+                                <div className='col'>
+                                    <h2 className='row heading text-primary d-flex justify-content-center'>
+                                        £47821
+                                    </h2>
+                                    <div className='row d-flex justify-content-center'>
+                                        Staked in Contracts.
+                                    </div>
+                                </div>
+                            </div>
+                            <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
+                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center">
+                                    <h2 className="title text-uppercase mb-4">United Kingdom</h2>
+                                    <div className="d-flex justify-content-center mb-4">
+                                        <p>io1dsfkjsndalmsa</p>
+                                    </div>
+                                </div>
+                            </AnimateHeight>
+                        </div>
+                        <div className="container-fluid">
+                            <Row>
+                                <div className="home-shape-arrow">
+                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
+                                    <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>
+                                </div>
+                            </Row>
+                        </div>
+                    </Col>
             </div>
         )
     }
