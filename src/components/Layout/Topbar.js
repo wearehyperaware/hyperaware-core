@@ -61,6 +61,7 @@ class Topbar extends Component {
     }
 
     render() {
+
         return (
             <React.Fragment>
                 <header id="topnav" className="defaultscroll sticky">
@@ -68,9 +69,10 @@ class Topbar extends Component {
                         <div>
                             <Link className="logo" to="/">Hyperaware<span className="text-primary">.</span></Link>
                         </div>
+                        {window.location.pathname === '/dashboard' ? <div></div> :
                         <div className="buy-button">
                             <a href='/dashboard' className="btn btn-primary">Demo</a>
-                        </div>
+                        </div>}
                         <div className="menu-extras">
                             <div className="menu-item">
                                 <Link to="#" onClick={ this.toggleLine } className={this.state.isOpen ? "navbar-toggle open" : "navbar-toggle" } >
@@ -89,7 +91,7 @@ class Topbar extends Component {
                                 <li><Link to="/">About Us</Link></li>
                                 <li><Link to="/">Use Cases</Link></li>
                                 <li className="has-submenu">
-                                    <Link  to="/dashboard" >Demo</Link>
+                                    <a href="/dashboard" >Demo</a>
                                     <span className="menu-arrow"></span>
                                     <ul  className="submenu"  >
                                         <li>
