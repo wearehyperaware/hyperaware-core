@@ -123,11 +123,12 @@ svg {
 }
 
 .sidebar {
-  width: 300px;
+  width: 700px;
+  height:320px;
+  padding: 10px;
   border-left: 1px solid #aaa;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  left: 0;
+  top: 650px;
   position: absolute;
   text-align: center;
   overflow: hidden;
@@ -189,7 +190,8 @@ circle.enter {
 }
 
 .screen {
-  overflow: scroll;
+  height: 80vh;
+  bottom: 0;
 }
 
 .ticker {
@@ -300,7 +302,7 @@ circle.enter {
 
 @media (max-height: 500px) {
   #sidebar {
-    width: 400px;
+    width: 20vw;
   }
   #map,
   #overlay {

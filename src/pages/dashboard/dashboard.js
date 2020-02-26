@@ -271,6 +271,18 @@ export class Dashboard extends React.Component {
             <div>
 
                 <div ref={this.overlay} className='overlay' id='overlay'/>
+
+                <div id='sidebar' className='sidebar'>
+                    <div className='clearfix'>
+                        <div>
+                            <div className='screen'>
+                                <div className='metriclabel small quiet space-top2 space-bottom2'>Notifications</div>
+                                <div className='ticker dark small text-left' id='ticker'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
                     <Topbar/>
                 </div>
