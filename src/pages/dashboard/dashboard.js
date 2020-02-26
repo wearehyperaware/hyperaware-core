@@ -318,12 +318,21 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
-                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center">
-                                    <h2 className="title text-uppercase mb-4">United Kingdom</h2>
-                                    <div className="d-flex justify-content-center mb-4">
-                                        <p>io1dsfkjsndalmsa</p>
+                                <div style={{height:228, overflowY: "auto"}}>
+                                    <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
+                                        <h2 className="title text-uppercase mb-4">United Kingdom</h2>
+                                        <div className="d-flex justify-content-center mb-4">
+                                            <p>io1dsfkjsndalmsa</p>
+                                        </div>
+                                    </div>
+                                    <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
+                                        <h2 className="title text-uppercase mb-4">Germany</h2>
+                                        <div className="d-flex justify-content-center mb-4">
+                                            <p>io1dsfkjsndalmsa</p>
+                                        </div>
                                     </div>
                                 </div>
+
                             </AnimateHeight>
                         </div>
                         <div className="container-fluid">
@@ -367,7 +376,7 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
-                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center">
+                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
                                     <h2 className="title text-uppercase mb-4">United Kingdom</h2>
                                     <div className="d-flex justify-content-center mb-4">
                                         <p>io1dsfkjsndalmsa</p>
