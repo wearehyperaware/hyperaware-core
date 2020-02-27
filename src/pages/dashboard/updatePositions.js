@@ -5,7 +5,7 @@ var d3 = require('d3');
 
 
 
-export default function updatePositions (positions) {
+export default function updatePositions (positions, privacyMode) {
 
   // positions must be an array.
   positions.forEach((position) => {

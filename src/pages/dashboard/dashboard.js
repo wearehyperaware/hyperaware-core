@@ -41,8 +41,8 @@ export class Dashboard extends React.Component {
             heightZonesCard: '0',
             heightVehiclesCard: '0',
             zonesChevron: "mdi-chevron-double-down",
-            vehiclesChevron: "mdi-chevron-double-down"
-
+            vehiclesChevron: "mdi-chevron-double-down",
+            isPrivacyMode: true
         };
     }
 
@@ -210,7 +210,7 @@ export class Dashboard extends React.Component {
 
 
     const addNotification = (type, did) => {
-            var color = "red"
+            var color = "#2f55d4 !important"
             var ticker = d3.selectAll('#ticker');
             var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
 
@@ -242,9 +242,36 @@ export class Dashboard extends React.Component {
 
     }
   }
+    togglePrivacyMode = async (e) => {
+        e.preventDefault()
+        await this.setState({isPrivacyMode: this.state.isPrivacyMode === true ? false : true})
+
+        if (this.state.isPrivacyMode) {
+            let circles = d3.selectAll('circle')
+            circles[0].forEach((circle) => {
+                if (circle.attributes['isPrivate'].value === 'true') {
+                    d3.select(circle).attr('fill', 'transparent').attr('stroke', 'transparent')
+                }
+            })
+        } else {
+            let circles = d3.selectAll('circle')
+            circles[0].forEach((circle) => {
+                if (circle.attributes['isPrivate'].value === 'true') {
+                    d3.select(circle).attr('fill', this.getRandomColor()).attr('stroke', '#fff')
+                }
+            })
+        }
+
+    }
+
+     getRandomColor = () => {
+        var colors = d3.scale.category10().range();
+        var max = colors.length;
+        return colors[Math.floor(Math.random() * max)];
+    }
 
      handleAdvance = (e) => {
-        e.preventDefault()
+         e.preventDefault()
         console.log('fetching points');
         socket.emit('fetchNewPositionsFromServer');
         // updatePositions(this.state.positions[this.state.currentPos % 6]);
@@ -271,15 +298,30 @@ export class Dashboard extends React.Component {
             <div>
 
                 <div ref={this.overlay} className='overlay' id='overlay'/>
+
+                <div id='sidebar' className='sidebar'>
+                    <div className='clearfix'>
+                        <div>
+                            <div className='screen'>
+                                <div className='metriclabel small space-top2 space-bottom2' style={{color: '#363636'}}>Notifications</div>
+                                <div className='ticker dark small text-left' id='ticker'>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
                     <Topbar/>
                 </div>
 
-                    <Col lg={7} style={{width:'550px', marginTop: '150px', marginLeft: '70%'}}>
-                        <div className='my-3 d-flex justify-content-center'>
-                            <button className='btn btn-primary mt-3' onClick={this.handleAdvance}>ADVANCE</button>
+                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '71%'}}>
+                        <div className='d-flex justify-content-center'>
+                            <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
+                            <button className='btn btn-primary mx-2' onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
+
                         </div>
-                        <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
+
+                        <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'4px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>
                                 <div className='col-6'>
@@ -319,16 +361,43 @@ export class Dashboard extends React.Component {
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
                                 <div style={{height:228, overflowY: "auto"}}>
-                                    <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
-                                        <h2 className="title text-uppercase mb-4">United Kingdom</h2>
-                                        <div className="d-flex justify-content-center mb-4">
-                                            <p>io1dsfkjsndalmsa</p>
+                                        <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                            <div className="float-left">
+                                                <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                    <li className="day font-weight-bold mb-2">UK</li>
+                                                </ul>
+                                            </div>
+                                            <div className="content">
+                                                <h4 className="text-dark title" style={{marginBottom: '0px'}}>Heathrow International Airport</h4>
+                                                <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
+                                                <p className="text-muted location-time">
+                                                    <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
+                                                    <br />
+                                                    <span className="text-dark h6">Charge: </span>0.07 GBP / minute
+                                                    <br />
+                                                    <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
+                                                </p>
+
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
-                                        <h2 className="title text-uppercase mb-4">Germany</h2>
-                                        <div className="d-flex justify-content-center mb-4">
-                                            <p>io1dsfkjsndalmsa</p>
+
+                                    <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                        <div className="float-left">
+                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                <li className="day font-weight-bold mb-2">DE</li>
+                                            </ul>
+                                        </div>
+                                        <div className="content">
+                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>Berlin High Emission Area</h4>
+                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
+                                            <p className="text-muted location-time">
+                                                <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
+                                                <br />
+                                                <span className="text-dark h6">Charge: </span>0.043 EUR / minute
+                                                <br />
+                                                <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
+                                            </p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -344,7 +413,7 @@ export class Dashboard extends React.Component {
                             </Row>
                         </div>
                     </Col>
-                    <Col lg={7} style={{width:'550px', marginLeft: '70%'}}>
+                    <Col lg={7} style={{width:'550px', marginLeft: '71%'}}>
                         <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>
@@ -384,14 +453,14 @@ export class Dashboard extends React.Component {
                                 </div>
                             </AnimateHeight>
                         </div>
-                        <div className="container-fluid">
-                            <Row>
-                                <div className="home-shape-arrow">
-                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
-                                    <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>
-                                </div>
-                            </Row>
-                        </div>
+                        {/*<div className="container-fluid">*/}
+                        {/*    <Row>*/}
+                        {/*        <div className="home-shape-arrow">*/}
+                        {/*            <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />*/}
+                        {/*            <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>*/}
+                        {/*        </div>*/}
+                        {/*    </Row>*/}
+                        {/*</div>*/}
                     </Col>
             </div>
         )
