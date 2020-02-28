@@ -135,6 +135,13 @@ svg {
   z-index: 999;
 }
 
+.dashboard-main-buttons {
+  z-index: 999;
+  position: absolute;
+  bottom: 40px;
+  margin-left: 42%;
+}
+
 .metriclabel {
   text-transform: uppercase;
   opacity: 0.75;

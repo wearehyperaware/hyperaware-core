@@ -3,7 +3,7 @@ import React from 'react'
 import Antenna from "iotex-antenna";
 import {readLog} from "../helperFunctions";
 import { Contract } from "iotex-antenna/lib/contract/contract";
-import { ABI } from './ABI'
+import ABI from './ABI'
 import Web3 from 'web3'
 import contractInfo from "../did-registration/did-contract-details";
 import eventABI from "./vehicleEventABIs";
@@ -129,14 +129,14 @@ export class VehicleRegistration extends React.Component {
     getVehicles = async (e) => {
         e.preventDefault()
         try {
-            let res = await antenna.iotx.readContractByMethod({
+            let res = await JSON.stringify(antenna.iotx.readContractByMethod({
                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
                 contractAddress: CONTRACT_ADDRESS,
                 abi: ABI,
                 method: "getVehicles"
-            }, this.state.getVehiclesOwnerDID);
-
+            }, this.state.getVehiclesOwnerDID));
             let vehicles = []
+            console.log(res[0][0].toString())
             // Output dids are mangled, need to find their locations inside the output string and extract them
             let regex = /did:io:/gi, result, dids = [];
             while ( (result = regex.exec(res[0][0])) ) {
