@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="Vehicle Registration complete,">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/setupProxy.js" afterDir="false" />
+    <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/images/icon/car.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/plane.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/images/icon/ship.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/sampleVehicles.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sampleVehicles.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/style.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +39,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -80,7 +95,25 @@
       <workItem from="1581628106058" duration="457000" />
       <workItem from="1581715674418" duration="1012000" />
       <workItem from="1581763842732" duration="604000" />
-      <workItem from="1581866568777" duration="1516000" />
+      <workItem from="1581866568777" duration="1811000" />
+      <workItem from="1581979843484" duration="21000" />
+      <workItem from="1582138930907" duration="2835000" />
+      <workItem from="1582152008479" duration="202000" />
+      <workItem from="1582301412557" duration="1421000" />
+      <workItem from="1582303950409" duration="1563000" />
+      <workItem from="1582317191110" duration="4234000" />
+      <workItem from="1582579839232" duration="7414000" />
+      <workItem from="1582627066993" duration="537000" />
+      <workItem from="1582639499684" duration="16670000" />
+      <workItem from="1582714565516" duration="9939000" />
+      <workItem from="1582744454845" duration="9973000" />
+      <workItem from="1582817429829" duration="195000" />
+      <workItem from="1582817633346" duration="129000" />
+      <workItem from="1582817780143" duration="1589000" />
+      <workItem from="1582819379961" duration="203000" />
+      <workItem from="1582819592510" duration="1408000" />
+      <workItem from="1582821440557" duration="6290000" />
+      <workItem from="1582886391726" duration="16107000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -89,27 +122,124 @@
       <option name="project" value="LOCAL" />
       <updated>1581716666640</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added express server and websocket">
+      <created>1581868273996</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1581868273996</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Visual overhaul and overall website">
+      <created>1582639977789</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1582639977789</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Update readme">
+      <created>1582640613862</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1582640613862</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Restore Advance button on dash">
+      <created>1582642604202</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1582642604202</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Push slash notifications back to client from socket and display">
+      <created>1582647363989</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1582647363989</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Dashboard UI update">
+      <created>1582679980331</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1582679980331</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Dashboard UI update">
+      <created>1582680607387</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1582680607387</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Dashboard UI update on card overflow">
+      <created>1582719188123</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1582719188123</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added notifications stream on dashboard">
+      <created>1582722892150</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1582722892150</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added notifications stream on dashboard">
+      <created>1582723114737</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1582723114737</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added privacy mode toggle and isPrivate identifier to vehicles">
+      <created>1582751006439</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582751006439</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
+        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/index.d.js" />
+      </list>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Slashing" />
     <MESSAGE value="updated dash implemented slashing" />
     <MESSAGE value="added websocket integration example" />
-    <option name="LAST_COMMIT_MESSAGE" value="added websocket integration example" />
+    <MESSAGE value="added express server and websocket" />
+    <MESSAGE value="Visual overhaul and overall website" />
+    <MESSAGE value="Update readme" />
+    <MESSAGE value="Restore Advance button on dash" />
+    <MESSAGE value="Push slash notifications back to client from socket and display" />
+    <MESSAGE value="Dashboard UI update" />
+    <MESSAGE value="Dashboard UI update on card overflow" />
+    <MESSAGE value="Added notifications stream on dashboard" />
+    <MESSAGE value="Added privacy mode toggle and isPrivate identifier to vehicles" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added privacy mode toggle and isPrivate identifier to vehicles" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716355680" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1581716665658">
+    <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1582324717285">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716665658" />
+    <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582902913212">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582902913212" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -126,9 +256,25 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1581716669373">
+    <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581716669373" />
+    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582751092693">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582751092693" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582895429380">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582895429380" />
+    <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="681" y="259" key="run.anything.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722006716" />
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1582890376754">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582890376754" />
   </component>
 </project>
