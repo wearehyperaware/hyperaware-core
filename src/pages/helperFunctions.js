@@ -37,7 +37,7 @@ export const didFromHTMLID = ( htmlID ) => {
 }
 
 //Creates did document
-export const generateDocument = (entity, creator = "", imei = "", vehicleType = "", id) => {
+export const generateDocument = (entity, id, creator = "", imei = "", vehicleType = "", isPrivate = false) => {
     let document
     if (entity === "Device") {
          document = {
@@ -47,6 +47,7 @@ export const generateDocument = (entity, creator = "", imei = "", vehicleType = 
             "entity": entity,
             "creator": creator,
             "vehicleType": vehicleType,
+            "isPrivateVehicle": isPrivate,
             "imei": imei
         };
     } else {

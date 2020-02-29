@@ -100,6 +100,7 @@ class Topbar extends Component {
                                                 <li><Link to="/register-did">DID Creation</Link></li>
                                                 <li><Link to="/vehicle-registration">Vehicle Registration</Link></li>
                                                 <li><Link to="/jurisdiction-registration">Jurisdiction Registration</Link></li>
+                                                <li><Link to="/tools">Tools</Link></li>
                                                 <li><Link to="/docs">Documentation</Link></li>
                                             </ul>
                                         </li>

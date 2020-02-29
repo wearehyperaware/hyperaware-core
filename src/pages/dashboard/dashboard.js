@@ -14,6 +14,7 @@ import car from '../../images/icon/car.svg'
 import ship from '../../images/icon/ship.svg'
 import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
+import { getStartEnd } from "./getPath";
 
 const socket = openSocket('http://localhost:3001');
 
@@ -38,6 +39,7 @@ export class Dashboard extends React.Component {
             zonesChevron: "mdi-chevron-double-down",
             vehiclesChevron: "mdi-chevron-double-down",
             isPrivacyMode: true,
+            totalStaked: 0
         };
     }
 
@@ -46,8 +48,15 @@ export class Dashboard extends React.Component {
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
       setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+      let tmp =[]
+        for (let i = 0; i < 15; i++ ) {
+            tmp.push(getStartEnd())
+        }
+        console.log(JSON.stringify(tmp))
 
-      mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
+
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
 
       var screenWidth = document.documentElement.clientWidth;
       var screenHeight = document.documentElement.clientHeight;
@@ -63,6 +72,8 @@ export class Dashboard extends React.Component {
         center,
       });
 
+        let totalStaked = await axios.get('/api/getTotalStaked')
+        totalStaked = totalStaked.data.totalStaked
         let vehicles = await axios.get('/api/getAllVehicles')
         vehicles = vehicles.data
         let zones = await axios.get('/api/getAllPolygons')
@@ -70,12 +81,11 @@ export class Dashboard extends React.Component {
         let positions = await axios.get('/api/getAllPoints')
         positions = positions.data
 
-        await this.setState({zones, vehicles, positions})
+        await this.setState({zones, vehicles, positions, totalStaked})
 
         this.loadVehiclesAndZones(map)
 
       socket.on('updatePositions', (newPositions) => {
-        console.log(newPositions)
         updatePositions(newPositions);
 
       })
@@ -85,7 +95,7 @@ export class Dashboard extends React.Component {
       })
 
     socket.on('fetchNewPositionsFromServerResponse', (message) => {
-        this.addNotification("enter", message.slashedDID)
+        this.addNotification(message.type, message.vehicleDetails.vehicleID, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime)
     })
 
   }
@@ -108,14 +118,17 @@ export class Dashboard extends React.Component {
             })
     }
 
-     addNotification = (type, did) => {
+     addNotification = (type, did, enterTime, exitTime) => {
+        console.log(enterTime, exitTime)
         var color = "#2f55d4 !important"
         var ticker = d3.selectAll('#ticker');
         var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
 
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + this.truncateDID(did) + ' is <strong>' + notification_types[type].message + '</strong> congestion zone.'
         html = type === 'enter' ? html + 'You will incur a £5 fee.' : html;
-        ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+        html = type === 'exit' ? html + `You were in zone for ${(exitTime - enterTime) * 1000} seconds.` : html;
+
+         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
 
     loadVehiclesAndZones = async (map) => {
@@ -401,10 +414,10 @@ export class Dashboard extends React.Component {
                             <div className='row'>
                                 <div className='col'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        £47821
+                                        {this.state.totalStaked} IOTX
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
-                                        Staked in Contracts.
+                                        Staked in Contract.
                                     </div>
                                 </div>
                             </div>

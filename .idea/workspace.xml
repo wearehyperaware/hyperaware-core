@@ -2,16 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/images/icon/car.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/icon/plane.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images/icon/ship.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/landing/UseCaseFeature.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/tools/Tools.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sampleVehicles.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sampleVehicles.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Layout/Topbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/Topbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/getPath.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/getPath.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/helperFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/helperFunctions.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +117,9 @@
       <workItem from="1582819379961" duration="203000" />
       <workItem from="1582819592510" duration="1408000" />
       <workItem from="1582821440557" duration="6290000" />
-      <workItem from="1582886391726" duration="16107000" />
+      <workItem from="1582886391726" duration="19693000" />
+      <workItem from="1582916161066" duration="7832000" />
+      <workItem from="1582971898844" duration="10417000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -199,7 +205,14 @@
       <option name="project" value="LOCAL" />
       <updated>1582751006439</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code">
+      <created>1582902918113</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1582902918113</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -225,7 +238,8 @@
     <MESSAGE value="Dashboard UI update on card overflow" />
     <MESSAGE value="Added notifications stream on dashboard" />
     <MESSAGE value="Added privacy mode toggle and isPrivate identifier to vehicles" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added privacy mode toggle and isPrivate identifier to vehicles" />
+    <MESSAGE value="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -260,14 +274,14 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582751092693">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582902946701">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582751092693" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582895429380">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582902946701" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582982687683">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582895429380" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582982687683" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

@@ -12,6 +12,7 @@ import {VehicleRegistration} from "./pages/vehicle-registration/vehicleRegistrat
 import {RegisterDID} from "./pages/did-registration/registerDID";
 import {RegisterJurisdiction} from "./pages/jurisdiction-registry/jurisdictionRegistration";
 import {Documentation} from './pages/Documentation'
+import {Tools} from './pages/tools/Tools'
 
 // Root Include
 const Root = React.lazy(() => import('./pages/landing'));
@@ -30,6 +31,7 @@ class App extends Component {
             <Route path="/register-did" component={RegisterDID}/>
             <Route path="/jurisdiction-registration" component={RegisterJurisdiction}/>
             <Route path="/docs" component={Documentation} />
+            <Route path="/tools" component={Tools} />
             <Route path="/" component={Root} />
             </Switch>
           </React.Suspense>

@@ -29,8 +29,6 @@ samplePolygons.forEach((polygon) => {
 
 // Fetch registered vehicles from Vehicle Registry (IoTeX)
 const sampleVehicles = require('./data/sampleVehicles.json');
-// TODO: (Jason), 1. Add isPrivate to contract. Add getAllExpiredVehicles() to contract. Add pages on website to display all vehicles registered in contract.
-
 
 server.use(bodyParser.urlencoded({ extended: false }));
 
@@ -57,8 +55,6 @@ io.on('connection', async (client) => {
     // we fetch new data from the S3 bucket ...
     client.on('fetchNewPositionsFromServer', function () {
 
-
-      console.log("Fetch request received")
       let newPositions =  JSON.parse(
         JSON.stringify(samplePoints[counter % 7])
       ); // ^^ lame - can I deep copy in JS?
@@ -74,26 +70,37 @@ io.on('connection', async (client) => {
           let turfPt = turf.point(newPosition.coords)
           let within = turf.booleanContains(turfPolygon, turfPt);
 
+
           if (within) {
             console.log("Invoking iotx slash() fn for",
               newPosition.vehicleID,
-              samplePolygons[i].features[0].properties.tezosAddress
             );
-            client.emit('fetchNewPositionsFromServerResponse', {slashedDID: newPosition.vehicleID, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress })
+            // If it wasn't already in, send notification
+              if (!newPosition.within){
+                  newPosition['within'] = true
+                  newPosition['enterTime'] = new Date()
+                  client.emit('fetchNewPositionsFromServerResponse',
+                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
 
-            newPosition.within = within;
+              }
+
             newPosition.owner = samplePolygons[i].features[0].properties.name;
             newPosition.address = samplePolygons[i].features[0].properties.tezosAddress;
 
             // invoke IoTeX slash()
             // Including Zone owner? To pay country ... or notify them :D
             break;
+          } else {
+              if (newPosition.within) {
+                  newPosition['within'] = false
+                  newPosition['exitTime'] = new Date()
+                  client.emit('fetchNewPositionsFromServerResponse',
+                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'exit' })
+              }
           }
         };
 
       };
-      console.log(newPositions);
-      // Attach status to points
 
       // transmit points to browser to visualize
       client.emit('updatePositions',newPositions);
@@ -110,42 +117,43 @@ io.on('connection', async (client) => {
 // Example get request to express server
 server.get('/api/getAllVehicles', async (req, res) => {
     let antenna = new Antenna.default("http://api.testnet.iotex.one:80")
+
     // NOTE: COMMENTED OUT BELOW IS WHAT WILL BE USED IN PRODUCTION
     // // Get the DIDs
-    //     // try {
-    //     //     let allRegisteredDIDs = await antenna.iotx.readContractByMethod({
-    //     //         from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-    //     //         abi: VEHICLE_REGISTER_ABI,
-    //     //         contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
-    //     //         gasPrice:"1",
-    //     //         gasLimit:"10000",
-    //     //         method: "getEveryRegisteredVehicle"
-    //     //     });
-    //     //
-    //     //     // Extract DIDs
-    //     //     let regex = /did:io:/gi, result, dids = [];
-    //     //     while ( (result = regex.exec(allRegisteredDIDs[0])) ) {
-    //     //         dids.push(allRegisteredDIDs[0].substr(result.index, 49));
-    //     //     }
-    //     //     let ret = []
-    //     // //  Get the DID documents associated with each
-    //     //     for (let i in dids) {
-    //     //         let uri = await antenna.iotx.readContractByMethod({
-    //     //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-    //     //             contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
-    //     //             abi: DID_REGISTER_ABI,
-    //     //             method: "getURI"
-    //     //         }, dids[i]);
-    //     //         uri = uri.toString('hex');
-    //     //         if (uri) {
-    //     //             let doc = await axios.get(uri)
-    //     //             ret.push(doc.data)
-    //     //         }
-    //     //     }
-    //     //     res.send(ret)
-    //     // } catch (err) {
-    //     //     console.log(err)
-    //     // }
+    //     try {
+    //         let allRegisteredDIDs = await antenna.iotx.readContractByMethod({
+    //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+    //             abi: VEHICLE_REGISTER_ABI,
+    //             contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
+    //             gasPrice:"1",
+    //             gasLimit:"10000",
+    //             method: "getEveryRegisteredVehicle"
+    //         });
+    //
+    //         // Extract DIDs
+    //         let regex = /did:io:/gi, result, dids = [];
+    //         while ( (result = regex.exec(allRegisteredDIDs[0])) ) {
+    //             dids.push(allRegisteredDIDs[0].substr(result.index, 49));
+    //         }
+    //         let ret = []
+    //     //  Get the DID documents associated with each
+    //         for (let i in dids) {
+    //             let uri = await antenna.iotx.readContractByMethod({
+    //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+    //                 contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
+    //                 abi: DID_REGISTER_ABI,
+    //                 method: "getURI"
+    //             }, dids[i]);
+    //             uri = uri.toString('hex');
+    //             if (uri) {
+    //                 let doc = await axios.get(uri)
+    //                 ret.push(doc.data)
+    //             }
+    //         }
+    //         res.send(ret)
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
     res.send(sampleVehicles)
 });
 
@@ -158,6 +166,25 @@ server.get('/api/getAllPolygons', async (req, res) => {
 
 server.get('/api/getAllPoints', async (req, res) => {
     res.send(samplePoints)
+})
+
+server.get('/api/getTotalStaked', async (req, res) => {
+    let meta = await axios({
+        url: "https://testnet.iotexscan.io/api-gateway/",
+        method: "post",
+        data: {
+            query: `
+                  query {
+                          getAccount (address: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q"){
+                            accountMeta {
+                              balance
+                            }
+                          }
+                        }
+                  `
+        },
+    });
+    res.send({totalStaked: meta.data.data.getAccount.accountMeta.balance/1e18})
 })
 
 
