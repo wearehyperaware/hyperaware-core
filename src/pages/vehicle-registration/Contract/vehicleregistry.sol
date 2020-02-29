@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.3;
 pragma experimental ABIEncoderV2;
 
 import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/contracts/math/SafeMath.sol";
@@ -6,8 +6,8 @@ import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/ma
 
 contract VehicleRegistry is Ownable {
     using SafeMath for uint256;
-    uint256 MIN_STAKE = 100;
-    uint256 SLASH_AMOUNT = 20;
+    uint256 MIN_STAKE = 1000000000000000000;
+    uint256 SLASH_AMOUNT = 100000000000000000;
 
     struct StakeInfo {
         bool exists;
@@ -21,7 +21,7 @@ contract VehicleRegistry is Ownable {
         uint256 expires;
     }
 
-    string[] allVehicles;
+    string[] public allVehicles;
 
     mapping(string => StakeInfo) stakeholders;
 
@@ -31,8 +31,8 @@ contract VehicleRegistry is Ownable {
     event GetVehiclesEvent(string[] ids, uint256[] amounts, uint256[] expires);
     event IncreaseStakeEvent(uint256 newStakeAmount, uint256 newExpiry);
 
-    function lockCoins(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint8 lockTime) internal {
-        require(lockAmount > MIN_STAKE, "You need to stake more than 100 tokens.");
+    function lockCoins(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint256 lockTime) internal {
+        require(lockAmount >= MIN_STAKE, "You need to stake more than 100 tokens.");
         StakeInfo storage userInfo = stakeholders[ownerDID];
         if (compareStrings(userInfo.vehicles[userInfo.vehicles.length - 1].id, vehicleDID)) {
             userInfo.vehicles[userInfo.vehicles.length - 1].expires = block.timestamp + lockTime * 1 minutes;
@@ -42,7 +42,7 @@ contract VehicleRegistry is Ownable {
         }
     }
 
-    function increaseStake(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint8 lockTime) public payable {
+    function increaseStake(string memory ownerDID, string memory vehicleDID, uint256 lockAmount, uint256 lockTime) public payable {
         StakeInfo storage userInfo = stakeholders[ownerDID];
         for (uint i = 0; i < userInfo.vehicles.length; i++) {
             if (compareStrings(userInfo.vehicles[i].id, vehicleDID)) {
@@ -60,7 +60,7 @@ contract VehicleRegistry is Ownable {
         for (uint i = 0; i < userInfo.vehicles.length; i++) {
             if (compareStrings(userInfo.vehicles[i].id, vehicleDID)) {
                 require(block.timestamp >= userInfo.vehicles[i].expires, "You can't withdraw before your stake expiry date passes.");
-                require(address(this).balance > withdrawAmount);
+                require(address(this).balance >= withdrawAmount);
                 userInfo.vehicles[i].expires = 0;
                 userInfo.vehicles[i].amount -= withdrawAmount;
                 msg.sender.transfer(withdrawAmount);
@@ -84,8 +84,8 @@ contract VehicleRegistry is Ownable {
     }
 
 
-    function registerVehicle (string memory ownerDID, string memory vehicleDID, uint8 lockTime) public payable {
-        require(msg.value >= MIN_STAKE, "You need to stake at least 100 wei");
+    function registerVehicle (string memory ownerDID, string memory vehicleDID, uint256 lockTime) public payable {
+        require(msg.value >= MIN_STAKE, "You need to stake at least 1 IOTX");
         if (!this.isStakeholder(ownerDID)) {
             stakeholders[ownerDID].exists = true;
             stakeholders[ownerDID].unclaimedSlashRewards = 0;
@@ -108,6 +108,17 @@ contract VehicleRegistry is Ownable {
         stakeholders[ownerDID].exists = false;
     }
 
+    function isVehicleExpired(string memory ownerDID, string memory vehicleDID) public view returns (bool) {
+        StakeInfo storage ownerInfo = stakeholders[ownerDID];
+        for (uint i = 0; i < ownerInfo.vehicles.length; i++) {
+            if (compareStrings(ownerInfo.vehicles[i].id, vehicleDID)) {
+                return block.timestamp >= ownerInfo.vehicles[i].expires;
+            }
+        }
+        revert("Owner does not have a vehicle with provided DID");
+    }
+
+
     function getVehicles(string memory ownerDID) public returns (string[] memory, uint256[] memory, uint256[] memory) {
         string[] memory ids = new string[](stakeholders[ownerDID].vehicles.length);
         uint256[] memory amounts = new uint256[](stakeholders[ownerDID].vehicles.length);
@@ -123,8 +134,8 @@ contract VehicleRegistry is Ownable {
         return (ids, amounts, expires);
     }
 
-    function getEveryRegisteredVehicle() public view returns (string[] memory) {
-        return allVehicles;
+    function getEveryRegisteredVehicle() public view returns (uint256) {
+        return allVehicles.length;
     }
 
 

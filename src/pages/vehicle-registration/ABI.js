@@ -126,7 +126,6 @@ module.exports = [
         "type": "event"
     },
     {
-        "constant": true,
         "inputs": [
             {
                 "internalType": "address",
@@ -142,12 +141,29 @@ module.exports = [
                 "type": "string"
             }
         ],
-        "payable": false,
         "stateMutability": "pure",
         "type": "function"
     },
     {
-        "constant": false,
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "allVehicles",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "internalType": "string",
@@ -157,27 +173,23 @@ module.exports = [
         ],
         "name": "deleteStakeholder",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "constant": true,
         "inputs": [],
         "name": "getEveryRegisteredVehicle",
         "outputs": [
             {
-                "internalType": "string[]",
+                "internalType": "uint256",
                 "name": "",
-                "type": "string[]"
+                "type": "uint256"
             }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "string",
@@ -203,12 +215,10 @@ module.exports = [
                 "type": "uint256[]"
             }
         ],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "string",
@@ -226,19 +236,17 @@ module.exports = [
                 "type": "uint256"
             },
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "lockTime",
-                "type": "uint8"
+                "type": "uint256"
             }
         ],
         "name": "increaseStake",
         "outputs": [],
-        "payable": true,
         "stateMutability": "payable",
         "type": "function"
     },
     {
-        "constant": true,
         "inputs": [],
         "name": "isOwner",
         "outputs": [
@@ -248,12 +256,10 @@ module.exports = [
                 "type": "bool"
             }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "constant": true,
         "inputs": [
             {
                 "internalType": "string",
@@ -269,12 +275,34 @@ module.exports = [
                 "type": "bool"
             }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "constant": true,
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "vehicleDID",
+                "type": "string"
+            }
+        ],
+        "name": "isVehicleExpired",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "owner",
         "outputs": [
@@ -284,12 +312,10 @@ module.exports = [
                 "type": "address"
             }
         ],
-        "payable": false,
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "string",
@@ -302,28 +328,24 @@ module.exports = [
                 "type": "string"
             },
             {
-                "internalType": "uint8",
+                "internalType": "uint256",
                 "name": "lockTime",
-                "type": "uint8"
+                "type": "uint256"
             }
         ],
         "name": "registerVehicle",
         "outputs": [],
-        "payable": true,
         "stateMutability": "payable",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [],
         "name": "renounceOwnership",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "uint256",
@@ -343,12 +365,10 @@ module.exports = [
         ],
         "name": "slash",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "address",
@@ -358,12 +378,10 @@ module.exports = [
         ],
         "name": "transferOwnership",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
-        "constant": false,
         "inputs": [
             {
                 "internalType": "string",
@@ -383,7 +401,6 @@ module.exports = [
         ],
         "name": "withdraw",
         "outputs": [],
-        "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     }

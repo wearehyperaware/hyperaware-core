@@ -119,41 +119,52 @@ server.get('/api/getAllVehicles', async (req, res) => {
     let antenna = new Antenna.default("http://api.testnet.iotex.one:80")
 
     // NOTE: COMMENTED OUT BELOW IS WHAT WILL BE USED IN PRODUCTION
-    // // Get the DIDs
-    //     try {
-    //         let allRegisteredDIDs = await antenna.iotx.readContractByMethod({
-    //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-    //             abi: VEHICLE_REGISTER_ABI,
-    //             contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
-    //             gasPrice:"1",
-    //             gasLimit:"10000",
-    //             method: "getEveryRegisteredVehicle"
-    //         });
-    //
-    //         // Extract DIDs
-    //         let regex = /did:io:/gi, result, dids = [];
-    //         while ( (result = regex.exec(allRegisteredDIDs[0])) ) {
-    //             dids.push(allRegisteredDIDs[0].substr(result.index, 49));
-    //         }
-    //         let ret = []
-    //     //  Get the DID documents associated with each
-    //         for (let i in dids) {
-    //             let uri = await antenna.iotx.readContractByMethod({
-    //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-    //                 contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
-    //                 abi: DID_REGISTER_ABI,
-    //                 method: "getURI"
-    //             }, dids[i]);
-    //             uri = uri.toString('hex');
-    //             if (uri) {
-    //                 let doc = await axios.get(uri)
-    //                 ret.push(doc.data)
-    //             }
-    //         }
-    //         res.send(ret)
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
+
+        // // Get total number of registered vehicles
+        // try {
+        //     let numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod(
+        //         {
+        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //                 abi: VEHICLE_REGISTER_ABI,
+        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
+        //                 method: "getEveryRegisteredVehicle"
+        //             },
+        //         0);
+        //     numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex')
+        //     let registeredVehicles = []
+        //     // Iterate through the registered vehicles array and return each string
+        //     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
+        //         const vehicleID = await antenna.iotx.readContractByMethod(
+        //             {
+        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //                 abi: VEHICLE_REGISTER_ABI,
+        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
+        //                 method: "allVehicles"
+        //             },
+        //             i);
+        //         registeredVehicles.push(vehicleID)
+        //     }
+        //         console.log(registeredVehicles)
+        //     let ret = []
+        //
+        //     // Get the DID documents associated with each
+        //     for (let i in registeredVehicles) {
+        //         let uri = await antenna.iotx.readContractByMethod({
+        //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //             contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
+        //             abi: DID_REGISTER_ABI,
+        //             method: "getURI"
+        //         }, registeredVehicles[i]);
+        //         uri = uri.toString('hex');
+        //         if (uri) {
+        //             let doc = await axios.get(uri)
+        //             ret.push(doc.data)
+        //         }
+        //     }
+        //     res.send(ret)
+        // } catch (err) {
+        //     console.log(err)
+        // }
     res.send(sampleVehicles)
 });
 
