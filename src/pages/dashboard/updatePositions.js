@@ -6,7 +6,6 @@ let d3 = require('d3');
 
 
 export default function updatePositions (positions) {
-console.log(positions)
   // positions must be an array.
   positions.forEach((position) => {
 

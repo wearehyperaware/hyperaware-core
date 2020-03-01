@@ -3,22 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/samplePoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/samplePoints.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sampleVehicles.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sampleVehicles.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Layout/FooterWithoutMenuLightSocialOnly.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/FooterWithoutMenuLightSocialOnly.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/did-registration/did-contract-details.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/did-contract-details.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/helperFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/helperFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/landing/Feature.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/Feature.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/landing/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +112,9 @@
       <workItem from="1582971898844" duration="10578000" />
       <workItem from="1583003400825" duration="7464000" />
       <workItem from="1583022914795" duration="7170000" />
-      <workItem from="1583058534657" duration="13304000" />
+      <workItem from="1583058534657" duration="13435000" />
+      <workItem from="1583073485140" duration="720000" />
+      <workItem from="1583074944337" duration="6128000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -232,7 +221,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583020402674</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="implemented fetching real vehicles and assigning them to routes">
+      <created>1583073151791</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1583073151791</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +257,9 @@
     <MESSAGE value="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code" />
     <MESSAGE value="added bulk account creation and isPrivateVehicle field to DID doc" />
     <MESSAGE value="fixed retrieving of dids from contract" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed retrieving of dids from contract" />
+    <MESSAGE value="implemented fetching real points and assigning them to routes" />
+    <MESSAGE value="implemented fetching real vehicles and assigning them to routes" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented fetching real vehicles and assigning them to routes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -272,10 +270,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1583020401523">
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1583073146269">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583020401523" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073146269" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -296,10 +294,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1583020406302">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1583073153503">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583020406302" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073153503" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583069585002">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

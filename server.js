@@ -26,10 +26,6 @@ samplePolygons.forEach((polygon) => {
   }
 });
 
-
-// Fetch registered vehicles from Vehicle Registry (IoTeX)
-const sampleVehicles = require('./data/sampleVehicles.json');
-
 server.use(bodyParser.urlencoded({ extended: false }));
 
 const http = server.listen(3001, () => {
@@ -41,17 +37,9 @@ const io = require('socket.io')(http);
 
 io.on('connection', async (client) => {
 
-    client.emit('setDashboardState', {
-      zones: samplePolygons,
-      vehicles: sampleVehicles,
-      positions: samplePoints
-    });
-
     let counter = 1;
 
     client.on('fetchNewPositionsFromServer', function (points) {
-      /* I don't think this is properly detecting when a vehicle exits. We should slash on exit because then we can
-       base the slash amount on the amount of time detected inside.. but we need to properly detect exits first*/
 
       let index = counter % points.length
       let newPositions = points[index]
@@ -69,7 +57,7 @@ io.on('connection', async (client) => {
 
           // If it wasn't already in, send notification
           if (within && !newPosition.vehicle.within) {
-              newPosition.vehicle['within'] = true
+              newPosition.vehicle['within'] = samplePolygons[i].features[0].properties.tezosAddress
               newPosition.vehicle['enterTime'] = new Date()
               client.emit('fetchNewPositionsFromServerResponse',
                   {vehicleDetails: newPosition.vehicle, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
@@ -79,7 +67,7 @@ io.on('connection', async (client) => {
             break;
 
             // If it was already in, but isn't anymore, slash and send exit notification
-          } else if (!within && newPosition.vehicle.within){
+          } else if (!within && newPosition.vehicle.within === samplePolygons[i].features[0].properties.tezosAddress){
               console.log("Invoking iotx slash() fn for", newPosition.vehicle.id);
               newPosition.vehicle['within'] = false
               newPosition.vehicle['exitTime'] = new Date()
@@ -93,7 +81,7 @@ io.on('connection', async (client) => {
         // For each vehicle..
         for (let i in newPositions) {
             // Loop through entire points array and overwrite vehicle info so that at every point in the array we know
-            // that the vehicle was previously detected as inside (or outside). This can probably be avoided? See dashboard.js line 259
+            // that the vehicle was previously detected as inside (or outside).
             for (let r in points) {
                 for (let s in points[index+1]) {
                     if (points[r][s].vehicle.id === newPositions[i].vehicle.id) {

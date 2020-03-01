@@ -86,9 +86,8 @@ export class Dashboard extends React.Component {
         this.loadVehiclesAndZones(map)
 
       socket.on('updatePositions', async (newPositions, newPointsArrayToUpdateState) => {
-        updatePositions(newPositions);
         await this.setState({positions: newPointsArrayToUpdateState})
-          console.log(this.state.positions)
+        updatePositions(newPositions);
       })
 
       map.on('move', () => {
@@ -119,15 +118,19 @@ export class Dashboard extends React.Component {
             })
     }
 
-     addNotification = (type, did, enterTime, exitTime) => {
-        console.log(enterTime, exitTime)
-        var color = "#2f55d4 !important"
-        var ticker = d3.selectAll('#ticker');
-        var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
+     addNotification = (type, did, enterTime, exitTime, rate=0.007) => {
+         const TIME_MULTIPLIER = 3.5
+         let timeElapsedInMinutes
+         if (type === 'exit') {
+             timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
 
-        var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + this.truncateDID(did) + ' is <strong>' + notification_types[type].message + '</strong> congestion zone.'
-        html = type === 'enter' ? html + 'You will incur a £5 fee.' : html;
-        html = type === 'exit' ? html + `You were in zone for ${(exitTime - enterTime) * 1000} seconds.` : html;
+         }
+        var color = type === 'exit' ? "#2f55d4 !important" : "#6c757d"
+        var ticker = d3.selectAll('#ticker');
+        var notification_types = { enter: { alert: '! Entering', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
+
+        var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
+        html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle will be charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> (Rate: ${rate} / second)` : html;
 
          ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
@@ -191,7 +194,7 @@ export class Dashboard extends React.Component {
 
             for (let i = 0; i < positions.length; i++) {
                 for (let j = 0; j < positions[0].length; j++) {
-                    positions[i][j] = {...positions[i][j], vehicle: {...this.state.vehicles[mapping[j]]}}
+                    positions[i][j] = {...positions[i][j], vehicle: {within: false, ...this.state.vehicles[mapping[j]]}}
                 }
             }
 
@@ -256,8 +259,6 @@ export class Dashboard extends React.Component {
      handleAdvance = (e) => {
         e.preventDefault()
         socket.emit('fetchNewPositionsFromServer', this.state.positions);
-        /* Instead of using this.state.positions maybe we should get the positions and attributes from the d3 svg directly.
-         It is probably a cleaner way to keep track of attributes such as inzone or out of zone*/
 
     }
 
@@ -274,7 +275,7 @@ export class Dashboard extends React.Component {
 
     expandVehiclesCard = (e) => {
         e.preventDefault()
-        let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
+        let chevronIcon = this.state.vehiclChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightVehiclesCard === 'auto' ? '0%' : 'auto'
         this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0%', zonesChevron: 'mdi-chevron-double-down'})
     }
@@ -446,9 +447,9 @@ export class Dashboard extends React.Component {
                                                 </div>
                                             <div className="content">
                                             <h4 className="text-dark title" style={{marginBottom: '0px'}}>ID: {this.truncateDID(vehicle.id)}</h4>
-                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>Owner: {vehicle.creator}</div>
+                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>Owner: {this.truncateDID(vehicle.creator)}</div>
                                             <p className="text-muted location-time">
-                                                <span className="text-dark h6">Registered: </span>{vehicle.created}
+                                                <span className="text-dark h6">Registered: </span>{new Date(vehicle.created).toLocaleString()}
                                                 <br />
                                                 <span className="text-dark h6">Vehicle Type: </span>{vehicle.vehicleType}
                                                 <br />
