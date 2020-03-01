@@ -1,25 +1,21 @@
 import React from 'react'
-import turf from 'turf'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
 import makeCar from './createCar'
 import updatePositions from './updatePositions'
-import arrowBottom from '../../images/shapes/arrow-bottom.png';
-
-// import zones from "./samplePolygons.json";
-// import zones from "./zones.json";
-import {ABI} from "../vehicle-registration/ABI";
+import axios from 'axios'
 import Antenna from 'iotex-antenna'
-// import { subscribeToTimer } from '../../websocket_api/timerExample';
-// import { subscribeToPointUpdates } from '../../websocket_api/subscribeToPointUpdates';
-// import { setDashboardState } from '../../websocket_api/setDashboardState';
-
 import openSocket from 'socket.io-client';
 import Topbar from "../../components/Layout/Topbar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import AnimateHeight from "react-animate-height";
-import {Link} from "react-router-dom";
+import car from '../../images/icon/car.svg'
+import ship from '../../images/icon/ship.svg'
+import plane from '../../images/icon/plane.svg'
+import arrowBottom from '../../images/shapes/arrow-bottom.png';
+import { getStartEnd } from "./getPath";
+
 const socket = openSocket('http://localhost:3001');
 
 export var map
@@ -42,7 +38,8 @@ export class Dashboard extends React.Component {
             heightVehiclesCard: '0',
             zonesChevron: "mdi-chevron-double-down",
             vehiclesChevron: "mdi-chevron-double-down",
-            isPrivacyMode: true
+            isPrivacyMode: true,
+            totalStaked: 0
         };
     }
 
@@ -51,13 +48,15 @@ export class Dashboard extends React.Component {
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
       setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+      let tmp =[]
+        for (let i = 0; i < 15; i++ ) {
+            tmp.push(getStartEnd())
+        }
+        console.log(JSON.stringify(tmp))
 
-      mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
 
-      var bounds = [
-        0.448565673828125, 50.33146969705743, // Southwest coordinates
-        -1.5005645751953125, 52.65211086156918, // Northeast coordinates
-      ];
+
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
 
       var screenWidth = document.documentElement.clientWidth;
       var screenHeight = document.documentElement.clientHeight;
@@ -71,177 +70,130 @@ export class Dashboard extends React.Component {
         style: 'mapbox://styles/mapbox/light-v10',
         zoom,
         center,
-        //maxBounds: bounds
       });
 
-      socket.on('setDashboardState', (dashboardState) => {
+        let totalStaked = await axios.get('/api/getTotalStaked')
+        totalStaked = totalStaked.data.totalStaked
+        let vehicles = await axios.get('/api/getAllVehicles')
+        vehicles = vehicles.data
+        let zones = await axios.get('/api/getAllPolygons')
+        zones = zones.data
+        let positions = await axios.get('/api/getAllPoints')
+        positions = positions.data
 
-        // Set up state:
-        this.state.zones = dashboardState.zones;
-        this.state.vehicles = dashboardState.vehicles;
-        this.state.positions = dashboardState.positions;
+        await this.setState({zones, vehicles, positions, totalStaked})
 
-        // this.state.buffered = turf.buffer(dashboardState.zones.length > 1 ? dashboardState.zones[1] : dashboardState.zones, 200, 'feet')
-        // ^^ convert to take FeatureCollection or array of polygons?
-        // ^^ We will want to zoom the map to the full extent of all registered zones I expect ...
+        this.loadVehiclesAndZones(map)
 
-        console.log(this.state)
+      socket.on('updatePositions', (newPositions) => {
+        updatePositions(newPositions);
 
-        // zone = turf.merge(this.state.buffered);
+      })
 
+      map.on('move', () => {
+        this.updateMap();
+      })
 
-        let buffered = this.state.buffered;
-        let vehicles = this.state.vehicles;
+    socket.on('fetchNewPositionsFromServerResponse', (message) => {
+        this.addNotification(message.type, message.vehicleDetails.vehicleID, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime)
+    })
 
-        map.on('style.load', async function() {
-          // Why can't I access the this.state object in here?
+  }
 
+     updateMap = () => {
+        // d3Projection = getD3();
+        // path.projection(d3Projection)
 
-          // initialize the congestion zone data and layer
-          dashboardState.zones.forEach(function (zone) {
-            console.log('ZONE', zone)
+        d3.selectAll('circle')
+            // here we could have a radius scaling factor based on map zoom ...
+            .attr('transform', function () {
+                let pixelCoords = map.project(
+                    d3.select(this)
+                        .attr('data-coords')
+                        .split(',')
+                        .map(Number)
+                );
+
+                return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+            })
+    }
+
+     addNotification = (type, did, enterTime, exitTime) => {
+        console.log(enterTime, exitTime)
+        var color = "#2f55d4 !important"
+        var ticker = d3.selectAll('#ticker');
+        var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
+
+        var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + this.truncateDID(did) + ' is <strong>' + notification_types[type].message + '</strong> congestion zone.'
+        html = type === 'enter' ? html + 'You will incur a £5 fee.' : html;
+        html = type === 'exit' ? html + `You were in zone for ${(exitTime - enterTime) * 1000} seconds.` : html;
+
+         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+    }
+
+    loadVehiclesAndZones = async (map) => {
+        // initialize the congestion zone data and layer
+        this.state.zones.forEach(function (zone) {
             let zoneName = zone.features[0].properties.name,
-              zoneAddress = zone.features[0].properties.tezosAddress,
-              zoneType = zone.features[0].properties.type
+                zoneAddress = zone.features[0].properties.tezosAddress,
+                zoneType = zone.features[0].properties.type
 
             map.addSource('zone-' + zoneName.toLowerCase(), {
-              type: 'geojson',
-              data: zone
+                type: 'geojson',
+                data: zone
             });
             //map.setCenter(center);
 
             map.addLayer({
-              id: 'zone-border-' + zoneName.toLowerCase(),
-              source: 'zone-' + zoneName.toLowerCase(),
-              type: 'line',
-              paint: {
-                'line-width': 5,
-                'line-opacity': .5,
-                'line-color': zoneType == 'maritime' ? 'blue' : 'orange'
-              }
+                id: 'zone-border-' + zoneName.toLowerCase(),
+                source: 'zone-' + zoneName.toLowerCase(),
+                type: 'line',
+                paint: {
+                    'line-width': 5,
+                    'line-opacity': .5,
+                    'line-color': zoneType == 'maritime' ? 'blue' : 'orange'
+                }
             });
 
             map.addLayer({
-              id: 'zone-fill-' + zoneName.toLowerCase(),
-              source: 'zone-' + zoneName.toLowerCase(),
-              type: 'fill',
-              paint: {
-                // 'line-width': 5,
-                'fill-opacity': .1,
-                'fill-color': zoneType == 'maritime' ? 'blue' : 'orange'
-              }
+                id: 'zone-fill-' + zoneName.toLowerCase(),
+                source: 'zone-' + zoneName.toLowerCase(),
+                type: 'fill',
+                paint: {
+                    // 'line-width': 5,
+                    'fill-opacity': .1,
+                    'fill-color': zoneType == 'maritime' ? 'blue' : 'orange'
+                }
             });
 
-          })
+        })
 
-          function initializeVehicles(vehicleArray, positions) {
-            console.log(vehicleArray, positions);
             // set up svg canvas
-            let svg = d3.select('#overlay').append('svg');
+            d3.select('#overlay').append('svg');
 
             // Set up right panel
             var openMobileNotifications = d3.select(".notifications-button-mobile");
             var closeMobileNotifications = d3.select(".icon.big.close");
             var mobileTicker = d3.select(".mobile-notifications-container");
             openMobileNotifications.on('click', function() {
-              mobileTicker.classed('show', true);
+                mobileTicker.classed('show', true);
             });
             closeMobileNotifications.on('click', function() {
-              mobileTicker.classed("show", false);
+                mobileTicker.classed("show", false);
             })
-
-
-            // Add to map ... get id, get position, put circle on.
-
-            //
 
             let allRegisteredDIDs = [];
-
-            vehicleArray.forEach(function (vehicle) {
-
-              allRegisteredDIDs.push(vehicle.id);
-
-              let pos = positions.find((position) => {
-                return position.vehicleID == vehicle.id;
-              });
-
-
-              // JUST ADD THE CAR TO THE MAP
-              makeCar(pos.coords, vehicle);
-
-              // dashboardState.positions.forEach(function (position) {
-              //   if (position.vehicleId == vehicle.id) {
-              //     pos = position.coords
-              //   }
-              // })
-              // test if there is a position
-
-                // if yes, add to map at position
-
-                // else, pass for now - but later add to
-                // righthand panel with indication that there's no position
-
+            let positions = this.state.positions
+            this.state.vehicles.forEach(function (vehicle) {
+                allRegisteredDIDs.push(vehicle.id);
+                let pos = positions[0].find((position) => {
+                    return position.vehicleID == vehicle.id;
+                });
+                makeCar(pos.coords, vehicle);
             })
 
-
-          }
-
-          initializeVehicles(dashboardState.vehicles, dashboardState.positions[0]);
-        })
-
-
-      });
-
-
-      socket.on('updatePositions', (newPositions) => {
-        console.log(newPositions)
-        updatePositions(newPositions);
-
-      })
-
-      map.on('move', () => {
-        renderMap();
-      })
-
-        socket.on('fetchNewPositionsFromServerResponse', (message) => {
-            addNotification("enter", message.slashedDID)
-        })
-
-
-
-    const addNotification = (type, did) => {
-            var color = "#2f55d4 !important"
-            var ticker = d3.selectAll('#ticker');
-            var notification_types = { enter: { alert: '! Alert', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
-
-            var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + truncateDID(did) + ' is <strong>' + notification_types[type].message + '</strong> congestion zone.'
-            html = type === 'enter' ? html + 'You will incur a £5 fee.' : html;
-            ticker.insert('div', ':first-child').html(html).classed('expanded', true);
-        }
-
-        function truncateDID(did) {
-            return did.substr(0, 15) + "..." + did.substr(42, 8)
-        }
-
-      const renderMap = () => {
-        // d3Projection = getD3();
-        // path.projection(d3Projection)
-
-        d3.selectAll('circle')
-          // here we could have a radius scaling factor based on map zoom ...
-          .attr('transform', function () {
-            let pixelCoords = map.project(
-              d3.select(this)
-                .attr('data-coords')
-                .split(',')
-                .map(Number)
-              );
-
-            return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
-          })
-
     }
-  }
+
     togglePrivacyMode = async (e) => {
         e.preventDefault()
         await this.setState({isPrivacyMode: this.state.isPrivacyMode === true ? false : true})
@@ -270,6 +222,29 @@ export class Dashboard extends React.Component {
         return colors[Math.floor(Math.random() * max)];
     }
 
+    getEntityCount = (vehicles) => {
+        let seen = {}
+        let counter = 0
+        vehicles.forEach((vehicle) => {
+            if (!(vehicle.creator in seen)) {
+                seen[vehicle.creator]= true
+                counter += 1
+            }
+        })
+        return counter
+    }
+
+    getVehicleIcon = (vehicleType) => {
+        let type = vehicleType.toLowerCase()
+        if (type.includes("plane")) {
+            return plane
+        } else if (type.includes("ship")) {
+            return ship
+        } else {
+            return car
+        }
+    }
+
      handleAdvance = (e) => {
          e.preventDefault()
         console.log('fetching points');
@@ -278,22 +253,25 @@ export class Dashboard extends React.Component {
         // this.state.currentPos += 1;
     }
 
+     truncateDID = (did) => {
+        return did.substr(0, 15) + "..." + did.substr(42, 8)
+    }
+
     expandZonesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightZonesCard === 'auto' ? '0' : 'auto'
-        this.setState({heightZonesCard: height, zonesChevron: chevronIcon})
+        this.setState({heightZonesCard: height, zonesChevron: chevronIcon, heightVehiclesCard: '0', vehiclesChevron: 'mdi-chevron-double-down'})
     }
 
     expandVehiclesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightVehiclesCard === 'auto' ? '0' : 'auto'
-        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon})
+        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0', zonesChevron: 'mdi-chevron-double-down'})
     }
 
     render() {
-
         return (
             <div>
 
@@ -301,27 +279,26 @@ export class Dashboard extends React.Component {
 
                 <div id='sidebar' className='sidebar'>
                     <div className='clearfix'>
-                        <div>
-                            <div className='screen'>
-                                <div className='metriclabel small space-top2 space-bottom2' style={{color: '#363636'}}>Notifications</div>
-                                <div className='ticker dark small text-left' id='ticker'>
-                                </div>
+                        <div className='screen'>
+                            <div className='metriclabel small space-top2 space-bottom2' style={{color: '#363636'}}>Notifications</div>
+                            <div className='ticker dark small text-left' id='ticker'>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div className='d-flex justify-content-center dashboard-main-buttons' >
+                    <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
+                    <button className='btn btn-primary mx-2' onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
+                </div>
+
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
                     <Topbar/>
                 </div>
 
                     <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '71%'}}>
-                        <div className='d-flex justify-content-center'>
-                            <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
-                            <button className='btn btn-primary mx-2' onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
 
-                        </div>
-
-                        <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'4px', paddingLeft: '8px'}}>
+                        <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'16px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>
                                 <div className='col-6'>
@@ -360,7 +337,7 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
-                                <div style={{height:228, overflowY: "auto"}}>
+                                <div style={{height:210, overflowY: "auto"}}>
                                         <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
                                             <div className="float-left">
                                                 <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
@@ -419,7 +396,7 @@ export class Dashboard extends React.Component {
                             <div className='row d-flex justify-content-center'>
                                 <div className='col-6'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        157
+                                        {this.state.vehicles ? this.state.vehicles.length : "..."}
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Vehicles Registered.
@@ -427,7 +404,7 @@ export class Dashboard extends React.Component {
                                 </div>
                                 <div className='col-6 text-center'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        47
+                                        {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Entities.
@@ -437,30 +414,52 @@ export class Dashboard extends React.Component {
                             <div className='row'>
                                 <div className='col'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        £47821
+                                        {this.state.totalStaked} IOTX
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
-                                        Staked in Contracts.
+                                        Staked in Contract.
                                     </div>
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
-                                <div className="bg-light pt-5 pb-5 p-4 rounded text-center" style={{marginLeft: '25px', marginTop:'25px'}}>
-                                    <h2 className="title text-uppercase mb-4">United Kingdom</h2>
-                                    <div className="d-flex justify-content-center mb-4">
-                                        <p>io1dsfkjsndalmsa</p>
-                                    </div>
+                                <div style={{height:210, overflowY: "auto"}}>
+                                    {!this.state.vehicles ? <div></div> : (
+                                        this.state.vehicles.map((vehicle) => { return (
+                                            <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                                <div className="float-left">
+                                                    <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                        <li className="day font-weight-bold mb-2">
+                                                            <div className="image position-relative d-inline-block">
+                                                                <img src={this.getVehicleIcon(vehicle.vehicleType)} alt="" style={{height: '40px', width: '40px'}}/>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            <div className="content">
+                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>ID: {this.truncateDID(vehicle.id)}</h4>
+                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>Owner: {vehicle.creator}</div>
+                                            <p className="text-muted location-time">
+                                                <span className="text-dark h6">Registered: </span>{vehicle.created}
+                                                <br />
+                                                <span className="text-dark h6">Vehicle Type: </span>{vehicle.vehicleType}
+                                                <br />
+                                                <span className="text-dark h6">IMEI: </span>{vehicle.IMEI}
+                                            </p>
+                                            </div>
+                                            </div>
+                                        )})
+                                    )}
                                 </div>
                             </AnimateHeight>
                         </div>
-                        {/*<div className="container-fluid">*/}
-                        {/*    <Row>*/}
-                        {/*        <div className="home-shape-arrow">*/}
-                        {/*            <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />*/}
-                        {/*            <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>*/}
-                        {/*        </div>*/}
-                        {/*    </Row>*/}
-                        {/*</div>*/}
+                        <div className="container-fluid">
+                            <Row>
+                                <div className="home-shape-arrow">
+                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
+                                    <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>
+                                </div>
+                            </Row>
+                        </div>
                     </Col>
             </div>
         )

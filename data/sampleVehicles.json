@@ -34,7 +34,7 @@
     "isPrivate": "false",
     "created": "2020-02-08T20:21:47.149Z",
     "entity": "Device",
-    "creator": "did:io:0x520ed8b0aabc5a124ee3aa1b66a618847beb0096",
+    "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
     "vehicleType": "Ship",
     "imei": "156022051523629"
   }

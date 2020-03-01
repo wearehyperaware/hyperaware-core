@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/images/analyze_report_4.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/sampleVehicles.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/sampleVehicles.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/landing/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregistry.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregistry.sol" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,19 +33,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/images" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="MTConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
@@ -101,7 +100,17 @@
       <workItem from="1582627066993" duration="537000" />
       <workItem from="1582639499684" duration="16670000" />
       <workItem from="1582714565516" duration="9939000" />
-      <workItem from="1582744454845" duration="6313000" />
+      <workItem from="1582744454845" duration="9973000" />
+      <workItem from="1582817429829" duration="195000" />
+      <workItem from="1582817633346" duration="129000" />
+      <workItem from="1582817780143" duration="1589000" />
+      <workItem from="1582819379961" duration="203000" />
+      <workItem from="1582819592510" duration="1408000" />
+      <workItem from="1582821440557" duration="6290000" />
+      <workItem from="1582886391726" duration="19693000" />
+      <workItem from="1582916161066" duration="7832000" />
+      <workItem from="1582971898844" duration="10578000" />
+      <workItem from="1583003400825" duration="7379000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -180,7 +189,28 @@
       <option name="project" value="LOCAL" />
       <updated>1582723114737</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Added privacy mode toggle and isPrivate identifier to vehicles">
+      <created>1582751006439</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582751006439</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code">
+      <created>1582902918113</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1582902918113</updated>
+    </task>
+    <task id="LOCAL-00016" summary="added bulk account creation and isPrivateVehicle field to DID doc">
+      <created>1582985538341</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1582985538341</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -205,7 +235,10 @@
     <MESSAGE value="Dashboard UI update" />
     <MESSAGE value="Dashboard UI update on card overflow" />
     <MESSAGE value="Added notifications stream on dashboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added notifications stream on dashboard" />
+    <MESSAGE value="Added privacy mode toggle and isPrivate identifier to vehicles" />
+    <MESSAGE value="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code" />
+    <MESSAGE value="added bulk account creation and isPrivateVehicle field to DID doc" />
+    <option name="LAST_COMMIT_MESSAGE" value="added bulk account creation and isPrivateVehicle field to DID doc" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -216,10 +249,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582750999925">
+    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582985533197">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582750999925" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582985533197" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -236,21 +269,25 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="567" y="134" key="SettingsEditor" timestamp="1582745147807">
+    <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="567" y="134" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582745147807" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582723119352">
+    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582985552792">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582723119352" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1582727207820">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582985552792" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583015828620">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582727207820" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583015828620" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="681" y="259" key="run.anything.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582722006716" />
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup" timestamp="1582890376754">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="687" y="243" width="672" height="678" key="search.everywhere.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582890376754" />
   </component>
 </project>

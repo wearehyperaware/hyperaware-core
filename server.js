@@ -5,8 +5,10 @@ const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
 const samplePoints = require('./data/samplePoints.json');
-
-
+const Antenna = require('iotex-antenna')
+const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
+const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
+const axios = require('axios').default
 // Fetch registered zones from Zone Registry (Tezos?)
 const samplePolygons = require('./data/samplePolygons.json');
 const turfPolygons = [];
@@ -27,14 +29,6 @@ samplePolygons.forEach((polygon) => {
 
 // Fetch registered vehicles from Vehicle Registry (IoTeX)
 const sampleVehicles = require('./data/sampleVehicles.json');
-  // Doesn't seem like we are able to decode the below properly on iotex, may need a different solution? But someone else can try to fix
-  // let allRegisteredDIDs = await antenna.iotx.readContractByMethod({ // obvs need to instantiate antenna and connect
-  //     from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-  //     contractAddress: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q",
-  //     abi: ABI,
-  //     method: "getEveryRegisteredVehicle"
-  // });
-  // console.log(allRegisteredDIDs)
 
 server.use(bodyParser.urlencoded({ extended: false }));
 
@@ -46,15 +40,13 @@ const http = server.listen(3001, () => {
 const io = require('socket.io')(http);
 
 // Example websocket connection. Call subscribeToTimer from the browser (example in src/websocket-api)
-io.on('connection', (client) => {
+io.on('connection', async (client) => {
 
     client.emit('setDashboardState', {
       zones: samplePolygons,
       vehicles: sampleVehicles,
       positions: samplePoints
     });
-
-
 
     let counter = 1;
 
@@ -63,8 +55,6 @@ io.on('connection', (client) => {
     // we fetch new data from the S3 bucket ...
     client.on('fetchNewPositionsFromServer', function () {
 
-
-      console.log("Fetch request received")
       let newPositions =  JSON.parse(
         JSON.stringify(samplePoints[counter % 7])
       ); // ^^ lame - can I deep copy in JS?
@@ -80,26 +70,37 @@ io.on('connection', (client) => {
           let turfPt = turf.point(newPosition.coords)
           let within = turf.booleanContains(turfPolygon, turfPt);
 
+
           if (within) {
             console.log("Invoking iotx slash() fn for",
               newPosition.vehicleID,
-              samplePolygons[i].features[0].properties.tezosAddress
             );
-            client.emit('fetchNewPositionsFromServerResponse', {slashedDID: newPosition.vehicleID, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress })
+            // If it wasn't already in, send notification
+              if (!newPosition.within){
+                  newPosition['within'] = true
+                  newPosition['enterTime'] = new Date()
+                  client.emit('fetchNewPositionsFromServerResponse',
+                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
 
-            newPosition.within = within;
+              }
+
             newPosition.owner = samplePolygons[i].features[0].properties.name;
             newPosition.address = samplePolygons[i].features[0].properties.tezosAddress;
 
             // invoke IoTeX slash()
             // Including Zone owner? To pay country ... or notify them :D
             break;
+          } else {
+              if (newPosition.within) {
+                  newPosition['within'] = false
+                  newPosition['exitTime'] = new Date()
+                  client.emit('fetchNewPositionsFromServerResponse',
+                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'exit' })
+              }
           }
         };
 
       };
-      console.log(newPositions);
-      // Attach status to points
 
       // transmit points to browser to visualize
       client.emit('updatePositions',newPositions);
@@ -114,9 +115,88 @@ io.on('connection', (client) => {
 
 
 // Example get request to express server
-server.get('/api/ping', async (req, res) => {
-    res.send("pong")
+server.get('/api/getAllVehicles', async (req, res) => {
+    let antenna = new Antenna.default("http://api.testnet.iotex.one:80")
+
+    // NOTE: COMMENTED OUT BELOW IS WHAT WILL BE USED IN PRODUCTION
+
+        // // Get total number of registered vehicles
+        // try {
+        //     let numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod(
+        //         {
+        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //                 abi: VEHICLE_REGISTER_ABI,
+        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
+        //                 method: "getEveryRegisteredVehicle"
+        //             },
+        //         0);
+        //     numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex')
+        //     let registeredVehicles = []
+        //     // Iterate through the registered vehicles array and return each string
+        //     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
+        //         const vehicleID = await antenna.iotx.readContractByMethod(
+        //             {
+        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //                 abi: VEHICLE_REGISTER_ABI,
+        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
+        //                 method: "allVehicles"
+        //             },
+        //             i);
+        //         registeredVehicles.push(vehicleID)
+        //     }
+        //         console.log(registeredVehicles)
+        //     let ret = []
+        //
+        //     // Get the DID documents associated with each
+        //     for (let i in registeredVehicles) {
+        //         let uri = await antenna.iotx.readContractByMethod({
+        //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+        //             contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
+        //             abi: DID_REGISTER_ABI,
+        //             method: "getURI"
+        //         }, registeredVehicles[i]);
+        //         uri = uri.toString('hex');
+        //         if (uri) {
+        //             let doc = await axios.get(uri)
+        //             ret.push(doc.data)
+        //         }
+        //     }
+        //     res.send(ret)
+        // } catch (err) {
+        //     console.log(err)
+        // }
+    res.send(sampleVehicles)
 });
+
+// TEST ROUTES ONLY, IN PRACTICE WOULD USE ROUTES SIMILAR TO getAllRegisteredVehicles
+
+
+server.get('/api/getAllPolygons', async (req, res) => {
+    res.send(samplePolygons)
+})
+
+server.get('/api/getAllPoints', async (req, res) => {
+    res.send(samplePoints)
+})
+
+server.get('/api/getTotalStaked', async (req, res) => {
+    let meta = await axios({
+        url: "https://testnet.iotexscan.io/api-gateway/",
+        method: "post",
+        data: {
+            query: `
+                  query {
+                          getAccount (address: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q"){
+                            accountMeta {
+                              balance
+                            }
+                          }
+                        }
+                  `
+        },
+    });
+    res.send({totalStaked: meta.data.data.getAccount.accountMeta.balance/1e18})
+})
 
 
 // Example get request to express server
