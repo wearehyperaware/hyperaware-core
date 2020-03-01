@@ -9,6 +9,7 @@ const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const axios = require('axios').default
+const {promisify} = require('util');
 // Fetch registered zones from Zone Registry (Tezos?)
 const samplePolygons = require('./data/samplePolygons.json');
 const turfPolygons = [];
@@ -36,74 +37,42 @@ const http = server.listen(3001, () => {
 const io = require('socket.io')(http);
 
 io.on('connection', async (client) => {
+    // Start enclave script
+    const SecureWorker = require('./secureworker');
+    const worker = new SecureWorker('enclave.so', 'enclave-point-polygon-check.js');
 
     let counter = 1;
 
-    client.on('fetchNewPositionsFromServer', function (points) {
-
-      let index = counter % points.length
-      let newPositions = points[index]
-
-      // TEST points inside enclave
-      for (var j = 0; j < newPositions.length; j++) {
-        let newPosition = newPositions[j];
-
-        for (var i = 0; i < turfPolygons.length; i++) {
-
-          let turfPolygon = turfPolygons[i];
-
-          let turfPt = turf.point(newPosition.coords)
-          let within = turf.booleanContains(turfPolygon, turfPt);
-
-          // If it wasn't already in, send notification
-          if (within && !newPosition.vehicle.within) {
-              newPosition.vehicle['within'] = samplePolygons[i].features[0].properties.tezosAddress
-              newPosition.vehicle['enterTime'] = new Date()
-              client.emit('fetchNewPositionsFromServerResponse',
-                  {vehicleDetails: newPosition.vehicle, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
-
-            newPosition.owner = samplePolygons[i].features[0].properties.name;
-            newPosition.address = samplePolygons[i].features[0].properties.tezosAddress;
-            break;
-
-            // If it was already in, but isn't anymore, slash and send exit notification
-          } else if (!within && newPosition.vehicle.within === samplePolygons[i].features[0].properties.tezosAddress){
-              console.log("Invoking iotx slash() fn for", newPosition.vehicle.id);
-              newPosition.vehicle['within'] = false
-              newPosition.vehicle['exitTime'] = new Date()
-              client.emit('fetchNewPositionsFromServerResponse',
-                  {vehicleDetails: newPosition.vehicle, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'exit' })
-          }
-        };
-        newPositions[j] = newPosition
-      };
-
-        // For each vehicle..
-        for (let i in newPositions) {
-            // Loop through entire points array and overwrite vehicle info so that at every point in the array we know
-            // that the vehicle was previously detected as inside (or outside).
-            for (let r in points) {
-                for (let s in points[index+1]) {
-                    if (points[r][s].vehicle.id === newPositions[i].vehicle.id) {
-                        points[r][s].vehicle = newPositions[i].vehicle
-                    }
-                }
-            }
+    worker.onMessage((message) => {
+        if (message.type === "pointInPolygonResponse") {
+            client.emit('updatePositions', message.newPositions, message.points);
+        } else if (message.type === 'enteringNotification') {
+            client.emit('fetchNewPositionsFromServerResponse', message.notification)
+        } else if (message.type === 'exitingNotification') {
+            // SLASH HERE //
+            client.emit('fetchNewPositionsFromServerResponse', message.notification)
+        } else if (message.type === 'updatePositions') {
+            client.emit('updatePositions', message.newPositions, message.points)
         }
-        // Transmit points to browser to visualize and update state
-        client.emit('updatePositions', newPositions, points);
-      counter += 1;
     })
-
-
     client.on('disconnect', function () {
-      console.log('user disconnected');
+        console.log('user disconnected')
     })
-});
 
+    client.on('fetchNewPositionsFromServer', function (points) {
+        worker.postMessage({
+            type: 'pointInPolygonCheck',
+            points,
+            turfPolygons,
+            samplePolygons,
+            counter
+        })
+        counter += 1;
+    });
+})
 
 server.get('/api/getAllVehicles', async (req, res) => {
-    let antenna = new Antenna.default("http://api.testnet.iotex.one:80")
+    let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
 
         // Get total number of registered vehicles
         try {
@@ -115,7 +84,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
                         method: "getEveryRegisteredVehicle"
                     },
                 0);
-            numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex')
+            numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
             let registeredVehicles = []
             // Iterate through the registered vehicles array and return each string
             for (let i = 0; i < numberOfRegisteredVehicles; i++) {

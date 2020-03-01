@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/enclave-imports.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/secureworker.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CENTRAL-CONTROL.md" beforeDir="false" afterPath="$PROJECT_DIR$/CENTRAL-CONTROL.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pseudoserver.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/updatePositions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +24,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1XRjeDUMDuYI9RMagmcYIoNNqO7" />
@@ -33,25 +42,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -115,6 +124,8 @@
       <workItem from="1583058534657" duration="13435000" />
       <workItem from="1583073485140" duration="720000" />
       <workItem from="1583074944337" duration="6128000" />
+      <workItem from="1583089416948" duration="4503000" />
+      <workItem from="1583094580180" duration="2650000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -235,9 +246,9 @@
     <option name="version" value="1" />
     <option name="exactExcludedFiles">
       <list>
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/index.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/index.d.js" />
       </list>
     </option>
   </component>
@@ -270,10 +281,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1583073146269">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583097290373">
+      <screen x="67" y="27" width="2493" height="1413" />
     </state>
     <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073146269" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
