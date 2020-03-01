@@ -24,7 +24,7 @@ export default function(position, vehicleInfo) {
 
 
   let color = vehicleInfo.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
-  return createCar(position, htmlIDFromDID(vehicleInfo.id), getRandomColor(), vehicleInfo.isPrivate);
+  return createCar(position, htmlIDFromDID(vehicleInfo.id), getRandomColor(), vehicleInfo.isPrivateVehicle);
 
 
   //
@@ -44,11 +44,11 @@ export default function(position, vehicleInfo) {
 
 function createCar(coords, id, color, isPrivate) {
   let new_car
-  if (isPrivate === 'true') {
+  if (isPrivate === true) {
      new_car = d3.select('svg')
         .append('circle')
         .attr('id', id)
-        .attr('isPrivate', isPrivate)
+        .attr('isPrivateVehicle', isPrivate)
         .attr('data-coords', coords.toString())
         .attr('fill', 'transparent')
         .attr('stroke', 'transparent')
@@ -61,7 +61,7 @@ function createCar(coords, id, color, isPrivate) {
     new_car = d3.select('svg')
         .append('circle')
         .attr('id', id)
-        .attr('isPrivate', isPrivate)
+        .attr('isPrivateVehicle', isPrivate)
         .attr('data-coords', coords.toString())
         .attr('fill', color)
         .attr('r', 5)

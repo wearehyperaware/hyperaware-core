@@ -39,7 +39,6 @@ const http = server.listen(3001, () => {
 
 const io = require('socket.io')(http);
 
-// Example websocket connection. Call subscribeToTimer from the browser (example in src/websocket-api)
 io.on('connection', async (client) => {
 
     client.emit('setDashboardState', {
@@ -50,60 +49,61 @@ io.on('connection', async (client) => {
 
     let counter = 1;
 
-    // This functionality lets us test in browser -
-    // updatePositions event will actually be emitted when
-    // we fetch new data from the S3 bucket ...
-    client.on('fetchNewPositionsFromServer', function () {
+    client.on('fetchNewPositionsFromServer', function (points) {
+      /* I don't think this is properly detecting when a vehicle exits. We should slash on exit because then we can
+       base the slash amount on the amount of time detected inside.. but we need to properly detect exits first*/
 
-      let newPositions =  JSON.parse(
-        JSON.stringify(samplePoints[counter % 7])
-      ); // ^^ lame - can I deep copy in JS?
+      let index = counter % points.length
+      let newPositions = points[index]
 
       // TEST points inside enclave
       for (var j = 0; j < newPositions.length; j++) {
+        let newPosition = newPositions[j];
 
         for (var i = 0; i < turfPolygons.length; i++) {
 
           let turfPolygon = turfPolygons[i];
-          let newPosition = newPositions[j];
 
           let turfPt = turf.point(newPosition.coords)
           let within = turf.booleanContains(turfPolygon, turfPt);
 
-
-          if (within) {
-            console.log("Invoking iotx slash() fn for",
-              newPosition.vehicleID,
-            );
-            // If it wasn't already in, send notification
-              if (!newPosition.within){
-                  newPosition['within'] = true
-                  newPosition['enterTime'] = new Date()
-                  client.emit('fetchNewPositionsFromServerResponse',
-                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
-
-              }
+          // If it wasn't already in, send notification
+          if (within && !newPosition.vehicle.within) {
+              newPosition.vehicle['within'] = true
+              newPosition.vehicle['enterTime'] = new Date()
+              client.emit('fetchNewPositionsFromServerResponse',
+                  {vehicleDetails: newPosition.vehicle, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'enter' })
 
             newPosition.owner = samplePolygons[i].features[0].properties.name;
             newPosition.address = samplePolygons[i].features[0].properties.tezosAddress;
-
-            // invoke IoTeX slash()
-            // Including Zone owner? To pay country ... or notify them :D
             break;
-          } else {
-              if (newPosition.within) {
-                  newPosition['within'] = false
-                  newPosition['exitTime'] = new Date()
-                  client.emit('fetchNewPositionsFromServerResponse',
-                      {vehicleDetails: newPosition, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'exit' })
-              }
+
+            // If it was already in, but isn't anymore, slash and send exit notification
+          } else if (!within && newPosition.vehicle.within){
+              console.log("Invoking iotx slash() fn for", newPosition.vehicle.id);
+              newPosition.vehicle['within'] = false
+              newPosition.vehicle['exitTime'] = new Date()
+              client.emit('fetchNewPositionsFromServerResponse',
+                  {vehicleDetails: newPosition.vehicle, jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress, type: 'exit' })
           }
         };
-
+        newPositions[j] = newPosition
       };
 
-      // transmit points to browser to visualize
-      client.emit('updatePositions',newPositions);
+        // For each vehicle..
+        for (let i in newPositions) {
+            // Loop through entire points array and overwrite vehicle info so that at every point in the array we know
+            // that the vehicle was previously detected as inside (or outside). This can probably be avoided? See dashboard.js line 259
+            for (let r in points) {
+                for (let s in points[index+1]) {
+                    if (points[r][s].vehicle.id === newPositions[i].vehicle.id) {
+                        points[r][s].vehicle = newPositions[i].vehicle
+                    }
+                }
+            }
+        }
+        // Transmit points to browser to visualize and update state
+        client.emit('updatePositions', newPositions, points);
       counter += 1;
     })
 
@@ -114,69 +114,63 @@ io.on('connection', async (client) => {
 });
 
 
-// Example get request to express server
 server.get('/api/getAllVehicles', async (req, res) => {
     let antenna = new Antenna.default("http://api.testnet.iotex.one:80")
 
-    // NOTE: COMMENTED OUT BELOW IS WHAT WILL BE USED IN PRODUCTION
+        // Get total number of registered vehicles
+        try {
+            let numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod(
+                {
+                        from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+                        abi: VEHICLE_REGISTER_ABI,
+                        contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
+                        method: "getEveryRegisteredVehicle"
+                    },
+                0);
+            numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex')
+            let registeredVehicles = []
+            // Iterate through the registered vehicles array and return each string
+            for (let i = 0; i < numberOfRegisteredVehicles; i++) {
+                const vehicleID = await antenna.iotx.readContractByMethod(
+                    {
+                        from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+                        abi: VEHICLE_REGISTER_ABI,
+                        contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
+                        method: "allVehicles"
+                    },
+                    i);
+                registeredVehicles.push(vehicleID)
+            }
+            let ret = []
 
-        // // Get total number of registered vehicles
-        // try {
-        //     let numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod(
-        //         {
-        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-        //                 abi: VEHICLE_REGISTER_ABI,
-        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
-        //                 method: "getEveryRegisteredVehicle"
-        //             },
-        //         0);
-        //     numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex')
-        //     let registeredVehicles = []
-        //     // Iterate through the registered vehicles array and return each string
-        //     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
-        //         const vehicleID = await antenna.iotx.readContractByMethod(
-        //             {
-        //                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-        //                 abi: VEHICLE_REGISTER_ABI,
-        //                 contractAddress: "io1n2m2jmzadcm6gvg7dlqmn3nr7j3ms0upl7uvmy",
-        //                 method: "allVehicles"
-        //             },
-        //             i);
-        //         registeredVehicles.push(vehicleID)
-        //     }
-        //         console.log(registeredVehicles)
-        //     let ret = []
-        //
-        //     // Get the DID documents associated with each
-        //     for (let i in registeredVehicles) {
-        //         let uri = await antenna.iotx.readContractByMethod({
-        //             from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-        //             contractAddress: "io1kxhm35frtzqmxct899c2zpnp8c2mh28lwcsk0m",
-        //             abi: DID_REGISTER_ABI,
-        //             method: "getURI"
-        //         }, registeredVehicles[i]);
-        //         uri = uri.toString('hex');
-        //         if (uri) {
-        //             let doc = await axios.get(uri)
-        //             ret.push(doc.data)
-        //         }
-        //     }
-        //     res.send(ret)
-        // } catch (err) {
-        //     console.log(err)
-        // }
-    res.send(sampleVehicles)
+            // Get the DID documents associated with each
+            for (let i in registeredVehicles) {
+                let uri = await antenna.iotx.readContractByMethod({
+                    from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+                    contractAddress: "io1zyksvtuqyxeadegsqsw6vsqrzr36cs7u2aa0ag",
+                    abi: DID_REGISTER_ABI,
+                    method: "getURI"
+                }, registeredVehicles[i]);
+                uri = uri.toString('hex');
+                if (uri) {
+                    let doc = await axios.get(uri)
+                    ret.push(doc.data)
+                }
+            }
+            res.send(ret)
+        } catch (err) {
+            console.log(err)
+        }
 });
-
-// TEST ROUTES ONLY, IN PRACTICE WOULD USE ROUTES SIMILAR TO getAllRegisteredVehicles
 
 
 server.get('/api/getAllPolygons', async (req, res) => {
-    res.send(samplePolygons)
+    res.send(samplePolygons) // Needs to be calling smart contracts to get polygons
 })
 
 server.get('/api/getAllPoints', async (req, res) => {
-    res.send(samplePoints)
+    res.send(samplePoints) // Should probably have a generateRoutes() function which generates random routes equal to the amount of registered vehicles.
+    // See mapbox directions API for potential solution.
 })
 
 server.get('/api/getTotalStaked', async (req, res) => {
@@ -186,7 +180,7 @@ server.get('/api/getTotalStaked', async (req, res) => {
         data: {
             query: `
                   query {
-                          getAccount (address: "io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q"){
+                          getAccount (address: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx"){
                             accountMeta {
                               balance
                             }

@@ -34,8 +34,8 @@ export class Dashboard extends React.Component {
             buffered: null,
             positions: [],
             currentPos: 1,
-            heightZonesCard: '0',
-            heightVehiclesCard: '0',
+            heightZonesCard: '0%',
+            heightVehiclesCard: '0%',
             zonesChevron: "mdi-chevron-double-down",
             vehiclesChevron: "mdi-chevron-double-down",
             isPrivacyMode: true,
@@ -48,11 +48,11 @@ export class Dashboard extends React.Component {
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
       setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
-      let tmp =[]
-        for (let i = 0; i < 15; i++ ) {
-            tmp.push(getStartEnd())
-        }
-        console.log(JSON.stringify(tmp))
+      // let tmp =[]
+      //   for (let i = 0; i < 15; i++ ) {
+      //       tmp.push(getStartEnd())
+      //   }
+      //   console.log(JSON.stringify(tmp))
 
 
 
@@ -80,14 +80,15 @@ export class Dashboard extends React.Component {
         zones = zones.data
         let positions = await axios.get('/api/getAllPoints')
         positions = positions.data
-
         await this.setState({zones, vehicles, positions, totalStaked})
+        console.log(this.state.positions)
 
         this.loadVehiclesAndZones(map)
 
-      socket.on('updatePositions', (newPositions) => {
+      socket.on('updatePositions', async (newPositions, newPointsArrayToUpdateState) => {
         updatePositions(newPositions);
-
+        await this.setState({positions: newPointsArrayToUpdateState})
+          console.log(this.state.positions)
       })
 
       map.on('move', () => {
@@ -95,7 +96,7 @@ export class Dashboard extends React.Component {
       })
 
     socket.on('fetchNewPositionsFromServerResponse', (message) => {
-        this.addNotification(message.type, message.vehicleDetails.vehicleID, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime)
+        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime)
     })
 
   }
@@ -132,17 +133,16 @@ export class Dashboard extends React.Component {
     }
 
     loadVehiclesAndZones = async (map) => {
-        // initialize the congestion zone data and layer
+        // Draw zone boundaries on map
         this.state.zones.forEach(function (zone) {
             let zoneName = zone.features[0].properties.name,
-                zoneAddress = zone.features[0].properties.tezosAddress,
+                // zoneAddress = zone.features[0].properties.tezosAddress,
                 zoneType = zone.features[0].properties.type
 
             map.addSource('zone-' + zoneName.toLowerCase(), {
                 type: 'geojson',
                 data: zone
             });
-            //map.setCenter(center);
 
             map.addLayer({
                 id: 'zone-border-' + zoneName.toLowerCase(),
@@ -151,7 +151,7 @@ export class Dashboard extends React.Component {
                 paint: {
                     'line-width': 5,
                     'line-opacity': .5,
-                    'line-color': zoneType == 'maritime' ? 'blue' : 'orange'
+                    'line-color': zoneType === 'maritime' ? 'blue' : 'orange'
                 }
             });
 
@@ -160,37 +160,45 @@ export class Dashboard extends React.Component {
                 source: 'zone-' + zoneName.toLowerCase(),
                 type: 'fill',
                 paint: {
-                    // 'line-width': 5,
                     'fill-opacity': .1,
-                    'fill-color': zoneType == 'maritime' ? 'blue' : 'orange'
+                    'fill-color': zoneType === 'maritime' ? 'blue' : 'orange'
                 }
             });
 
         })
 
-            // set up svg canvas
+            // Set up svg canvas
             d3.select('#overlay').append('svg');
 
-            // Set up right panel
-            var openMobileNotifications = d3.select(".notifications-button-mobile");
-            var closeMobileNotifications = d3.select(".icon.big.close");
-            var mobileTicker = d3.select(".mobile-notifications-container");
-            openMobileNotifications.on('click', function() {
-                mobileTicker.classed('show', true);
-            });
-            closeMobileNotifications.on('click', function() {
-                mobileTicker.classed("show", false);
-            })
+            const { positions } = this.state
 
-            let allRegisteredDIDs = [];
-            let positions = this.state.positions
-            this.state.vehicles.forEach(function (vehicle) {
-                allRegisteredDIDs.push(vehicle.id);
-                let pos = positions[0].find((position) => {
-                    return position.vehicleID == vehicle.id;
-                });
-                makeCar(pos.coords, vehicle);
-            })
+            // Randomly assign a vehicle to a route
+            let mapping = {}
+            let seen = {}
+            for (let i in positions[0]) {
+                let vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
+                while (vehicleIndex in seen) {
+                    vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
+                }
+                seen[vehicleIndex] = true
+                mapping[i] = vehicleIndex
+            }
+
+            // Add each vehicle to its assigned route
+
+            /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
+            * to have multiple routes and the. */
+
+            for (let i = 0; i < positions.length; i++) {
+                for (let j = 0; j < positions[0].length; j++) {
+                    positions[i][j] = {...positions[i][j], vehicle: {...this.state.vehicles[mapping[j]]}}
+                }
+            }
+
+            // Render each vehicle in its initial position
+            for (let i in positions[0]) {
+                makeCar(positions[0][i].coords, positions[0][i].vehicle)
+            }
 
     }
 
@@ -201,14 +209,14 @@ export class Dashboard extends React.Component {
         if (this.state.isPrivacyMode) {
             let circles = d3.selectAll('circle')
             circles[0].forEach((circle) => {
-                if (circle.attributes['isPrivate'].value === 'true') {
+                if (circle.attributes['isPrivateVehicle'].value === 'true') {
                     d3.select(circle).attr('fill', 'transparent').attr('stroke', 'transparent')
                 }
             })
         } else {
             let circles = d3.selectAll('circle')
             circles[0].forEach((circle) => {
-                if (circle.attributes['isPrivate'].value === 'true') {
+                if (circle.attributes['isPrivateVehicle'].value === 'true') {
                     d3.select(circle).attr('fill', this.getRandomColor()).attr('stroke', '#fff')
                 }
             })
@@ -246,11 +254,11 @@ export class Dashboard extends React.Component {
     }
 
      handleAdvance = (e) => {
-         e.preventDefault()
-        console.log('fetching points');
-        socket.emit('fetchNewPositionsFromServer');
-        // updatePositions(this.state.positions[this.state.currentPos % 6]);
-        // this.state.currentPos += 1;
+        e.preventDefault()
+        socket.emit('fetchNewPositionsFromServer', this.state.positions);
+        /* Instead of using this.state.positions maybe we should get the positions and attributes from the d3 svg directly.
+         It is probably a cleaner way to keep track of attributes such as inzone or out of zone*/
+
     }
 
      truncateDID = (did) => {
@@ -260,15 +268,15 @@ export class Dashboard extends React.Component {
     expandZonesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
-        let height = this.state.heightZonesCard === 'auto' ? '0' : 'auto'
-        this.setState({heightZonesCard: height, zonesChevron: chevronIcon, heightVehiclesCard: '0', vehiclesChevron: 'mdi-chevron-double-down'})
+        let height = this.state.heightZonesCard === 'auto' ? '0%' : 'auto'
+        this.setState({heightZonesCard: height, zonesChevron: chevronIcon, heightVehiclesCard: '0%', vehiclesChevron: 'mdi-chevron-double-down'})
     }
 
     expandVehiclesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
-        let height = this.state.heightVehiclesCard === 'auto' ? '0' : 'auto'
-        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0', zonesChevron: 'mdi-chevron-double-down'})
+        let height = this.state.heightVehiclesCard === 'auto' ? '0%' : 'auto'
+        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0%', zonesChevron: 'mdi-chevron-double-down'})
     }
 
     render() {
@@ -385,7 +393,8 @@ export class Dashboard extends React.Component {
                             <Row>
                                 <div className="home-shape-arrow">
                                     <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
-                                    <a className="mouse-down" onClick={this.expandZonesCard}><i className={`mdi ${this.state.zonesChevron} arrow-icon mover text-dark h5`}></i></a>
+                                    {/* eslint-disable jsx-a11y/anchor-is-valid */}
+                                    <a href="" className="mouse-down" onClick={this.expandZonesCard}><i className={`mdi ${this.state.zonesChevron} arrow-icon mover text-dark h5`}></i></a>
                                 </div>
                             </Row>
                         </div>
@@ -425,7 +434,7 @@ export class Dashboard extends React.Component {
                                 <div style={{height:210, overflowY: "auto"}}>
                                     {!this.state.vehicles ? <div></div> : (
                                         this.state.vehicles.map((vehicle) => { return (
-                                            <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                            <div className="event-schedule d-flex bg-white rounded p-3 border" key={vehicle.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
                                                 <div className="float-left">
                                                     <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                         <li className="day font-weight-bold mb-2">
@@ -443,7 +452,7 @@ export class Dashboard extends React.Component {
                                                 <br />
                                                 <span className="text-dark h6">Vehicle Type: </span>{vehicle.vehicleType}
                                                 <br />
-                                                <span className="text-dark h6">IMEI: </span>{vehicle.IMEI}
+                                                <span className="text-dark h6">IMEI: </span>{vehicle.imei}
                                             </p>
                                             </div>
                                             </div>
