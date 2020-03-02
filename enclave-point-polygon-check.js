@@ -1,4 +1,4 @@
-
+// This code runs inside a secure enclave
 
 SecureWorker.importScripts('bundled-enclave-imports.js')
 
