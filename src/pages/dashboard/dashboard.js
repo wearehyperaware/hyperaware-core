@@ -258,6 +258,7 @@ export class Dashboard extends React.Component {
 
      handleAdvance = (e) => {
         e.preventDefault()
+        console.log(' ', this.state.positions)
         socket.emit('fetchNewPositionsFromServer', this.state.positions);
 
     }

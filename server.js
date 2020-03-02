@@ -1,17 +1,23 @@
 const turf = require('./modules/turfModules')
+const buffer = require('@turf/buffer')
 const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
-const samplePoints = require('./data/samplePoints.json');
+// const samplePoints = require('./data/samplePoints.json');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const axios = require('axios').default
+const generateRandomRoute = require('./modules/generateRandomRoute')
+const mapboxtoken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw'
 
 // Fetch registered zones from Zone Registry (Tezos?)
 const samplePolygons = require('./data/samplePolygons.json');
 const turfPolygons = [];
+
+var sampleVehicles = [];
+var samplePoints = [];
 
 samplePolygons.forEach((polygon) => {
   // If polygons are FeatureCollections ...
@@ -25,6 +31,10 @@ samplePolygons.forEach((polygon) => {
     console.log("Error with a polygon");
   }
 });
+
+
+
+
 
 server.use(bodyParser.urlencoded({ extended: false }));
 
@@ -51,6 +61,12 @@ io.on('connection', async (client) => {
             counter
         })
         counter += 1;
+
+
+        // We'll add the non-enclave tests and event emission here
+
+
+
     });
 
     // Listen for results from enclave
@@ -90,6 +106,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
             numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
             let registeredVehicles = []
             // Iterate through the registered vehicles array and return each string
+            console.log(numberOfRegisteredVehicles, "vehicles NOW")
             for (let i = 0; i < numberOfRegisteredVehicles; i++) {
                 const vehicleID = await antenna.iotx.readContractByMethod(
                     {
@@ -99,8 +116,23 @@ server.get('/api/getAllVehicles', async (req, res) => {
                         method: "allVehicles"
                     },
                     i);
+
+                    // Generates a route near LONDON right now ...
+                      // NEXT up: pull random Terrestrial polygon from the zones and generate a route through that ...
+                let route = await generateRandomRoute(turfPolygons[1], mapboxtoken)
+                sampleVehicles.push(route);
+
+
                 registeredVehicles.push(vehicleID)
             }
+            console.log(sampleVehicles);
+            samplePoints = sampleVehicles.map((line) => {
+              return line.geometry.coordinates.map((point) => {
+                return {"coordinates": point}
+              })
+            })
+            console.log(samplePoints)
+            // console.log("sampleVehicles", sampleVehicles)
             let ret = []
 
             // Get the DID documents associated with each
