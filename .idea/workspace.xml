@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enclave-point-polygon-check.js" beforeDir="false" afterPath="$PROJECT_DIR$/enclave-point-polygon-check.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -234,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583073151791</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Commented enclave code">
+      <created>1583155257782</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1583155257782</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -276,7 +282,8 @@
     <MESSAGE value="fixed retrieving of dids from contract" />
     <MESSAGE value="implemented fetching real points and assigning them to routes" />
     <MESSAGE value="implemented fetching real vehicles and assigning them to routes" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented fetching real vehicles and assigning them to routes" />
+    <MESSAGE value="Commented enclave code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commented enclave code" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -287,10 +294,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583155200792">
+    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583155256956">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155200792" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155256956" />
     <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -308,18 +315,22 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
+    <state x="791" y="322" key="SettingsEditor" timestamp="1583155419207">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1583073153503">
+    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155419207" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1583155261332">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073153503" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155261332" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583069585002">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583069585002" />
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog" timestamp="1583155281677">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155281677" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
