@@ -200,6 +200,7 @@ export class Dashboard extends React.Component {
 
             // Render each vehicle in its initial position
             for (let i in positions[0]) {
+              console.log(positions[0][i])
                 makeCar(positions[0][i].coords, positions[0][i].vehicle)
             }
 

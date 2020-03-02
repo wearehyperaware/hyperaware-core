@@ -43,6 +43,7 @@ export default function(position, vehicleInfo) {
 }
 
 function createCar(coords, id, color, isPrivate) {
+  console.log(coords);
   let new_car
   if (isPrivate === true) {
      new_car = d3.select('svg')

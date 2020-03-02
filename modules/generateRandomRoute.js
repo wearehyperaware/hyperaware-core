@@ -7,7 +7,7 @@ module.exports = async (polygon, token) => {
 
 
   var endpoints = generateRandomPoints(polygon).join(';');
-
+  console.log(endpoints)
   var directions_url = 'https://api.tiles.mapbox.com/v4/directions/mapbox.driving/' + endpoints + '.json?access_token=' + token;
 
   let route = await axios.get(directions_url)
@@ -15,6 +15,10 @@ module.exports = async (polygon, token) => {
       // console.log('geometry', res.data.routes[0].geometry)
       return res.data.routes[0].geometry
     });
+
+    route.coordinates = route.coordinates.filter(function (value, i, Arr) {
+      return i % Math.floor(route.coordinates.length / 10) == 0;
+    })
   let feat = {
     "type": "FeatureCollection",
     "features": [
@@ -29,8 +33,10 @@ module.exports = async (polygon, token) => {
 
 
   return geojsonTidy.tidy(feat, {
-    maximumPoints: 100
+    maximumPoints: 10
   }).features[0]
+
+
 
   // return axios.get(directions_url);
 
@@ -40,7 +46,7 @@ module.exports = async (polygon, token) => {
 function generateRandomPoints(polygon) {
 
 
-  let buffer = turf.buffer(polygon, 5, 'km').features[0];
+  let buffer = polygon;
 
   let border1 = turf.linestring(
     buffer.geometry.coordinates[0].slice(0, buffer.geometry.coordinates[0].length / 2)
