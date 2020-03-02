@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/ABI.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregistry.sol" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/Contract/vehicleregistry.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +18,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1XRjeDUMDuYI9RMagmcYIoNNqO7" />
@@ -33,25 +36,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/data" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path" value="node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\views\landing" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -110,7 +113,13 @@
       <workItem from="1582886391726" duration="19693000" />
       <workItem from="1582916161066" duration="7832000" />
       <workItem from="1582971898844" duration="10578000" />
-      <workItem from="1583003400825" duration="7379000" />
+      <workItem from="1583003400825" duration="7464000" />
+      <workItem from="1583022914795" duration="7170000" />
+      <workItem from="1583058534657" duration="13435000" />
+      <workItem from="1583073485140" duration="720000" />
+      <workItem from="1583074944337" duration="6128000" />
+      <workItem from="1583089416948" duration="4503000" />
+      <workItem from="1583094580180" duration="2650000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -210,17 +219,49 @@
       <option name="project" value="LOCAL" />
       <updated>1582985538341</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fixed retrieving of dids from contract">
+      <created>1583020402674</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1583020402674</updated>
+    </task>
+    <task id="LOCAL-00018" summary="implemented fetching real vehicles and assigning them to routes">
+      <created>1583073151791</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1583073151791</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Commented enclave code">
+      <created>1583155257782</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1583155257782</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
     <option name="exactExcludedFiles">
       <list>
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
-        <option value="$USER_HOME$/Desktop/themeforest-fv4Jh4F9-landrick-react-landing-page-template/Landrick_v1.0.0/Landing/node_modules/wait-for-expect/lib/index.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/waitForExpect.spec.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
+        <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/index.d.js" />
       </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
@@ -238,7 +279,11 @@
     <MESSAGE value="Added privacy mode toggle and isPrivate identifier to vehicles" />
     <MESSAGE value="Loading real vehicle data to card, allow vehicle card expansion and refactor dashboard code" />
     <MESSAGE value="added bulk account creation and isPrivateVehicle field to DID doc" />
-    <option name="LAST_COMMIT_MESSAGE" value="added bulk account creation and isPrivateVehicle field to DID doc" />
+    <MESSAGE value="fixed retrieving of dids from contract" />
+    <MESSAGE value="implemented fetching real points and assigning them to routes" />
+    <MESSAGE value="implemented fetching real vehicles and assigning them to routes" />
+    <MESSAGE value="Commented enclave code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commented enclave code" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -249,10 +294,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" key="CommitChangelistDialog2" timestamp="1582985533197">
+    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583155256956">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582985533197" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155256956" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -269,18 +315,22 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
+    <state x="791" y="322" key="SettingsEditor" timestamp="1583155419207">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1582985552792">
+    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155419207" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1583155261332">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582985552792" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583015828620">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155261332" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583069585002">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583015828620" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583069585002" />
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog" timestamp="1583155281677">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155281677" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

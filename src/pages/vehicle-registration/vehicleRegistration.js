@@ -12,7 +12,7 @@ import AnimateHeight from 'react-animate-height'
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 
-let CONTRACT_ADDRESS = 'io1s3eflxnjpteqspnp3xs5nj9rwyu9cac7a5qjek';
+let CONTRACT_ADDRESS = 'io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx';
 let contract;
 let antenna
 let unlockedWallet
@@ -108,7 +108,7 @@ export class VehicleRegistration extends React.Component {
                 );
         try {
             let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, {
-                amount: toRau("0.1", "iotx"),
+                amount: toRau("1", "iotx"),
                 account: wallet,
                 gasLimit: "1000000",
                 gasPrice: toRau("1", "Qev")
@@ -130,14 +130,14 @@ export class VehicleRegistration extends React.Component {
     getVehicles = async (e) => {
         e.preventDefault()
         try {
-            let res = await JSON.stringify(antenna.iotx.readContractByMethod({
+            let res = await antenna.iotx.readContractByMethod({
                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
                 contractAddress: CONTRACT_ADDRESS,
                 abi: ABI,
                 method: "getVehicles"
-            }, this.state.getVehiclesOwnerDID));
+            }, this.state.getVehiclesOwnerDID);
             let vehicles = []
-            console.log(res[0][0].toString())
+
             // Output dids are mangled, need to find their locations inside the output string and extract them
             let regex = /did:io:/gi, result, dids = [];
             while ( (result = regex.exec(res[0][0])) ) {

@@ -59,7 +59,7 @@ export const generateDocument = (entity, id, creator = "", imei = "", vehicleTyp
             "creator": creator,
         };
     }
-
+    console.log(JSON.stringify(document, null, 2))
     return JSON.stringify(document, null, 2);
 };
 
@@ -96,6 +96,7 @@ export const saveToArweave = async (document) => {
         }
 
         arweaveURL = "https://arweave.net/tx/" + transaction.id + "/data.txt";
+        console.log(arweaveURL)
         return Promise.resolve(arweaveURL);
     } catch (err) {
         return Promise.reject(err);

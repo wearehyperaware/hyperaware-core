@@ -1,7 +1,6 @@
 // React Basic and Bootstrap
 import React, { Component } from 'react';
 import { Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
 
 // Modal Video 
 import '../../../node_modules/react-modal-video/scss/modal-video.scss';

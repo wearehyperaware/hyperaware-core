@@ -17,7 +17,6 @@ import Typist from "react-typist";
 import contact from "../../images/contact.png";
 import Topbar from "../../components/Layout/Topbar";
 import FooterLight from "../../components/Layout/FooterLight";
-import analyzeReport4 from '../../images/analyze_report_4.svg';
 
 class Index extends Component {
 
