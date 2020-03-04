@@ -44,6 +44,7 @@
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "secureworker": "^0.3.0",
+    "serviceworker": "^0.1.7",
     "socket.io": "^2.3.0",
     "turf": "^2.0.2",
     "web3": "^1.2.6"
