@@ -108,7 +108,7 @@ export class VehicleRegistration extends React.Component {
                 );
         try {
             let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, {
-                amount: toRau("1", "iotx"),
+                amount: toRau("0.2", "iotx"),
                 account: wallet,
                 gasLimit: "1000000",
                 gasPrice: toRau("1", "Qev")
@@ -316,8 +316,3 @@ export class VehicleRegistration extends React.Component {
         );
     }
 }
-
-
-
-
-
