@@ -1,0 +1,185 @@
+[{
+    "@context": "https://www.w3.org/ns/did/v1",
+    "id": "did:example:123456789abcdefghi",
+    "authentication": [{
+      "id": "did:example:123456789abcdefghi#keys-1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:123456789abcdefghi",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }],
+    "jurisdictionMetadata": {
+      "jurisdictionName": "United Kingdom",
+      "jurisdictionAddr": "0x123456789abcdefghi",
+      "ISO3": "GBR",
+      "borders": "./zones/GBR.json" // <- ??
+    },
+    "service": [{
+        "id": "did:example:123456789abcdefghi#london-congestion-zone",
+        "type": "TerrestrialPolicyZoneGeometryService",
+        "zoneType": ["urban", "terrestrial"], // <- more sophisticated categorization
+        "name": "London Congestion Zone",
+        "serviceEndpoint": "./zones/london-congestion-zone.json",
+        "policies": {
+          "subjectDevices": ["road", "commercial"],
+          "beneficiary": "0x456789123cdef...", // "london.hyperaware.eth" <-- who gets paid
+          "entryCharge": 0,
+          "exitCharge": 0,
+          "chargePerMinute": 0.15,
+          "currency": "GBP",
+          "alerts": [
+            "0x08aslklkdsflksa93malKLlknfdlkdl3223",
+            "0x0l38asLlknfdlkksa9lklkmalKddl3223sf",
+            "0x0KLlknfdlkdl3223dsflksa938aslklkmal",
+            "this might be where we designate access to pebble data feeds"
+          ]
+        }
+      },
+      {
+        "id": "did:example:123456789abcdefghi#heathrow-restricted-airspace",
+        "type": "AerialialPolicyZoneGeometryService",
+        "zoneType": ["urban", "aerial"], // <- more sophisticated categorization
+        "name": "Heathrow Restricted Airspace",
+        "serviceEndpoint": "./zones/heathrow-restricted-airspace.json",
+        "policies": {
+          "subjectDevices": ["uav"],
+          "beneficiary": "0x678912345fghi...", // "heathrow.hyperaware.eth"
+          "entryCharge": 0,
+          "exitCharge": 0,
+          "chargePerMinute": 0,
+          "currency": "GBP",
+          "alerts": [
+            "0xdsflksa93malK08aslklkLlknfdlkdl32",
+            "0xlklkmalKddl3223sf0l38asLlknfdlkksa9",
+            "0x23dsflksa938as0KLlknfdlkdl32lklkmal"
+          ]
+        }
+      },
+      {
+        "id": "did:example:123456789abcdefghi#port-of-southampton",
+        "type": "MaritimePolicyZoneGeometryService",
+        "zoneType": ["port", "maritime"], // <- more sophisticated categorization
+        "name": "Port of Southampton",
+        "serviceEndpoint": "./zones/port-of-southampton.json",
+        "policies": {
+          "beneficiary": "0x89123456efghi...", // "port.southampton.hyperaware.eth"
+          "entryCharge": 500, // <- more sophisticated logic - a function of cargo value. Obvs complexity :chart_with_upwards_trend:
+          "exitCharge": 0,
+          "chargePerMinute": 0,
+          "currency": "GBP",
+          "alerts": [
+            "0xl322308aslklKLlknfdlkdlkdsflksa93ma",
+            "0xfdlkddl3223sfksa9lklkmalK0l38asLlkn",
+            "0xLlknfdlkdl320sflksa938aslklkmalK23d",
+          ]
+        }
+      }
+    ]
+  },
+  {
+    {
+      "@context": "https://www.w3.org/ns/did/v1",
+      "id": "did:example:56789abcdefghigermany",
+      "authentication": [{
+        "id": "did:example:123456789abcdefghi#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }],
+      "jurisdictionMetadata": {
+        "jurisdictionName": "Germany",
+        "jurisdictionAddr": "56789abcdefghigermany",
+        "ISO3": "DEU",
+      },
+      "service": [{
+        "id": "did:example:56789abcdefghigermany#berlin-congestion-zone",
+        "type": "TerrestrialPolicyZoneGeometryService",
+        "zoneType": ["urban", "terrestrial"], // <- more sophisticated categorization
+        "name": "Berlin Congestion Zone", // <- In German?
+        "serviceEndpoint": "./zones/berlin-congestion-zone.json",
+        "policies": {
+          "subjectDevices": ["road", "commercial"],
+          "beneficiary": "0x6789123cdef...", // "congestion.berlin.hyperaware.eth" <-- who gets paid
+          "entryCharge": 2,
+          "exitCharge": 0,
+          "chargePerMinute": 0.35,
+          "currency": "EUR",
+          "alerts": [
+            "0xKLlknfdlkdl322308aslklkdsflksa93mal",
+            "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
+            "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
+          ]
+        }
+      }]
+    },
+    {
+      "@context": "https://www.w3.org/ns/did/v1",
+      "id": "did:example:56789abcdefghigermany",
+      "authentication": [{
+        "id": "did:example:123456789abcdefghi#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }],
+      "jurisdictionMetadata": {
+        "jurisdictionName": "Germany",
+        "jurisdictionAddr": "56789abcdefghigermany",
+        "ISO3": "DEU",
+      },
+      "service": [{
+        "id": "did:example:56789abcdefghigermany#berlin-congestion-zone",
+        "type": "TerrestrialPolicyZoneGeometryService",
+        "zoneType": ["urban", "terrestrial"], // <- more sophisticated categorization
+        "name": "Berlin Congestion Zone", // <- In German?
+        "serviceEndpoint": "./zones/berlin-congestion-zone.json",
+        "policies": {
+          "subjectDevices": ["road", "commercial"],
+          "beneficiary": "0x6789123cdef...", // "congestion.berlin.hyperaware.eth" <-- who gets paid
+          "entryCharge": 2,
+          "exitCharge": 0,
+          "chargePerMinute": 0.35,
+          "currency": "EUR",
+          "alerts": [
+            "0xKLlknfdlkdl322308aslklkdsflksa93mal",
+            "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
+            "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
+          ]
+        }
+      }]
+    },
+    {
+      "@context": "https://www.w3.org/ns/did/v1",
+      "id": "did:example:789abcdefghijknetherlands",
+      "authentication": [{
+        "id": "did:example:789abcdefghijknetherlands#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }],
+      "jurisdictionMetadata": {
+        "jurisdictionName": "Netherlands",
+        "jurisdictionAddr": "789abcdefghijknetherlands",
+        "ISO3": "NLD",
+      },
+      "service": [{
+        "id": "did:example:789abcdefghijknetherlands#rotterdam-port-zone",
+        "type": "MaritimePolicyZoneGeometryService",
+        "zoneType": ["port", "maritime"], // <- more sophisticated categorization
+        "name": "Port of Rotterdam", // <- In German?
+        "serviceEndpoint": "./zones/rotterdam-port-zone.json",
+        "policies": {
+          "subjectDevices": ["ship"],
+          "beneficiary": "0x3678912cdef...", // "rotterdam.netherlands.hyperaware.eth" <-- who gets paid
+          "entryCharge": 2,
+          "exitCharge": 0,
+          "chargePerMinute": 0.35,
+          "currency": "EUR",
+          "alerts": [
+            "0xKLlknfdlkdl322308aslklkdsflksa93mal",
+            "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
+            "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
+          ]
+        }
+      }]
+    }
+
+  ]

@@ -5,7 +5,7 @@
       "type": "Feature",
       "properties": {
         "name": "Rotterdam",
-        "tezosAddress": "tz1bDXD6nNSrebqmAnnKKwnX1QdePSMCj4MX",
+        "didEndpoint": "did:example:789abcdefghijknetherlands#rotterdam-port-zone"
         "type": "maritime"
       },
       "geometry": {
