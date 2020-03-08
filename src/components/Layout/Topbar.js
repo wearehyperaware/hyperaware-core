@@ -69,9 +69,9 @@ class Topbar extends Component {
                         <div>
                             <Link className="logo" to="/">Hyperaware<span className="text-primary">.</span></Link>
                         </div>
-                        {window.location.pathname === '/dashboard' ? <div></div> :
+                        {window.location.pathname === '/demo/dashboard' ? <div></div> :
                         <div className="buy-button">
-                            <a href='/dashboard' className="btn btn-primary">Demo</a>
+                            <a href='/demo/dashboard' className="btn btn-primary">Demo</a>
                         </div>}
                         <div className="menu-extras">
                             <div className="menu-item">
@@ -91,17 +91,17 @@ class Topbar extends Component {
                                 <li><Link to="/">About Us</Link></li>
                                 <li><Link to="/">Use Cases</Link></li>
                                 <li className="has-submenu">
-                                    <a href="/dashboard" >Demo</a>
+                                    <a href="/demo/dashboard" >Demo</a>
                                     <span className="menu-arrow"></span>
                                     <ul  className="submenu"  >
                                         <li>
                                             <ul>
-                                                <li><a href='/dashboard'>Dashboard</a></li>
-                                                <li><Link to="/register-did">DID Creation</Link></li>
-                                                <li><Link to="/vehicle-registration">Vehicle Registration</Link></li>
-                                                <li><Link to="/jurisdiction-registration">Jurisdiction Registration</Link></li>
-                                                <li><Link to="/tools">Tools</Link></li>
-                                                <li><Link to="/docs">Documentation</Link></li>
+                                                <li><a href='/demo/dashboard'>Dashboard</a></li>
+                                                <li><Link to="/demo/register-did">DID Creation</Link></li>
+                                                <li><Link to="/demo/vehicle-registration">Vehicle Registration</Link></li>
+                                                <li><Link to="/demo/jurisdiction-registration">Jurisdiction Registration</Link></li>
+                                                <li><Link to="/demo/tools">Tools</Link></li>
+                                                <li><Link to="/demo/docs">Documentation</Link></li>
                                             </ul>
                                         </li>
                                     </ul>

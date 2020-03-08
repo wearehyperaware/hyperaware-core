@@ -106,7 +106,7 @@ class Index extends Component {
                                             </p>
                                             <div className="mt-4 pt-2">
                                                 <div className="mt-4 pt-2">
-                                                    <a href="/dashboard" className="btn btn-primary mt-2 mr-2">View Demo</a>
+                                                    <a href="/demo/dashboard" className="btn btn-primary mt-2 mr-2">View Demo</a>
                                                     <Link to="/" className="btn btn-outline-primary mt-2 ml-1">Learn More</Link>
                                                 </div>
                                             </div>
