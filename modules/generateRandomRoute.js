@@ -44,7 +44,7 @@ module.exports = async (polygon, token) => {
 
 
 function generateRandomPoints(polygon) {
-
+  console.log(polygon)
   let buffer = polygon.geometry.coordinates // turf.buffer(polygon.geometry.coordinates, 10, {units: 'kilometers'}).features[0] // <- something weird going on there
 
   let border1 = turf.linestring(

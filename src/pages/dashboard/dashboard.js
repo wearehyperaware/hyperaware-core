@@ -315,7 +315,7 @@ export class Dashboard extends React.Component {
                     <Topbar/>
                 </div>
 
-                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '71%'}}>
+                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '65%'}}>
 
                         <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'16px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
@@ -356,7 +356,7 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
-                                <div style={{height:210, overflowY: "auto"}}>
+                                <div style={{height:300, overflowY: "auto"}}>
                                         <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
                                             <div className="float-left">
                                                 <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
@@ -410,7 +410,7 @@ export class Dashboard extends React.Component {
                             </Row>
                         </div>
                     </Col>
-                    <Col lg={7} style={{width:'550px', marginLeft: '71%'}}>
+                    <Col lg={7} style={{width:'550px', marginLeft: '65%'}}>
                         <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>
@@ -427,7 +427,7 @@ export class Dashboard extends React.Component {
                                         {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
-                                        Entities.
+                                        Companies.
                                     </div>
                                 </div>
                             </div>
@@ -442,7 +442,7 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
-                                <div style={{height:210, overflowY: "auto"}}>
+                                <div style={{height:300, overflowY: "auto"}}>
                                     {!this.state.vehicles ? <div></div> : (
                                         this.state.vehicles.map((vehicle) => { return (
                                             <div className="event-schedule d-flex bg-white rounded p-3 border" key={vehicle.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
