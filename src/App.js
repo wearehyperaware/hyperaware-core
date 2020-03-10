@@ -25,13 +25,13 @@ class App extends Component {
       <Router>
           <React.Suspense fallback={<div></div>}>
             <Switch>
-            <Route path="/dashboard" component={Dashboard}/>
-            <Route path="/vehicle-registration" component={VehicleRegistration}/>
-            <Route path="/register-did" component={RegisterDID}/>
-            <Route path="/jurisdiction-registration" component={RegisterJurisdiction}/>
-            <Route path="/docs" component={Documentation} />
-            <Route path="/tools" component={Tools} />
-            <Route path="/" component={Root} />
+              <Route exact path="/" component={Root} />
+              <Route path="/demo/dashboard" component={Dashboard}/>
+              <Route path="/demo/vehicle-registration" component={VehicleRegistration}/>
+              <Route path="/demo/register-did" component={RegisterDID}/>
+              <Route path="/demo/jurisdiction-registration" component={RegisterJurisdiction}/>
+              <Route path="/demo/docs" component={Documentation} />
+              <Route path="/demo/tools" component={Tools} />
             </Switch>
           </React.Suspense>
         </Router>
