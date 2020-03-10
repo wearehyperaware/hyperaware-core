@@ -39,7 +39,8 @@ export class Dashboard extends React.Component {
             zonesChevron: "mdi-chevron-double-down",
             vehiclesChevron: "mdi-chevron-double-down",
             isPrivacyMode: true,
-            totalStaked: 0
+            totalStaked: 0,
+            timestep: 0
         };
     }
 
@@ -260,7 +261,14 @@ export class Dashboard extends React.Component {
      handleAdvance = (e) => {
         e.preventDefault()
         console.log(' ', this.state.positions)
-        socket.emit('fetchNewPositionsFromServer', this.state.positions);
+        this.state.timestep += 1;
+
+        // This hardcodes advance into the browser - there is no interaction
+        // with the server ... this is NOT reflecting if the point is
+        // inside a Zone in the browser
+        updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
+
+        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
 
     }
 

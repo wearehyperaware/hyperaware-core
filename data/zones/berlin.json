@@ -5,7 +5,7 @@
     "type": "Feature",
     "properties": {
       "name": "Berlin",
-      "tezosAddress": "tz3NExpXn9aPNZCorRE4SdjJ2RGrfbJgMAaV",
+      "address": "0x3NExpXn9aPNZCorRE4SdjJ2RGrfbJgMAaV",
       "type": "terrestrial"
     },
     "geometry": {

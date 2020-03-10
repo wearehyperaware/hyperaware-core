@@ -4,35 +4,44 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
-var samplePoints = require('./data/samplePoints.json');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const axios = require('axios').default
+
 const generateRandomRoute = require('./modules/generateRandomRoute')
+const fetchGeometriesFromDidDocs = require('./modules/fetchGeometriesFromDidDocs')
+const turfifyGeometries = require('./modules/turfifyGeometries')
+
+
 const mapboxtoken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw'
 
 // Fetch registered zones from Zone Registry (Tezos?)
+var samplePoints = require('./data/samplePoints.json');
 const samplePolygons = require('./data/samplePolygons.json');
-const turfPolygons = [];
+const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
+// const sampleVehicles = require('./data/sampleVehicles.json')
+
+var polygonsFetched = false;
+var turfPolygons = [];
+
+// Fetch and assemble geometries
+fetchGeometriesFromDidDocs(sampleJurisdictionDIDdocs)
+  .then((res) => {
+
+    turfPolygons = res.map(geojson => turf.polygon(geojson.features[0]))
+    geojsonGeometries = res;
+    polygonsFetched = true;
+
+  })
+  .catch((err) => {
+    console.log(err.response)
+  });
+
+
+
 
 var sampleVehicles = [];
-
-samplePolygons.forEach((polygon) => {
-  // If polygons are FeatureCollections ...
-  if (polygon.type == "FeatureCollection") {
-    turfPolygons.push(turf.polygon(polygon.features[0].geometry.coordinates))
-  } else if (polygon.type == 'Feature') {
-    turfPolygons.push(turf.polygon(polygon.geometry.coordinates))
-  } else if (polygon.type == "Polygon") {
-    turfPolygons.push(polygon.coordinates)
-  } else {
-    console.log("Error with a polygon");
-  }
-});
-
-
-
 
 
 server.use(bodyParser.urlencoded({
@@ -64,7 +73,8 @@ io.on('connection', async (client) => {
 
 
     // We'll add the non-enclave tests and event emission here
-
+    console.log(samplePoints);
+    client.emit('updatePositions', samplePoints[counter % 10])
 
 
   });
@@ -90,6 +100,19 @@ io.on('connection', async (client) => {
 
 })
 
+
+//// I think we should restructure this ...
+// Like polygons - fetch vehicles into server memory when we start up server.js
+// When the browser hits the vehicles API we just send them the already downloaded
+// vehicles rather than connecting to IoTeX every API call ...
+// And then we just have the server.js check for new vehicles every minute or so?
+// ....... ?
+// Part of the trouble is this generates new routes for the vehicles every time the api is hit.
+// If we pull it outside the API callback then we create a demo route once, when we fetch
+// vehicles into the server - then on ADVANCE we just feed them the next point in the array,
+// based on some global "time" integer we iterate each time Advance is pressed.
+// Though this ^ is also not ideal for the multiple-clients-to-one-server situation
+// we should be anticipating. THat's a case for pushing all points to the browser straight away?
 server.get('/api/getAllVehicles', async (req, res) => {
   let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
 
@@ -117,7 +140,8 @@ server.get('/api/getAllVehicles', async (req, res) => {
 
       // Generates a route near LONDON right now ...
       // NEXT up: pull random Terrestrial polygon from the zones and generate a route through that ...
-      let route = await generateRandomRoute(turfPolygons[1], mapboxtoken)
+
+      let route = await generateRandomRoute(turfPolygons[Math.floor(Math.random() * turfPolygons.length)], mapboxtoken)
       sampleVehicles.push(route);
 
 
@@ -160,7 +184,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
 
 
 server.get('/api/getAllPolygons', async (req, res) => {
-  res.send(samplePolygons) // Needs to be calling smart contracts to get polygons
+  res.send(geojsonGeometries) // Needs to be calling smart contracts to get polygons
 })
 
 server.get('/api/getAllPoints', async (req, res) => {
