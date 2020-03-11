@@ -294,7 +294,6 @@ export class Dashboard extends React.Component {
         return (
             <div>
 
-                <div ref={this.overlay} className='overlay' id='overlay'/>
 
                 <div id='sidebar' className='sidebar'>
                     <div className='clearfix'>
@@ -312,8 +311,11 @@ export class Dashboard extends React.Component {
                 </div>
 
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
+
                     <Topbar/>
                 </div>
+                <div ref={this.overlay} className='overlay' id='overlay'/>
+
 
                     <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '65%'}}>
 

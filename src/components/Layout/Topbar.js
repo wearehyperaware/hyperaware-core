@@ -6,9 +6,9 @@ class Topbar extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            isOpen : false, 
-            page : false, 
+        this.state = {
+            isOpen : false,
+            page : false,
             landing : false,
             docs : false,
             new :false,
@@ -38,7 +38,7 @@ class Topbar extends Component {
             this.activateParentDropdown(matchingMenuItem);
          }
      }
- 
+
      activateParentDropdown = (item) => {
           const parent = item.parentElement;
           if (parent) {
@@ -88,7 +88,7 @@ class Topbar extends Component {
                         <div id="navigation" style={{ display : this.state.isOpen ? "block" : "none" }}>
                             <ul className="navigation-menu" id="top-menu">
                                 <li><Link to="/">Home</Link></li>
-                                <li><Link to="/">About Us</Link></li>
+                                <li><Link to="/">About</Link></li>
                                 <li><Link to="/">Use Cases</Link></li>
                                 <li className="has-submenu">
                                     <a href="/demo/dashboard" >Demo</a>

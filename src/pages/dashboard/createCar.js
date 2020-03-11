@@ -53,10 +53,13 @@ function createCar(coords, id, color, isPrivate) {
         .attr('data-coords', coords.toString())
         .attr('fill', 'transparent')
         .attr('stroke', 'transparent')
-        .attr('r', 5)
+        .attr('r', '50px')
         .attr('transform', function() {
           var pixelCoords = map.project(coords);
           return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+        })
+        .on('click', function () {
+          console.log(id);
         });
   } else {
     new_car = d3.select('svg')
@@ -65,10 +68,13 @@ function createCar(coords, id, color, isPrivate) {
         .attr('isPrivateVehicle', isPrivate)
         .attr('data-coords', coords.toString())
         .attr('fill', color)
-        .attr('r', 5)
+        .attr('r', 50)
         .attr('transform', function () {
           var pixelCoords = map.project(coords);
           return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+        })
+        .on('click', function () {
+          console.log(id);
         });
   }
   return new_car;
