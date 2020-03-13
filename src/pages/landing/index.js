@@ -7,7 +7,7 @@ import { Row, Col, Alert  } from 'reactstrap';
 import Feature from './Feature';
 import Price from './Price';
 
-// Modal Video 
+// Modal Video
 import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 
 //Import Images
@@ -17,7 +17,6 @@ import Typist from "react-typist";
 import contact from "../../images/contact.png";
 import Topbar from "../../components/Layout/Topbar";
 import FooterLight from "../../components/Layout/FooterLight";
-import analyzeReport4 from '../../images/analyze_report_4.svg';
 
 class Index extends Component {
 
@@ -27,13 +26,14 @@ class Index extends Component {
             isOpen: false,
             Contactvisible : false
         }
-        this.openModal = this.openModal.bind(this);        
+        this.openModal = this.openModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
+        // Anything else here? 
         this.setState({Contactvisible : true});
-    }  
+    }
 
     openModal() {
         this.setState({ isOpen: true })
@@ -52,7 +52,7 @@ class Index extends Component {
        componentWillUnmount() {
         window.removeEventListener("scroll",this.scrollNavigation);
      }
-  
+
       scrollNavigation = () => {
           var doc = document.documentElement;
           var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
@@ -107,7 +107,7 @@ class Index extends Component {
                                             </p>
                                             <div className="mt-4 pt-2">
                                                 <div className="mt-4 pt-2">
-                                                    <a href="/dashboard" className="btn btn-primary mt-2 mr-2">View Demo</a>
+                                                    <a href="/demo/dashboard" className="btn btn-primary mt-2 mr-2">View Demo</a>
                                                     <Link to="/" className="btn btn-outline-primary mt-2 ml-1">Learn More</Link>
                                                 </div>
                                             </div>

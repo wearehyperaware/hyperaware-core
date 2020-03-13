@@ -1,5 +1,6 @@
 import React from 'react'
 import Antenna from "iotex-antenna";
+import { toRau } from "iotex-antenna/lib/account/utils"
 import {
     Contract
 } from "iotex-antenna/lib/contract/contract";
@@ -27,7 +28,8 @@ export class RegisterDID extends React.Component {
             showModal: false,
             didResult: {},
             vehicleDidResult: {},
-            entity: ''
+            entity: '',
+            isPrivateVehicle: false,
         };
     }
 
@@ -43,17 +45,12 @@ export class RegisterDID extends React.Component {
             //connect to the test network
             antenna = new Antenna("http://api.testnet.iotex.one:80");
 
-            //USER'S IOTEX PRIVATE KEY
-            //did:io:0xd29694ef9654e7296ebbfcfd7f5aba2050fc0b80
-            unlockedWallet = await antenna.iotx.accounts.privateKeyToAccount(
-                "450a9968f2fb740a3eee34a870d79c5c991159d86d6600b5e924b81cdd23c57b"
-            );
-
             //connect to the DIDsmartcontract
             contract = new Contract(contractInfo.abi, contractInfo.contractAddress, {
                 provider: antenna.iotx
             });
-            this.remindDID("eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8")
+
+        console.log(this.state.isPrivateVehicle)
     };
 
     scrollNavigation = () => {
@@ -142,8 +139,8 @@ createDID = async (e, entity, privateKey) => {
     try {
         let actionHash = await contract.methods.createDID(docHash, arweaveURL, "", {
             account: wallet,
-            gasLimit: "1000000",
-            gasPrice: "1000000000000"
+              gasLimit: "1000000",
+              gasPrice: toRau("1", "Qev")
         });
         console.log(actionHash);
         //wait till the block is mined
@@ -175,7 +172,7 @@ createDID = async (e, entity, privateKey) => {
             abi: contractInfo.abi,
             method: "remindDIDString"
         });
-        let doc = generateDocument("Device", this.state.creatorDID, imei, vehicleType, did);
+        let doc = generateDocument("Device", did, this.state.creatorDID, imei, vehicleType, this.state.isPrivateVehicle);
         let arweaveURL = await saveToArweave(doc);
         let docHash = Web3.utils.keccak256(doc);
         console.log(docHash);
@@ -184,7 +181,7 @@ createDID = async (e, entity, privateKey) => {
             let actionHash = await contract.methods.createDID(docHash, arweaveURL, imei, {
                 account: pebbleWallet,
                 gasLimit: "1000000",
-                gasPrice: "1000000000000"
+                gasPrice: toRau("1", "Qev")
             });
             //wait till the block is mined
             window.setTimeout(async () => {
@@ -369,7 +366,23 @@ getDocUriFromImei = async (imei) => {
                                                    placeholder="990000862471854" onChange={event => this.setState({pebbleIMEI: event.target.value})}/>
                                         </div>
                                     </div>
-                                    <button className="btn btn-primary" onClick={e => this.createVehicleDID(e, this.state.vehicleType, this.state.pebbleIMEI)}>Register</button>
+                                    <div className="mb-3">
+                                        <label className='switch'>
+                                            <input
+                                                type='checkbox'
+                                                onClick={e => {
+                                                    this.setState({
+                                                        isPrivateVehicle: this.state.isPrivateVehicle === false ? true : false
+                                                    });
+                                                }}
+                                            />
+                                            <span className='slider round' />
+                                        </label>
+                                        <span style={{ marginLeft: "8px", marginTop: "4rem" }}>
+                                          Is Private Vehicle
+                                        </span>
+                                    </div>
+                                    <button className="btn btn-primary mb-3" onClick={e => this.createVehicleDID(e, this.state.vehicleType, this.state.pebbleIMEI)}>Register</button>
 
                                 </div>
                                 <div className="col">

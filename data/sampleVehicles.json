@@ -37,6 +37,35 @@
     "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
     "vehicleType": "Ship",
     "imei": "156022051523629"
-  }
-
+  },
+  {
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:5",
+    "isPrivate": "true",
+    "created": "2020-02-08T20:21:47.149Z",
+    "entity": "Device",
+    "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
+    "vehicleType": "Car (diesel)",
+    "imei": "156022051523629"
+  },
+  {
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:6",
+    "isPrivate": "true",
+    "created": "2020-02-08T20:21:47.149Z",
+    "entity": "Device",
+    "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
+    "vehicleType": "Car (diesel)",
+    "imei": "156022051523629"
+  },
+  {
+    "@context": "https://w3id.org/did/v1",
+    "id": "did:io:7",
+    "isPrivate": "true",
+    "created": "2020-02-08T20:21:47.149Z",
+    "entity": "Device",
+    "creator": "did:io:0xe3aa1b66a618847beb0096520ed8b0aabc5a124e",
+    "vehicleType": "Car (diesel)",
+    "imei": "156022051523629"
+  },
 ]

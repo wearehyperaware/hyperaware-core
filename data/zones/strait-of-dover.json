@@ -1,0 +1,40 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Strait of Dover",
+        "tezosAddress": "tz1iQqEzyyaq9hUAG9tMxxadTKMa9NL73CgK",
+        "type": "maritime"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              1.75506591796875,
+              51.31516382328001
+            ],
+            [
+              0.76080322265625,
+              50.79899141148548
+            ],
+            [
+              0.9970092773437499,
+              50.581492622208735
+            ],
+            [
+              1.9830322265624998,
+              51.15350888865556
+            ],
+            [
+              1.75506591796875,
+              51.31516382328001
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

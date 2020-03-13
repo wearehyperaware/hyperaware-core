@@ -37,7 +37,7 @@ export const didFromHTMLID = ( htmlID ) => {
 }
 
 //Creates did document
-export const generateDocument = (entity, creator = "", imei = "", vehicleType = "", id) => {
+export const generateDocument = (entity, id, creator = "", imei = "", vehicleType = "", isPrivate = false) => {
     let document
     if (entity === "Device") {
          document = {
@@ -47,6 +47,7 @@ export const generateDocument = (entity, creator = "", imei = "", vehicleType = 
             "entity": entity,
             "creator": creator,
             "vehicleType": vehicleType,
+            "isPrivateVehicle": isPrivate,
             "imei": imei
         };
     } else {
@@ -58,7 +59,7 @@ export const generateDocument = (entity, creator = "", imei = "", vehicleType = 
             "creator": creator,
         };
     }
-
+    console.log(JSON.stringify(document, null, 2))
     return JSON.stringify(document, null, 2);
 };
 
@@ -95,6 +96,7 @@ export const saveToArweave = async (document) => {
         }
 
         arweaveURL = "https://arweave.net/tx/" + transaction.id + "/data.txt";
+        console.log(arweaveURL)
         return Promise.resolve(arweaveURL);
     } catch (err) {
         return Promise.reject(err);

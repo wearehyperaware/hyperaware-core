@@ -82,10 +82,8 @@ class Price extends Component {
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
                                                             <h4 className="title mb-4">International Maritime Activity</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <p className="text-muted para-desc mb-0">With <span className="text-primary font-weight-bold">Hyperaware</span>, track and securely govern maritime assets - no matter where they are in the world.</p>
+
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -101,10 +99,7 @@ class Price extends Component {
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
                                                             <h4 className="title mb-4">Drone and Airspace Management</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <p className="text-muted para-desc mb-0"><span className="text-primary font-weight-bold">Hyperaware</span> ensures that all connected drones and UAVs have access to accurate, up-to-date no-fly zones.</p>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -120,10 +115,8 @@ class Price extends Component {
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
                                                             <h4 className="title mb-4">International Logistics</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <p className="text-muted para-desc mb-0">With <span className="text-primary font-weight-bold">Hyperaware</span> customs agencies can control borders more safely and efficiently, and logistics companies know more.</p>
+                                              
                                                         </div>
                                                     </Col>
                                                 </Row>

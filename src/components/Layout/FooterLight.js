@@ -9,6 +9,8 @@ class FooterLight extends Component {
     this.state = { };
   }
 
+  // onSubscribe - handle email submission.
+
   render() {
     return (
       <React.Fragment>
@@ -20,31 +22,21 @@ class FooterLight extends Component {
                         <Link className="logo-footer text-dark" to="#">Hyperaware<span className="text-primary">.</span></Link>
                         <p className="mt-4 text-muted">A decentralized application to govern connected devices and their data based on their physical location.</p>
                         <p className='text-muted'>Where things happen matters.</p>
-                        <ul className="list-unstyled social-icon social mb-0 mt-4">
-                            <li className="list-inline-item"><Link to="#" className="rounded mr-1"><i className="mdi mdi-facebook" title="Facebook"></i></Link></li>
-                            <li className="list-inline-item"><Link to="#" className="rounded"><i className="mdi mdi-twitter" title="Twitter"></i></Link></li>
-                        </ul>
+                        <a href="mailto:trust@hyperaware.io"><p className='text-primary'>trust@hyperaware.io</p></a>
+
                     </Col>
-                    
-                    <Col lg={2} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
+                    <Col lg={1}></Col>
+                    <Col lg={4} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <h4 className="text-dark footer-head">Company</h4>
                         <ul className="list-unstyled footer-list mt-4">
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> About Us</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Services</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Team</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Features</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> FAQ</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Blog</Link></li>
-                        </ul>
-                    </Col>
-
-                    <Col lg={3} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
-                        <h4 className="text-dark footer-head">Useful Links</h4>
-                        <ul className="list-unstyled footer-list mt-4">
+                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> About</Link></li>
+                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Use Cases</Link></li>
                             <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Demo</Link></li>
                             <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Documentation</Link></li>
                         </ul>
                     </Col>
+
+
 
                     <Col lg={3} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <h4 className="text-dark footer-head">Newsletter</h4>
