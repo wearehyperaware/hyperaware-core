@@ -46,11 +46,11 @@ class Feature extends Component {
     render() {
         return (
             <React.Fragment>
-                <section className="section">
-                    <div className="container mb-5">
+                <section className="section" id='about'>
+                    <div className="container mb-5" >
                         <Row className="justify-content-center">
                             <Col className="text-center">
-                                <div id='about-us' className="section-title mb-4 pb-2">
+                                <div className="section-title mb-4 pb-2">
                                     <h4 className="title mb-4">Where Things Happen Matters</h4>
                                     <p className="text-muted para-desc mb-0 mx-auto">At <span className="text-primary font-weight-bold">Hyperaware</span> we know how important it is that things remain where they should be.</p>
                                 </div>

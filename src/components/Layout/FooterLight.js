@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import MailchimpSubscribe from "react-mailchimp-subscribe"
 
 class FooterLight extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { };
+    this.state = {
+        email: null
+    };
+  }
+
+  handleSubscribe = (e, cb) => {
+      e.preventDefault()
+      cb({EMAIL: this.state.email})
   }
 
   render() {
@@ -29,11 +37,9 @@ class FooterLight extends Component {
                     <Col lg={2} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <h4 className="text-dark footer-head">Company</h4>
                         <ul className="list-unstyled footer-list mt-4">
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> About Us</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Services</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Team</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Features</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> FAQ</Link></li>
+                            <li><a href="#about" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> About</a></li>
+                            <li><a href="#use-cases" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Use Cases</a></li>
+                            <li><a href="#faq" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> FAQ</a></li>
                             <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Blog</Link></li>
                         </ul>
                     </Col>
@@ -41,8 +47,8 @@ class FooterLight extends Component {
                     <Col lg={3} md={4} className="col-12 mt-4 mt-sm-0 pt-2 pt-sm-0">
                         <h4 className="text-dark footer-head">Useful Links</h4>
                         <ul className="list-unstyled footer-list mt-4">
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Demo</Link></li>
-                            <li><Link to="#" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Documentation</Link></li>
+                            <li><a href="/demo/dashboard" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Demo</a></li>
+                            <li><Link to="/demo/docs" className="text-muted"><i className="mdi mdi-chevron-right mr-1"></i> Documentation</Link></li>
                         </ul>
                     </Col>
 
@@ -52,15 +58,30 @@ class FooterLight extends Component {
                         <form>
                             <Row>
                                 <Col lg={12}>
-                                    <div className="foot-subscribe form-group position-relative">
-                                        <label className="text-muted">Write your email <span className="text-danger">*</span></label>
-                                        <i className="mdi mdi-email ml-3 icons"></i>
-                                        <input type="email" name="email" id="emailsubscribe" className="form-control bg-light border pl-5 rounded" placeholder="Your email : " required />
-                                    </div>
+                                    <MailchimpSubscribe
+                                        url='https://hotmail.us19.list-manage.com/subscribe/post?u=57bb7efa582a3cbc3eafde6d9&amp;id=4a8244181b'
+                                        render={({ subscribe, status, message }) => (
+                                            <div>
+                                                <form>
+                                                    <div className="foot-subscribe form-group position-relative">
+                                                        <label className="text-muted">Write your email <span
+                                                            className="text-danger">*</span></label>
+                                                        <i className="mdi mdi-email ml-3 icons"></i>
+                                                        <input type="email" name="email" id="emailsubscribe"
+                                                               className="form-control bg-light border pl-5 rounded text-muted"
+                                                               placeholder="Your email : " required onChange={(e)=> this.setState({email: e.target.value})}/>
+                                                        {status === "sending" && <div className='pt-2' style={{ color: "blue" }}>Subscribing...</div>}
+                                                        {status === "error" && <div className='pt-2' style={{ color: "red" }} dangerouslySetInnerHTML={{__html: message}}/>}
+                                                        {status === "success" && <div className='pt-2' style={{ color: "green" }}>Subscribed!</div>}
+                                                    </div>
+                                                    <button type="submit" className="btn btn-primary w-100" onClick={(e) => this.handleSubscribe(e, subscribe)}>Subscribe
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        )}
+                                    />
                                 </Col>
-                                <Col lg={12}>
-                                    <input type="submit" id="submitsubscribe" name="send" className="btn btn-primary w-100" value="Subscribe" />
-                                </Col>
+
                             </Row>
                         </form>
                     </Col>
