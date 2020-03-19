@@ -10,19 +10,19 @@ Tasks to complete to finish development of MVP.
 
 ## Home
 
-- Connect Topbar "About" and "Learn more" buttons to About section on homepage (Where Things Happen Matters)
-- Connect Topbar "Use Cases" button to Use Cases section on homepage
-- Connect FooterLight buttons to appropriate pages / anchors
-- Connect email sign up and subscribe to capture email addresses
+- ~~Connect Topbar "About" and "Learn more" buttons to About section on homepage (Where Things Happen Matters)~
+- ~~Connect Topbar "Use Cases" button to Use Cases section on homepage~
+- ~~Connect FooterLight buttons to appropriate pages / anchors~
+- ~~Connect email sign up and subscribe to capture email addresses~
 
 
 ## DID Creation
 
-- Test to ensure it is functional!
+- ~~Test to ensure it is functional!~~ Although we still need proper unit tests!
 
 ## Vehicle Registration
 
-- Test to make sure it works!
+- ~~Test to make sure it works!~~ Although still want to make minor edits to variable names etc
 - Make sure registered vehicles appear on the map
 
 ## Jurisdiction Registration
@@ -45,14 +45,15 @@ Tasks to complete to finish development of MVP.
 
 ## Dashboard
 
-- Build loading indicators like spinners etc to make sure users know things are working - and, ideally, what is happening behind the scenes.
-- Reorder so menu dropdown appears in front of cards rather than behind.
-- Flip chevron arrows depending on expanded or collapsed.
-- Move navbar a bit to the left so it doesn't bump against cards. Make it white background?
-- Make sure server.js testing is pushing notifications into the dashboard.
+- ~~Build loading indicators like spinners etc to make sure users know things are working - and, ideally, what is happening behind the scenes.~~ Loading spinners have been added to did creation and vehicle registration
+- ~Reorder so menu dropdown appears in front of cards rather than behind.~
+- ~~Flip chevron arrows depending on expanded or collapsed.~
+- ~~Move navbar a bit to the left so it doesn't bump against cards. Make it white background?~
+- ~~Make sure server.js testing is pushing notifications into the dashboard.~
 - Clean up console.log so user can see what's happening in browser console.
 - Test to make sure it all works - consistently!
 - If time: Look at dashboard/README.md for a longer wishlist.
+- Register a good number of vehicles with high stake amounts and turn on slashing
 
 ### Zones
 
@@ -64,6 +65,7 @@ Tasks to complete to finish development of MVP.
 
 ### Vehicles
 
+- Make rendered vehicles start somewhere outside of zone boundaries not directly on 
 - On card click - zoom to car?
 - Confirm that all vehicles are being pulled in a visualized properly
 
