@@ -10,10 +10,26 @@ import eventABI from "./did-event-abis";
 import {readLog, generateDocument, saveToArweave} from "../helperFunctions";
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
+import {Spinner} from "react-bootstrap";
 
 let unlockedWallet;
 let contract;
 let antenna;
+
+function Loader() {
+    return (
+        <div>
+            <div className='mb-4 d-flex justify-content-center'>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
+            <div>This should take around 10 seconds.</div>
+        </div>
+
+    );
+}
+
 export class RegisterDID extends React.Component {
     constructor(props) {
         super(props);
@@ -28,8 +44,12 @@ export class RegisterDID extends React.Component {
             showModal: false,
             didResult: {},
             vehicleDidResult: {},
-            entity: '',
+            entity: 'Individual',
             isPrivateVehicle: false,
+            createSelfDidLoaded: false,
+            createSelfDidLoading: false,
+            createVehicleDidLoaded: false,
+            createVehicleDidLoading: false,
         };
     }
 
@@ -50,7 +70,6 @@ export class RegisterDID extends React.Component {
                 provider: antenna.iotx
             });
 
-        console.log(this.state.isPrivateVehicle)
     };
 
     scrollNavigation = () => {
@@ -99,30 +118,12 @@ getAccountDetails = async () => {
 };
 
 
-//returns timestamp
- getTimeStamp = async (actionHash) => {
-    try {
-        const action = await antenna.iotx.getActions({
-            byHash: {
-                actionHash: actionHash,
-                checkingPending: true
-            }
-        });
-
-        console.log(JSON.stringify(action.actionInfo[0].timestamp));
-        return JSON.stringify(action.actionInfo[0].timestamp);
-    } catch (err) {
-        console.log(err);
-    }
-
-};
-
-
 //given the documentHash, uri, imei(optional), createsDID
 // and returns the actionHash(the address of the transaction)
-//emits evnet
-createDID = async (e, entity, privateKey) => {
+
+    createDID = async (e, entity, privateKey) => {
     e.preventDefault();
+    await this.setState({createSelfDidLoading: true})
     let wallet = await antenna.iotx.accounts.privateKeyToAccount(
         privateKey
     );
@@ -143,19 +144,18 @@ createDID = async (e, entity, privateKey) => {
               gasPrice: toRau("1", "Qev")
         });
         console.log(actionHash);
-        //wait till the block is mined
         window.setTimeout(async () => {
-            //READ LOG
             //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
             let log = await readLog(eventABI.createEvent, actionHash, antenna);
             console.log("LOG when new did is created: ", log);
-            this.setState({didResult: {id: did, uri: arweaveURL, doc}});
+            await this.setState({didResult: {id: did, uri: arweaveURL, doc}, createSelfDidLoaded: true, createSelfDidLoading: false, createSelfDidError: null});
             return log.didString;
 
         }, 11000)
 
     } catch (err) {
-        console.log(err);
+        this.setState({createSelfDidLoading: false})
+        console.log(err)
     }
 
 };
@@ -163,6 +163,8 @@ createDID = async (e, entity, privateKey) => {
 
     createVehicleDID = async (e, vehicleType, imei) => {
         e.preventDefault();
+        await this.setState({createVehicleDidLoading: true})
+
         let pebbleWallet = await antenna.iotx.accounts.privateKeyToAccount(
             this.state.pebblePrivateKey
         );
@@ -189,12 +191,13 @@ createDID = async (e, entity, privateKey) => {
                 //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
                 let log = await readLog(eventABI.createEvent, actionHash, antenna);
                 console.log("LOG when new did is created: ", log);
-                this.setState({vehicleDidResult: {id: did, uri: arweaveURL, doc}});
+                this.setState({vehicleDidResult: {id: did, uri: arweaveURL, doc}, createVehicleDidLoaded: true, createVehicleDidLoading: false});
                 return log.didString;
 
             }, 11000)
 
         } catch (err) {
+            this.setState({createVehicleDidLoading: false})
             console.log(err);
         }
 
@@ -300,7 +303,7 @@ getDocUriFromImei = async (imei) => {
                     <div className='card-body'>
                         <form>
                             <div className="row">
-                                <div className="col">
+                                <div className="col-lg-6">
                                     <div className="form-row">
                                         <div className="form-group col-md">
                                             <label htmlFor="inputOwnerDID">Entity (Individual, Corporate (Company name))</label>
@@ -318,13 +321,23 @@ getDocUriFromImei = async (imei) => {
                                     <button className="btn btn-primary" onClick={e => this.createDID(e, this.state.entity, this.state.privateKey)}>Register</button>
 
                                 </div>
-                                <div className="col">
-                                    <div>
-                                        <div>DID: {this.state.didResult.id}</div>
-                                        <div>DID Document URI: {this.state.didResult.uri}</div>
-                                        <div>DID Document: <code><pre>{this.state.didResult.doc}</pre></code></div>
-                                    </div>
-                                </div>
+                                {this.state.createSelfDidLoading ? (
+                                    <div className='col-6 d-flex justify-content-center'>
+                                            <div className='mb-4'>
+                                                <Loader/>
+                                            </div>
+                                    </div>) : <div></div>}
+                                {
+                                    this.state.createSelfDidLoaded ? (
+                                        <div className="col-6">
+                                            <div>
+                                                <div>DID: {this.state.didResult.id}</div>
+                                                <div>DID Document URI: {this.state.didResult.uri}</div>
+                                                <div>DID Document: <code><pre>{this.state.didResult.doc}</pre></code></div>
+                                            </div>
+                                        </div>
+                                    ) : <div></div>
+                                }
                             </div>
                         </form>
                     </div>
@@ -394,11 +407,21 @@ getDocUriFromImei = async (imei) => {
                                 </div>
                             </div>
                         </form>
-                        <div>
-                            <div>DID: {this.state.vehicleDidResult.id}</div>
-                            <div>DID Document URI: {this.state.vehicleDidResult.uri}</div>
-                            <div>DID Document: <code><pre>{this.state.vehicleDidResult.doc}</pre></code></div>
+                        {this.state.createVehicleDidLoading ? (
+                            <div className='d-flex justify-content-center'>
+                                <div className='mb-4'>
+                                    <Loader/>
+                                </div>
+                            </div>) : <div></div>}
+                        {this.state.createVehicleDidLoaded ? (
+                            <div>
+                                <div>DID: {this.state.vehicleDidResult.id}</div>
+                                <div>DID Document URI: {this.state.vehicleDidResult.uri}</div>
+                                <div>DID Document: <code><pre>{this.state.vehicleDidResult.doc}</pre></code>
+                            </div>
                         </div>
+                        ) : <div></div>}
+
                     </div>
                 </div>
 
