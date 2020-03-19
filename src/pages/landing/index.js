@@ -164,7 +164,7 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card border rounded shadow mb-2">
-                                                <Link to="#collapseTwo" onClick={() => this.setState({ col2: !this.state.col2,col1 : false, col3 : false })} className={ this.state.col2 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#collapseTwo" onClick={() => this.setState({ col2: !this.state.col2, col5: false, col4: false, col1 : false, col3 : false })} className={ this.state.col2 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingTwo">
                                                         <h4 className="title mb-0 faq-question"> How do we demo with real routes? </h4>
                                                     </div>
@@ -177,7 +177,7 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card rounded shadow mb-2">
-                                                <Link to="#" onClick={() => this.setState({ col3: !this.state.col3,col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#" onClick={() => this.setState({ col3: !this.state.col3, col5: false, col4: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingfive">
                                                         <h4 className="title mb-0 faq-question"> Can Hyperaware integrate with any system? </h4>
                                                     </div>
@@ -190,12 +190,12 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card rounded shadow mb-2">
-                                                <Link to="#" onClick={() => this.setState({ col3: !this.state.col3,col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#" onClick={() => this.setState({ col4: !this.state.col4, col5: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingfive">
                                                         <h4 className="title mb-0 faq-question"> Are special sensors required? </h4>
                                                     </div>
                                                 </Link>
-                                                <Collapse isOpen={this.state.col3}>
+                                                <Collapse isOpen={this.state.col4}>
                                                     <div className="card-body">
                                                         <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
                                                     </div>
@@ -203,12 +203,12 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card rounded shadow mb-0">
-                                                <Link to="#" onClick={() => this.setState({ col3: !this.state.col3,col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#" onClick={() => this.setState({ col5: !this.state.col5, col4: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingfive">
                                                         <h4 className="title mb-0 faq-question"> How is data privacy ensured? </h4>
                                                     </div>
                                                 </Link>
-                                                <Collapse isOpen={this.state.col3}>
+                                                <Collapse isOpen={this.state.col5}>
                                                     <div className="card-body">
                                                         <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
                                                     </div>
