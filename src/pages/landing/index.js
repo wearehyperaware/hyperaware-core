@@ -14,7 +14,6 @@ import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 import london_3d from '../../images/london_3d.png';
 import roundWhite from '../../images/shapes/round-white.png';
 import Typist from "react-typist";
-import contact from "../../images/contact.png";
 import Topbar from "../../components/Layout/Topbar";
 import FooterLight from "../../components/Layout/FooterLight";
 

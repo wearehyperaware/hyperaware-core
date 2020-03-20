@@ -52,7 +52,7 @@ export class Dashboard extends React.Component {
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
       document.getElementById('topnav').classList.add('bg-white');
-        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+      setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
       // let tmp =[]
       //   for (let i = 0; i < 15; i++ ) {
       //       tmp.push(getStartEnd())
