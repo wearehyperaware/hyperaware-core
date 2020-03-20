@@ -5,7 +5,7 @@ Tasks to complete to finish development of MVP.
 ## Site-wide
 
 - Merge `johnx25bd/LBL-Future-LBL-FutureOfBlockchain2020/merge-fetch-geometries`
-- Merge `johnx25bd/LBL-Future-LBL-FutureOfBlockchain2020/dev-pages`
+- Merge `johnx25bd/LBL-Future-LBL-FutureOfBlockchain2020/master`
 - Deploy on hyperaware.io
 
 ## Home
