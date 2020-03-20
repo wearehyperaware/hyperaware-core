@@ -17,7 +17,12 @@ import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import { getStartEnd } from "./getPath";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA"
-const socket = openSocket('http://localhost:3001');
+let socket
+if (process.env.NODE_ENV === 'production') {
+     socket = openSocket(window.location.hostname)
+} else {
+     socket = openSocket('http://localhost:3001');
+}
 
 export var map
 export var zone
