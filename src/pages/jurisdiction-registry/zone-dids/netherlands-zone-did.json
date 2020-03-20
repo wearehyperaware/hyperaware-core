@@ -1,0 +1,20 @@
+{
+    "@context": "https://www.w3.org/ns/did/v1",
+    "id": "did:example:0x375ef39Fe23128a42992d5cad5a166Ab04C20A88",
+    "authentication": [{
+      "id": "did:example:0x375ef39Fe23128a42992d5cad5a166Ab04C20A88#keys-1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:0x375ef39Fe23128a42992d5cad5a166Ab04C20A88",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }],
+    "service": [{
+      "id": "did:example:0x375ef39Fe23128a42992d5cad5a166Ab04C20A88#rotterdam-port-zone",
+      "name": "Port of Rotterdam",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/rotterdam-port-zone.json",
+      "policies": {
+        "beneficiary": "0x2C8F629dA2c4574143aC9eC118F463c8930aFaC4",
+        "chargePerMinute": 0.35,
+        "currency": "EUR"
+      }
+    }]
+  }

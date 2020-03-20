@@ -16,6 +16,7 @@
     "concurrently": "^5.1.0",
     "d3": "^3.5.16",
     "esm": "^3.2.25",
+    "ethers": "^4.0.46",
     "geojson-validation": "^0.2.1",
     "iotex-antenna": "0.25.0",
     "lodash.template": "^4.2.1",

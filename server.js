@@ -4,15 +4,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
+const ethers = require('ethers');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
+const ZONE_REGISTER_ABI = require('./src/pages/jurisdiction-registry/zone-contract-details.js').abi
+const ZONE_REGISTER_ADDRESS = require('./src/pages/jurisdiction-registry/zone-contract-details.js').contractAddress
 const axios = require('axios').default
 
-const generateRandomRoute = require('./modules/generateRandomRoute')
+const generateRandomRoute = require('./modules/generateRandomRoute');
+const fetchGeometriesFromDidDocs = require('./modules/fetchGeometriesFromDidDocs')
 const mapboxtoken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA'
 
-// Fetch registered zones from Zone Registry (Tezos?)
+// Fetch registered zones from Zone Registry
 var samplePoints = require('./data/samplePoints.json');
 const samplePolygons = require('./data/samplePolygons.json');
 const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
@@ -21,10 +25,14 @@ const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
 var polygonsFetched = false;
 var turfPolygons = [];
 
+// Set up connection with ZoneRegistry contract on Ethereum
+let ethProvider = ethers.getDefaultProvider();
+let contract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_ABI, ethProvider);
+console.log('contract', contract);
+
 // Fetch and assemble geometries
 fetchGeometriesFromDidDocs(sampleJurisdictionDIDdocs)
   .then((res) => {
-
     turfPolygons = res.map(geojson => turf.polygon(geojson.features[0]))
     geojsonGeometries = res;
     polygonsFetched = true;
