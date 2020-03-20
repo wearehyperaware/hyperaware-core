@@ -16,13 +16,11 @@ import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import { getStartEnd } from "./getPath";
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA';
+mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA"
 const socket = openSocket('http://localhost:3001');
 
 export var map
 export var zone
-
-// var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
 
 export class Dashboard extends React.Component {
 
@@ -31,7 +29,7 @@ export class Dashboard extends React.Component {
         this.state = {
             zones: [],
             vehicles: [],
-            antenna: new Antenna("http://api.testnet.iotex.one:80"),
+            antenna: new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST),
             buffered: null,
             positions: [],
             currentPos: 1,
@@ -201,7 +199,6 @@ export class Dashboard extends React.Component {
 
             // Render each vehicle in its initial position
             for (let i in positions[0]) {
-              console.log(positions[0][i])
                 makeCar(positions[0][i].coords, positions[0][i].vehicle)
             }
 

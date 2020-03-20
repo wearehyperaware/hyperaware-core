@@ -9,7 +9,7 @@ export class Tools extends React.Component {
 
     constructor(props) {
         super(props);
-        let antenna = new Antenna("http://api.testnet.iotex.one:80");
+        let antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
         this.state = {
             accountsToCreate: 1,
             createdAccounts: [],
@@ -47,7 +47,7 @@ export class Tools extends React.Component {
         e.preventDefault()
 
         let senderWallet = this.state.antenna.iotx.accounts.privateKeyToAccount(
-            "cd1ee30decfa0b4490642e92afccc00510256ef6c01ccb8989e5d186694ee3d5"
+            process.env.REACT_APP_FAUCET_PRIVATE_KEY
         );
         let tmp = []
         let wallet

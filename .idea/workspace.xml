@@ -3,7 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CENTRAL-CONTROL.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/map.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/did-registration/registerDID.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/landing/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/tools/Tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/tools/Tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +132,10 @@
       <workItem from="1583695614769" duration="987000" />
       <workItem from="1583701102909" duration="8000" />
       <workItem from="1584617462717" duration="10693000" />
-      <workItem from="1584632306948" duration="5210000" />
+      <workItem from="1584632306948" duration="5398000" />
+      <workItem from="1584637777024" duration="3000" />
+      <workItem from="1584711178256" duration="868000" />
+      <workItem from="1584712057612" duration="3746000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -265,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584636686386</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="fixed accordion">
+      <created>1584637547840</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1584637547840</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,7 +332,8 @@
     <MESSAGE value="added /demo/ to demo routes" />
     <MESSAGE value="connected navbar to sections on homepage, implemented mailing list sign up" />
     <MESSAGE value="loading spinners implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="loading spinners implemented" />
+    <MESSAGE value="fixed accordion" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed accordion" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -324,10 +344,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584636684845">
+    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584637547062">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584636684845" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584637547062" />
     <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -349,14 +369,14 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155419207" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1584636687801">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1584637549030">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584636687801" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1584633743509">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584637549030" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1584714082771">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584633743509" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584714082771" />
     <state x="800" y="335" key="git4idea.merge.GitMergeDialog" timestamp="1583155281677">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

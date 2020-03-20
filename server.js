@@ -10,7 +10,7 @@ const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const axios = require('axios').default
 const generateRandomRoute = require('./modules/generateRandomRoute')
-const mapboxtoken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA'
+const mapboxtoken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA"
 
 // Fetch registered zones from Zone Registry (Tezos?)
 const samplePolygons = require('./data/samplePolygons.json');
@@ -32,15 +32,17 @@ samplePolygons.forEach((polygon) => {
 });
 
 
-
-
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the React frontend app
+  server.use(express.static(path.join(__dirname, '/build')))
+}
 
 server.use(bodyParser.urlencoded({
   extended: false
 }));
-
-const http = server.listen(3001, () => {
-  console.log('Express server and socket.io websocket are running on localhost:3001');
+const PORT = process.env.PORT || 3001
+const http = server.listen(PORT, () => {
+  console.log('Express server and socket.io websocket are running on', PORT);
 });
 
 const io = require('socket.io')(http);
@@ -189,6 +191,10 @@ server.get('/api/getTotalStaked', async (req, res) => {
   })
 })
 
+if (process.env.NODE_ENV === 'production') {
+  // Anything that doesn't match the above, send back index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/build/index.html'))
+  })
+}
 
-// Example get request to express server
-server.use('/', express.static(path.join(__dirname, 'public/home')));

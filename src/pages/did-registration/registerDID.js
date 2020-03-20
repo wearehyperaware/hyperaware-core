@@ -63,7 +63,7 @@ export class RegisterDID extends React.Component {
             window.addEventListener("scroll", this.scrollNavigation, true);
 
             //connect to the test network
-            antenna = new Antenna("http://api.testnet.iotex.one:80");
+            antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
 
             //connect to the DIDsmartcontract
             contract = new Contract(contractInfo.abi, contractInfo.contractAddress, {
@@ -177,7 +177,6 @@ getAccountDetails = async () => {
         let doc = generateDocument("Device", did, this.state.creatorDID, imei, vehicleType, this.state.isPrivateVehicle);
         let arweaveURL = await saveToArweave(doc);
         let docHash = Web3.utils.keccak256(doc);
-        console.log(docHash);
 
         try {
             let actionHash = await contract.methods.createDID(docHash, arweaveURL, imei, {
@@ -190,7 +189,7 @@ getAccountDetails = async () => {
                 //READ LOG
                 //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
                 let log = await readLog(eventABI.createEvent, actionHash, antenna);
-                console.log("LOG when new did is created: ", log);
+                console.log("Event log: ", log);
                 this.setState({vehicleDidResult: {id: did, uri: arweaveURL, doc}, createVehicleDidLoaded: true, createVehicleDidLoading: false});
                 return log.didString;
 

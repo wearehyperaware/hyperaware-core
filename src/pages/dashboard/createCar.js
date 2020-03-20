@@ -149,8 +149,8 @@ function truncateDID(did) {
 }
 
 async function slash(did) {
-  let antenna = new Antenna("http://api.testnet.iotex.one:80");
-  let vehicleRegContract = new Contract(VehicleRegABI,'io1zf0g0e5l935wfq0lvu9ptqadwrgqqpht7v2a9q',{provider: antenna.iotx});
+  let antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
+  let vehicleRegContract = new Contract(VehicleRegABI,process.env.REACT_APP_VEHICLE_REG_CONTRACT_ADDRESS,{provider: antenna.iotx});
 
   // Get vehicle's document
   let uri = await antenna.iotx.readContractByMethod({
@@ -166,7 +166,7 @@ async function slash(did) {
 
   // Slash owner (admin needs to use the private key of the owner of the VehicleRegistry contract)
   let admin = await antenna.iotx.accounts.privateKeyToAccount(
-      "eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8"
+      process.env.REACT_APP_SLASH_ACCOUNT_PRIVATE_KEY
   );
   try {
     // let actionHash = await vehicleRegContract.methods.slash(0.15, vehicleOwner, did, {
