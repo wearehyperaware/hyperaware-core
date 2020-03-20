@@ -49,7 +49,7 @@ Tasks to complete to finish development of MVP.
 - ~~Reorder so menu dropdown appears in front of cards rather than behind.~~
 - ~~Flip chevron arrows depending on expanded or collapsed.~~
 - ~~Move navbar a bit to the left so it doesn't bump against cards. Make it white background?~~
-- ~~Make sure server.js testing is pushing notifications into the dashboard.~
+- ~~Make sure server.js testing is pushing notifications into the dashboard.~~
 - Clean up console.log so user can see what's happening in browser console.
 - Test to make sure it all works - consistently!
 - If time: Look at dashboard/README.md for a longer wishlist.
