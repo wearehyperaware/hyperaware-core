@@ -36,7 +36,8 @@ const zoneContract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_AB
   var zoneAddresses = [
     "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
     "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
-    "0x3985dE49147725D64407d14c3430bd1dC9c11f04"  // <- Germany
+    "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
+    "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD" // <- France
   ];
 
   // Fetch Zone DID Docs from addresses, and geojson from DID docs:
@@ -52,8 +53,9 @@ const zoneContract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_AB
 
     polygonsFetched = true;
 
+    console.log(zoneDIDDocs.map((doc) => {return doc.service}));
 
- // Fetch vehicles and generate routes"
+  // Fetch vehicles and generate routes"
   let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
 
   // Get total number of registered vehicles

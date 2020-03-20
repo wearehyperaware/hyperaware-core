@@ -29,6 +29,7 @@ export class Dashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            zoneDIDs: [],
             zones: [],
             vehicles: [],
             antenna: new Antenna("http://api.testnet.iotex.one:80"),
@@ -51,14 +52,6 @@ export class Dashboard extends React.Component {
       document.getElementById("pageLoader").style.display = "block";
       document.getElementById('topnav').classList.add('bg-white');
         setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
-      // let tmp =[]
-      //   for (let i = 0; i < 15; i++ ) {
-      //       tmp.push(getStartEnd())
-      //   }
-      //   console.log(JSON.stringify(tmp))
-
-
-
 
       var screenWidth = document.documentElement.clientWidth;
       var screenHeight = document.documentElement.clientHeight;
@@ -78,12 +71,12 @@ export class Dashboard extends React.Component {
         totalStaked = totalStaked.data.totalStaked
         let vehicles = await axios.get('/api/getAllVehicles')
         vehicles = vehicles.data
-        let zones = await axios.get('/api/getAllPolygons')
-        zones = zones.data
+        let zoneDIDs = await axios.get('/api/getAllPolygons');
+        zoneDIDs = zoneDIDs.data;
+        let zones = zoneDIDs.map((did) => {return did.service.map((zone) => {return zone.geojson})}).flat();
         let positions = await axios.get('/api/getAllPoints')
         positions = positions.data
-        await this.setState({zones, vehicles, positions, totalStaked})
-        console.log(this.state.positions)
+        await this.setState({zoneDIDs, zones, vehicles, positions, totalStaked})
 
         this.loadVehiclesAndZones(map)
 
@@ -261,7 +254,7 @@ export class Dashboard extends React.Component {
 
      handleAdvance = (e) => {
         e.preventDefault()
-        console.log(' ', this.state.positions)
+
         this.state.timestep += 1;
 
         // This hardcodes advance into the browser - there is no interaction
