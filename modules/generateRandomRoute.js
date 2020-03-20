@@ -4,7 +4,7 @@ var axios = require('axios');
 var geojsonTidy = require('@mapbox/geojson-tidy');
 
 module.exports = async (polygon, token) => {
-
+  console.log(polygon)
 
   var endpoints = generateRandomPoints(polygon).join(';');
   console.log(endpoints)
