@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,7 +120,7 @@
       <workItem from="1583074944337" duration="6128000" />
       <workItem from="1583089416948" duration="4503000" />
       <workItem from="1583094580180" duration="2650000" />
-      <workItem from="1584730582115" duration="660000" />
+      <workItem from="1584730582115" duration="1358000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -236,7 +234,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583073151791</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="deploy">
+      <created>1584731503700</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1584731503701</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -267,7 +272,8 @@
     <MESSAGE value="fixed retrieving of dids from contract" />
     <MESSAGE value="implemented fetching real points and assigning them to routes" />
     <MESSAGE value="implemented fetching real vehicles and assigning them to routes" />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented fetching real vehicles and assigning them to routes" />
+    <MESSAGE value="deploy" />
+    <option name="LAST_COMMIT_MESSAGE" value="deploy" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -278,11 +284,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583097368674">
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584731503184">
       <screen x="67" y="27" width="2493" height="1413" />
     </state>
     <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073146269" />
-    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097368674" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1584731503184" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -307,11 +313,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
-    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1583097389382">
+    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1584731506649">
       <screen x="67" y="27" width="2493" height="1413" />
     </state>
     <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073153503" />
-    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097389382" />
+    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.2493.1413@67.27.2493.1413" timestamp="1584731506649" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583069585002">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
