@@ -88,8 +88,9 @@ class Topbar extends Component {
                         <div id="navigation" style={{ display : this.state.isOpen ? "block" : "none" }}>
                             <ul className="navigation-menu" id="top-menu">
                                 <li><Link to="/">Home</Link></li>
-                                <li><Link to="/">About</Link></li>
-                                <li><Link to="/">Use Cases</Link></li>
+                                <li><a href="/#about">About</a></li>
+                                <li><a href="/#use-cases">Use Cases</a></li>
+                                <li><a href="/#faq">FAQ</a></li>
                                 <li className="has-submenu">
                                     <a href="/demo/dashboard" >Demo</a>
                                     <span className="menu-arrow"></span>

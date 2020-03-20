@@ -1,7 +1,7 @@
 // React Basic and Bootstrap
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col, Alert  } from 'reactstrap';
+import { Row, Col, Alert, Collapse  } from 'reactstrap';
 
 // Import Generic components
 import Feature from './Feature';
@@ -130,84 +130,150 @@ class Index extends Component {
                 {/* Feature */}
                 <Feature />
 
-                {/* FAQ */}
-                {/*<div className="container">*/}
-                {/*    <Row className="align-items-center">*/}
-                {/*        <Col md={6}>*/}
-                {/*            <img src={analyzeReport4} className="mr-md-4" alt="" />*/}
-                {/*        </Col>*/}
-
-                {/*        <Col md={6} className="mt-4 mt-sm-0 pt-2 pt-sm-0">*/}
-                {/*            <div className="section-title mr-lg-5">*/}
-                {/*                <h4 className="title mb-4">Clean And Modern Code</h4>*/}
-                {/*                <p className="text-muted">This prevents repetitive patterns from impairing the overall visual impression and facilitates the comparison of different typefaces. Furthermore, it is advantageous when the dummy text is relatively realistic.</p>*/}
-                {/*                <Link to="#" className="btn btn-outline-primary">Start Now <i className="mdi mdi-chevron-right"></i></Link>*/}
-                {/*            </div>*/}
-                {/*        </Col>*/}
-                {/*    </Row>*/}
-                {/*</div>*/}
-
                 {/* Price */}
                 <Price />
 
                 {/* Contact Us */}
-                <div className="container mb-5">
-                    <Row className="align-items-center">
-                        <Col lg={5} md={6} className="mt-4 mt-sm-0 pt-2 pt-sm-0 order-2 order-md-1">
-                            <div className="pt-5 pb-5 p-4 bg-light shadow rounded">
-                                <h4>Get In Touch !</h4>
-                                <div className="custom-form mt-4">
-                                    <div id="message"></div>
-                                    <Alert color="info" isOpen={this.state.Contactvisible} toggle={()=>{ this.setState({Contactvisible : !this.state.Contactvisible}) }}>
-                                        Contact details send successfully.
-                                    </Alert>
-                                    <form method="post" onSubmit={this.handleSubmit} name="contact-form" id="contact-form">
-                                        <Row>
-                                            <Col md={6}>
-                                                <div className="form-group position-relative">
-                                                    <label>Your Name <span className="text-danger">*</span></label>
-                                                    <i className="mdi mdi-account ml-3 icons"></i>
-                                                    <input name="name" id="name" type="text" className="form-control pl-5" placeholder="First Name :" required />
-                                                </div>
-                                            </Col>
-                                            <Col md={6}>
-                                                <div className="form-group position-relative">
-                                                    <label>Your Email <span className="text-danger">*</span></label>
-                                                    <i className="mdi mdi-email ml-3 icons"></i>
-                                                    <input name="email" id="email" type="email" className="form-control pl-5" placeholder="Your email :" required />
-                                                </div>
-                                            </Col>
-                                            <Col md={12}>
-                                                <div className="form-group position-relative">
-                                                    <label>Subject</label>
-                                                    <i className="mdi mdi-book ml-3 icons"></i>
-                                                    <input name="subject" id="subject" className="form-control pl-5" placeholder="Your subject :" required />
-                                                </div>
-                                            </Col>
-                                            <Col md={12}>
-                                                <div className="form-group position-relative">
-                                                    <label>Comments</label>
-                                                    <i className="mdi mdi-comment-text-outline ml-3 icons"></i>
-                                                    <textarea name="comments" id="comments" rows="4" className="form-control pl-5" placeholder="Your Message :"></textarea>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <Row>
-                                            <Col sm={12} className="text-center">
-                                                <input type="submit" id="submit" name="send" className="submitBnt btn btn-primary btn-block" value="Send Message" />
-                                                <div id="simple-msg"></div>
-                                            </Col>
-                                        </Row>
-                                    </form>
+                <section id='faq'>
+                    <div className="container mb-5">
+                        <Row className="justify-content-center">
+                            <Col className="text-center">
+                                <div id='use-cases' className="section-title mb-60">
+                                    <h4 className="main-title mb-4">FAQ // Contact Us</h4>
+                                    <p className="text-muted para-desc mb-0 mx-auto">Have questions? <span className="text-primary font-weight-bold">Get in touch.</span></p>
                                 </div>
-                            </div>
-                        </Col>
+                            </Col>
+                        </Row>
+                        <Row >
+                            <Col lg={7} md={6}>
+                                {/*FAQ */}
+                                <div className="px-4 pb-4">
+                                    <div className="faq-content">
+                                        <div className="accordion" id="accordionExample">
+                                            <div className="card border rounded shadow mb-2">
 
-                        <Col lg={7} md={6} className="order-1 order-md-2">
-                            <img src={contact} className="img-fluid" alt="Hyperaware" />
-                        </Col>
-                    </Row>
-                </div>
+                                                <Link to="#collapseOne" className={ this.state.col1 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  } onClick={() => this.setState({ col1: !this.state.col1, col2 : false, col3 : false })}>
+                                                    <div className="card-header bg-light p-3" id="headingOne">
+                                                        <h4 className="title mb-0 faq-question"> What's the demo? </h4>
+                                                    </div>
+                                                </Link>
+                                                <Collapse isOpen={this.state.col1}>
+                                                    <div className="card-body">
+                                                        <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                                                    </div>
+                                                </Collapse>
+                                            </div>
+
+                                            <div className="card border rounded shadow mb-2">
+                                                <Link to="#collapseTwo" onClick={() => this.setState({ col2: !this.state.col2, col5: false, col4: false, col1 : false, col3 : false })} className={ this.state.col2 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                    <div className="card-header bg-light p-3" id="headingTwo">
+                                                        <h4 className="title mb-0 faq-question"> How do we demo with real routes? </h4>
+                                                    </div>
+                                                </Link>
+                                                <Collapse isOpen={this.state.col2}>
+                                                    <div className="card-body">
+                                                        <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                                                    </div>
+                                                </Collapse>
+                                            </div>
+
+                                            <div className="card rounded shadow mb-2">
+                                                <Link to="#" onClick={() => this.setState({ col3: !this.state.col3, col5: false, col4: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                    <div className="card-header bg-light p-3" id="headingfive">
+                                                        <h4 className="title mb-0 faq-question"> Can Hyperaware integrate with any system? </h4>
+                                                    </div>
+                                                </Link>
+                                                <Collapse isOpen={this.state.col3}>
+                                                    <div className="card-body">
+                                                        <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                                                    </div>
+                                                </Collapse>
+                                            </div>
+
+                                            <div className="card rounded shadow mb-2">
+                                                <Link to="#" onClick={() => this.setState({ col4: !this.state.col4, col5: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                    <div className="card-header bg-light p-3" id="headingfive">
+                                                        <h4 className="title mb-0 faq-question"> Are special sensors required? </h4>
+                                                    </div>
+                                                </Link>
+                                                <Collapse isOpen={this.state.col4}>
+                                                    <div className="card-body">
+                                                        <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                                                    </div>
+                                                </Collapse>
+                                            </div>
+
+                                            <div className="card rounded shadow mb-0">
+                                                <Link to="#" onClick={() => this.setState({ col5: !this.state.col5, col4: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                    <div className="card-header bg-light p-3" id="headingfive">
+                                                        <h4 className="title mb-0 faq-question"> How is data privacy ensured? </h4>
+                                                    </div>
+                                                </Link>
+                                                <Collapse isOpen={this.state.col5}>
+                                                    <div className="card-body">
+                                                        <p className="text-muted mb-0 faq-ans">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form.</p>
+                                                    </div>
+                                                </Collapse>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Col>
+
+                            <Col lg={5} md={6} className="mt-4 mt-sm-0 pt-2 pt-sm-0 order-2 order-md-1">
+                                <div className="pt-5 pb-5 p-4 bg-light shadow rounded">
+                                    <h4>Get In Touch !</h4>
+                                    <div className="custom-form mt-4">
+                                        <div id="message"></div>
+                                        <Alert color="info" isOpen={this.state.Contactvisible} toggle={()=>{ this.setState({Contactvisible : !this.state.Contactvisible}) }}>
+                                            Contact details send successfully.
+                                        </Alert>
+                                        <form method="post" onSubmit={this.handleSubmit} name="contact-form" id="contact-form">
+                                            <Row>
+                                                <Col md={6}>
+                                                    <div className="form-group position-relative">
+                                                        <label>Your Name <span className="text-danger">*</span></label>
+                                                        <i className="mdi mdi-account ml-3 icons"></i>
+                                                        <input name="name" id="name" type="text" className="form-control pl-5" placeholder="First Name :" required />
+                                                    </div>
+                                                </Col>
+                                                <Col md={6}>
+                                                    <div className="form-group position-relative">
+                                                        <label>Your Email <span className="text-danger">*</span></label>
+                                                        <i className="mdi mdi-email ml-3 icons"></i>
+                                                        <input name="email" id="email" type="email" className="form-control pl-5" placeholder="Your email :" required />
+                                                    </div>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <div className="form-group position-relative">
+                                                        <label>Subject</label>
+                                                        <i className="mdi mdi-book ml-3 icons"></i>
+                                                        <input name="subject" id="subject" className="form-control pl-5" placeholder="Your subject :" required />
+                                                    </div>
+                                                </Col>
+                                                <Col md={12}>
+                                                    <div className="form-group position-relative">
+                                                        <label>Comments</label>
+                                                        <i className="mdi mdi-comment-text-outline ml-3 icons"></i>
+                                                        <textarea name="comments" id="comments" rows="4" className="form-control pl-5" placeholder="Your Message :"></textarea>
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col sm={12} className="text-center">
+                                                    <input type="submit" id="submit" name="send" className="submitBnt btn btn-primary btn-block" value="Send Message" />
+                                                    <div id="simple-msg"></div>
+                                                </Col>
+                                            </Row>
+                                        </form>
+                                    </div>
+                                </div>
+                            </Col>
+
+
+                        </Row>
+                    </div>
+                </section>
                 <FooterLight />
 
             </React.Fragment>

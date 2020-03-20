@@ -16,6 +16,7 @@ import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import { getStartEnd } from "./getPath";
 
+mapboxgl.accessToken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA';
 const socket = openSocket('http://localhost:3001');
 
 export var map
@@ -48,7 +49,8 @@ export class Dashboard extends React.Component {
 
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
-      setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+      document.getElementById('topnav').classList.add('bg-white');
+        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
       // let tmp =[]
       //   for (let i = 0; i < 15; i++ ) {
       //       tmp.push(getStartEnd())
@@ -57,7 +59,6 @@ export class Dashboard extends React.Component {
 
 
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoiaW90eHBsb3JlciIsImEiOiJjazZhbXVpZjkwNmc4M29vZ3A2cTViNWo1In0.W38aUZEDsxdIcdVVJ7_LWw';
 
       var screenWidth = document.documentElement.clientWidth;
       var screenHeight = document.documentElement.clientHeight;
@@ -285,7 +286,7 @@ export class Dashboard extends React.Component {
 
     expandVehiclesCard = (e) => {
         e.preventDefault()
-        let chevronIcon = this.state.vehiclChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
+        let chevronIcon = this.state.vehiclesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightVehiclesCard === 'auto' ? '0%' : 'auto'
         this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0%', zonesChevron: 'mdi-chevron-double-down'})
     }
@@ -317,7 +318,7 @@ export class Dashboard extends React.Component {
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
 
-                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '65%'}}>
+                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '72.5%'}}>
 
                         <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'16px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
@@ -412,7 +413,7 @@ export class Dashboard extends React.Component {
                             </Row>
                         </div>
                     </Col>
-                    <Col lg={7} style={{width:'550px', marginLeft: '65%'}}>
+                    <Col lg={7} style={{width:'550px', marginLeft: '72.5%'}}>
                         <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
                             <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
                             <div className='row d-flex justify-content-center'>

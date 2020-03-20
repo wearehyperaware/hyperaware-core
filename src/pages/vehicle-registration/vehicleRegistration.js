@@ -11,11 +11,26 @@ import {toRau} from "iotex-antenna/lib/account/utils";
 import AnimateHeight from 'react-animate-height'
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
+import {Spinner} from "react-bootstrap";
 
 let CONTRACT_ADDRESS = 'io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx';
 let contract;
 let antenna
 let unlockedWallet
+
+function Loader() {
+    return (
+        <div>
+            <div className='mb-4 d-flex justify-content-center'>
+                <Spinner animation="border" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
+            </div>
+            <div>This should take around 10 seconds.</div>
+        </div>
+
+    );
+}
 
 export class VehicleRegistration extends React.Component {
     constructor(props) {
@@ -32,7 +47,10 @@ export class VehicleRegistration extends React.Component {
             proof: '',
             getVehiclesOwnerDID: '',
             vehicles: [],
-            height: 0
+            height: 0,
+            registrationLoaded: false,
+            registrationLoading: false,
+            registrationMessage: ""
         };
     }
 
@@ -103,6 +121,8 @@ export class VehicleRegistration extends React.Component {
 
     registerVehicle = async (e, ownerDID, vehicleDID, lockTime) => {
         e.preventDefault()
+        await this.setState({registrationLoading: true, registrationMessage: ""})
+
         let wallet = await antenna.iotx.accounts.privateKeyToAccount(
                     this.state.ownerPrivateKey
                 );
@@ -118,11 +138,12 @@ export class VehicleRegistration extends React.Component {
             window.setTimeout(async () => {
                 let log = await readLog(eventABI.RegisterEvent, actionHash, antenna);
                 console.log(log);
-                //this.setState({didResult: {id: did, uri: arweaveURL, doc}});
+                await this.setState({registrationLoading: false, registrationLoaded: true, registrationMessage: "Registration successful!"})
 
             }, 11000)
 
         } catch (err) {
+            this.setState({registrationMessage: "Something went wrong, try again."})
             console.log(err);
         }
     };
@@ -259,6 +280,17 @@ export class VehicleRegistration extends React.Component {
                                             <input type="text" className="form-control" id="inputEmailDID"
                                                    placeholder="35b7d915458EVLkjdFK6Lp5f434..." onChange={e => this.setState({ownerPrivateKey: e.target.value})}/>
                                         </div>
+                                    </div>
+                                    {this.state.registrationLoading ? (
+                                        <div className='col-6 d-flex justify-content-center'>
+                                            <div className='mb-4'>
+                                                <Loader/>
+                                            </div>
+                                        </div>) : <div></div>
+                                    }
+
+                                    <div>
+                                        {this.state.registrationMessage}
                                     </div>
                                     {/*<div className="form-group">*/}
                                     {/*    <label htmlFor="proof">Proof of authorisation</label>*/}

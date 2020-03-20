@@ -50,11 +50,11 @@ class Price extends Component {
     render() {
         return (
             <React.Fragment>
-                <section className="section" style={{paddingTop: '0px'}}>
+                <section className="section" id='use-cases' style={{paddingTop: '0px'}}>
                     <div className="container mt-60">
                         <Row className="justify-content-center">
                             <Col className="text-center">
-                                <div id='use-cases' className="section-title mb-60">
+                                <div className="section-title mb-60">
                                     <h4 className="main-title mb-4">Use Cases</h4>
                                     <p className="text-muted para-desc mb-0 mx-auto">Use <span className="text-primary font-weight-bold">Hyperaware</span> to unlock value and ensure compliance in multiple industries and scenarios.</p>
                                 </div>
