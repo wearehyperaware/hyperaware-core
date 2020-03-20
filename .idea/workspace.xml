@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +22,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="with_enclave" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -42,18 +45,18 @@
     <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\WebStorm 2019.2.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
+      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\data" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020" />
       <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\images\icon" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\public\theme" />
-      <recent name="C:\Users\Jason\WebstormProjects\fob-geo-2020\src\websocket_api" />
     </key>
   </component>
   <component name="SvnConfiguration">
@@ -119,14 +122,7 @@
       <workItem from="1583074944337" duration="6128000" />
       <workItem from="1583089416948" duration="4503000" />
       <workItem from="1583094580180" duration="2650000" />
-      <workItem from="1583695614769" duration="987000" />
-      <workItem from="1583701102909" duration="8000" />
-      <workItem from="1584617462717" duration="10693000" />
-      <workItem from="1584632306948" duration="5398000" />
-      <workItem from="1584637777024" duration="3000" />
-      <workItem from="1584711178256" duration="868000" />
-      <workItem from="1584712057612" duration="4492000" />
-      <workItem from="1584716698700" duration="1707000" />
+      <workItem from="1584730582115" duration="660000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -240,70 +236,7 @@
       <option name="project" value="LOCAL" />
       <updated>1583073151791</updated>
     </task>
-    <task id="LOCAL-00019" summary="Commented enclave code">
-      <created>1583155257782</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1583155257782</updated>
-    </task>
-    <task id="LOCAL-00020" summary="added /demo/ to demo routes">
-      <created>1583696223591</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1583696223591</updated>
-    </task>
-    <task id="LOCAL-00021" summary="connected navbar to sections on homepage, implemented mailing list sign up">
-      <created>1584626093426</created>
-      <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
-      <option name="project" value="LOCAL" />
-      <updated>1584626093426</updated>
-    </task>
-    <task id="LOCAL-00022" summary="loading spinners implemented">
-      <created>1584636686386</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1584636686386</updated>
-    </task>
-    <task id="LOCAL-00023" summary="fixed accordion">
-      <created>1584637547840</created>
-      <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
-      <option name="project" value="LOCAL" />
-      <updated>1584637547840</updated>
-    </task>
-    <task id="LOCAL-00024" summary="deploy prep">
-      <created>1584716170926</created>
-      <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
-      <option name="project" value="LOCAL" />
-      <updated>1584716170926</updated>
-    </task>
-    <task id="LOCAL-00025" summary="deploy prep">
-      <created>1584716337275</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1584716337275</updated>
-    </task>
-    <task id="LOCAL-00026" summary="deploy prep">
-      <created>1584716960240</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1584716960240</updated>
-    </task>
-    <task id="LOCAL-00027" summary="deploy prep">
-      <created>1584717598880</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1584717598880</updated>
-    </task>
-    <option name="localTasksCounter" value="28" />
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -314,19 +247,6 @@
         <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/toBeInRangeMatcher.d.js" />
         <option value="$PROJECT_DIR$/node_modules/wait-for-expect/lib/index.d.js" />
       </list>
-    </option>
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State>
-              <option name="COLUMN_ORDER" />
-            </State>
-          </value>
-        </entry>
-      </map>
     </option>
   </component>
   <component name="VcsManagerConfiguration">
@@ -347,13 +267,7 @@
     <MESSAGE value="fixed retrieving of dids from contract" />
     <MESSAGE value="implemented fetching real points and assigning them to routes" />
     <MESSAGE value="implemented fetching real vehicles and assigning them to routes" />
-    <MESSAGE value="Commented enclave code" />
-    <MESSAGE value="added /demo/ to demo routes" />
-    <MESSAGE value="connected navbar to sections on homepage, implemented mailing list sign up" />
-    <MESSAGE value="loading spinners implemented" />
-    <MESSAGE value="fixed accordion" />
-    <MESSAGE value="deploy prep" />
-    <option name="LAST_COMMIT_MESSAGE" value="deploy prep" />
+    <option name="LAST_COMMIT_MESSAGE" value="implemented fetching real vehicles and assigning them to routes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -364,11 +278,11 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584717598198">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2" timestamp="1583097368674">
+      <screen x="67" y="27" width="2493" height="1413" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584717598198" />
-    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073146269" />
+    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097368674" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
@@ -385,26 +299,27 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="791" y="322" key="SettingsEditor" timestamp="1583155419207">
+    <state x="1018" y="450" width="580" height="564" key="MultipleFileMergeDialog" timestamp="1584730637086">
+      <screen x="67" y="27" width="2493" height="1413" />
+    </state>
+    <state x="1018" y="450" width="580" height="564" key="MultipleFileMergeDialog/67.27.2493.1413@67.27.2493.1413" timestamp="1584730637086" />
+    <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155419207" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1584717611473">
+    <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582819564028" />
+    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1583097389382">
+      <screen x="67" y="27" width="2493" height="1413" />
+    </state>
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073153503" />
+    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097389382" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1583069585002">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584717611473" />
-    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1584714082771">
-      <screen x="0" y="0" width="2048" height="1112" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583069585002" />
+    <state x="1021" y="446" width="575" height="572" key="git4idea.branch.GitSmartOperationDialog" timestamp="1584730628674">
+      <screen x="67" y="27" width="2493" height="1413" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584714082771" />
-    <state x="800" y="335" key="git4idea.merge.GitMergeDialog" timestamp="1583155281677">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state x="800" y="335" key="git4idea.merge.GitMergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155281677" />
-    <state x="667" y="283" width="700" height="530" key="recent.locations.popup" timestamp="1584624637141">
-      <screen x="0" y="0" width="2048" height="1112" />
-    </state>
-    <state x="667" y="283" width="700" height="530" key="recent.locations.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584624637141" />
+    <state x="1021" y="446" width="575" height="572" key="git4idea.branch.GitSmartOperationDialog/67.27.2493.1413@67.27.2493.1413" timestamp="1584730628674" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

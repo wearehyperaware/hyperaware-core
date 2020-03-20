@@ -5,7 +5,7 @@ import makeCar from './createCar'
 import updatePositions from './updatePositions'
 import axios from 'axios'
 import Antenna from 'iotex-antenna'
-import openSocket from 'socket.io-client';
+import connect from 'socket.io-client';
 import Topbar from "../../components/Layout/Topbar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -16,12 +16,12 @@ import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import { getStartEnd } from "./getPath";
 
-mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA"
+mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 let socket
 if (process.env.NODE_ENV === 'production') {
-     socket = openSocket(window.location.hostname)
+     socket = connect(window.location.hostname)
 } else {
-     socket = openSocket('http://localhost:3001');
+     socket = connect('http://localhost:3001');
 }
 
 export var map
