@@ -126,7 +126,7 @@
       <workItem from="1584637777024" duration="3000" />
       <workItem from="1584711178256" duration="868000" />
       <workItem from="1584712057612" duration="4492000" />
-      <workItem from="1584716698700" duration="813000" />
+      <workItem from="1584716698700" duration="1707000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -296,7 +296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1584716960240</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="deploy prep">
+      <created>1584717598880</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1584717598880</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -357,10 +364,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584716959397">
+    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584717598198">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584716959397" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584717598198" />
     <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1583097290373" />
     <state width="2027" height="285" key="GridCell.Tab.0.bottom" timestamp="1581197961643">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -382,10 +389,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="791" y="322" key="SettingsEditor/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583155419207" />
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1584716962695">
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2" timestamp="1584717611473">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584716962695" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1584717611473" />
     <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1584714082771">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>

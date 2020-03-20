@@ -193,7 +193,7 @@ server.get('/api/getTotalStaked', async (req, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   // Anything that doesn't match the above, send back index.html
-  app.get('*', (req, res) => {
+  server.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/build/index.html'))
   })
 }
