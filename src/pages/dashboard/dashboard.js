@@ -1,6 +1,8 @@
 import React from 'react'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
+import * as turf from '@turf/turf'
+import geojsonMerge from '@mapbox/geojson-merge'
 import makeCar from './createCar'
 import updatePositions from './updatePositions'
 import axios from 'axios'
@@ -198,6 +200,15 @@ export class Dashboard extends React.Component {
               console.log(positions[0][i])
                 makeCar(positions[0][i].coords, positions[0][i].vehicle)
             }
+
+            let turfPolygons = geojsonMerge.merge(this.state.zones);
+            // let bbox = turf.bbox(turfPolygons);
+            map.fitBounds(turf.bbox(turfPolygons), {
+                top: 150,
+                bottom: 150,
+                left: 100,
+                right: 800
+            });
 
     }
 
