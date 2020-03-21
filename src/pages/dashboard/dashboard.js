@@ -1,6 +1,8 @@
 import React from 'react'
 import d3 from 'd3'
 import mapboxgl from 'mapbox-gl'
+import * as turf from '@turf/turf'
+import geojsonMerge from '@mapbox/geojson-merge'
 import makeCar from './createCar'
 import updatePositions from './updatePositions'
 import axios from 'axios'
@@ -27,11 +29,14 @@ if (process.env.NODE_ENV === 'production') {
 export var map
 export var zone
 
+// var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
+
 export class Dashboard extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            zoneDIDs: [],
             zones: [],
             vehicles: [],
             antenna: new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST),
@@ -43,7 +48,8 @@ export class Dashboard extends React.Component {
             zonesChevron: "mdi-chevron-double-down",
             vehiclesChevron: "mdi-chevron-double-down",
             isPrivacyMode: true,
-            totalStaked: 0
+            totalStaked: 0,
+            timestep: 0
         };
     }
 
@@ -52,15 +58,7 @@ export class Dashboard extends React.Component {
       // Dismiss loading bar
       document.getElementById("pageLoader").style.display = "block";
       document.getElementById('topnav').classList.add('bg-white');
-      setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
-      // let tmp =[]
-      //   for (let i = 0; i < 15; i++ ) {
-      //       tmp.push(getStartEnd())
-      //   }
-      //   console.log(JSON.stringify(tmp))
-
-
-
+        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
 
       var screenWidth = document.documentElement.clientWidth;
       var screenHeight = document.documentElement.clientHeight;
@@ -80,12 +78,39 @@ export class Dashboard extends React.Component {
         totalStaked = totalStaked.data.totalStaked
         let vehicles = await axios.get('/api/getAllVehicles')
         vehicles = vehicles.data
-        let zones = await axios.get('/api/getAllPolygons')
-        zones = zones.data
+        let zoneDIDs = await axios.get('/api/getAllPolygons');
+        zoneDIDs = zoneDIDs.data;
+        let zones = zoneDIDs.map((did) => {return did.service.map((zone) => {
+            zone.geojson.features[0].properties.did = did.id;
+            return zone})}).flat();
         let positions = await axios.get('/api/getAllPoints')
         positions = positions.data
-        await this.setState({zones, vehicles, positions, totalStaked})
-        console.log(this.state.positions)
+
+        // Randomly assign a vehicle to a route
+        let mapping = {}
+        let seen = {}
+        for (let i in positions[0]) {
+            let vehicleIndex = Math.floor(Math.random() * vehicles.length)
+            while (vehicleIndex in seen) {
+                vehicleIndex = Math.floor(Math.random() * vehicles.length)
+            }
+            seen[vehicleIndex] = true
+            mapping[i] = vehicleIndex
+        }
+
+        // Add each vehicle to its assigned route
+
+        /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
+        * to have multiple routes and the. */
+
+        for (let i = 0; i < positions.length; i++) {
+            for (let j = 0; j < positions[0].length; j++) {
+                positions[i][j] = {...positions[i][j], vehicle: {within: false, ...vehicles[mapping[j]]}}
+            }
+        }
+
+
+        await this.setState({zoneDIDs, zones, vehicles, positions, totalStaked})
 
         this.loadVehiclesAndZones(map)
 
@@ -165,9 +190,15 @@ export class Dashboard extends React.Component {
          ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
 
+    flyToZone = (geojson) => {
+
+        map.fitBounds(turf.bbox(geojson));
+    }
+
     loadVehiclesAndZones = async (map) => {
         // Draw zone boundaries on map
         this.state.zones.forEach(function (zone) {
+            zone = zone.geojson;
             let zoneName = zone.features[0].properties.name,
                 // zoneAddress = zone.features[0].properties.tezosAddress,
                 zoneType = zone.features[0].properties.type
@@ -230,8 +261,18 @@ export class Dashboard extends React.Component {
 
             // Render each vehicle in its initial position
             for (let i in positions[0]) {
+              console.log(positions[0][i])
                 makeCar(positions[0][i].coords, positions[0][i].vehicle)
             }
+
+            let turfPolygons = geojsonMerge.merge(this.state.zones.map((zone) => {return zone.geojson}));
+            // let bbox = turf.bbox(turfPolygons);
+            map.fitBounds(turf.bbox(turfPolygons), {
+                top: 150,
+                bottom: 150,
+                left: 100,
+                right: 800
+            });
 
     }
 
@@ -288,8 +329,15 @@ export class Dashboard extends React.Component {
 
      handleAdvance = (e) => {
         e.preventDefault()
-        console.log(' ', this.state.positions)
-        socket.emit('fetchNewPositionsFromServer', this.state.positions);
+
+        this.state.timestep += 1;
+
+        // This hardcodes advance into the browser - there is no interaction
+        // with the server ... this is NOT reflecting if the point is
+        // inside a Zone in the browser
+        updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
+
+        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
 
     }
 
@@ -314,9 +362,6 @@ export class Dashboard extends React.Component {
     render() {
         return (
             <div>
-
-                <div ref={this.overlay} className='overlay' id='overlay'/>
-
                 <div id='sidebar' className='sidebar'>
                     <div className='clearfix'>
                         <div className='screen'>
@@ -335,6 +380,7 @@ export class Dashboard extends React.Component {
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
                     <Topbar/>
                 </div>
+                <div ref={this.overlay} className='overlay' id='overlay'/>
 
                     <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '72.5%'}}>
 
@@ -343,7 +389,7 @@ export class Dashboard extends React.Component {
                             <div className='row d-flex justify-content-center'>
                                 <div className='col-6'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        7
+                                        {this.state.zoneDIDs.length}
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Jurisdictions.
@@ -361,7 +407,7 @@ export class Dashboard extends React.Component {
                             <div className='row'>
                                 <div className='col-6'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        19
+                                        { this.state.zones.length }
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Policy Zones.
@@ -377,46 +423,37 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
-                                <div style={{height:210, overflowY: "auto"}}>
-                                        <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
-                                            <div className="float-left">
-                                                <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                    <li className="day font-weight-bold mb-2">UK</li>
-                                                </ul>
-                                            </div>
-                                            <div className="content">
-                                                <h4 className="text-dark title" style={{marginBottom: '0px'}}>Heathrow International Airport</h4>
-                                                <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
-                                                <p className="text-muted location-time">
-                                                    <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
-                                                    <br />
-                                                    <span className="text-dark h6">Charge: </span>0.07 GBP / minute
-                                                    <br />
-                                                    <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
-                                                </p>
+                                <div style={{height:300, overflowY: "auto"}}>
+                                    {
+                                        !this.state.zones ? <div></div> : (
 
-                                            </div>
-                                        </div>
+                                            this.state.zones.map((zone) => {
+                                                var zoneDID = this.state.zoneDIDs.find((didDoc) => {return didDoc.id == zone.geojson.features[0].properties.did})
+                                                // set event listener to zoom to zone on click ...
+                                                    return (
+                                                        <div /*onClick={ this.flyToZone(zone.geojson) }*/ className="zone-card event-schedule d-flex bg-white rounded p-3 border" key={zone.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                                        <div className="float-left">
+                                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                                <li className="day font-weight-bold mb-2">UK</li> {/* <- fix this */}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="content">
+                                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>{ zone.name }</h4>
+                                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>{ zone.id }</div>
+                                                            <p className="text-muted location-time">
+                                                                <span className="text-dark h6">Beneficiary: </span><a target="_blank" href= {"https://etherscan.io/address/" + zone.policies.beneficiary}> { this.truncateDID(zone.policies.beneficiary) }</a>
+                                                                <br />
+                                                                <span className="text-dark h6">Charge: </span>{ zone.policies.chargePerMinute + " " + zone.policies.currency } / minute
+                                                                <br />
+                                                                <span className="text-dark h6">Zone Geometry: </span><a target="_blank" href= { zone.serviceEndpoint}> { this.truncateDID(zone.serviceEndpoint) }</a>
+                                                            </p>
 
-                                    <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
-                                        <div className="float-left">
-                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                <li className="day font-weight-bold mb-2">DE</li>
-                                            </ul>
-                                        </div>
-                                        <div className="content">
-                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>Berlin High Emission Area</h4>
-                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
-                                            <p className="text-muted location-time">
-                                                <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
-                                                <br />
-                                                <span className="text-dark h6">Charge: </span>0.043 EUR / minute
-                                                <br />
-                                                <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
-                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    )
+                                                })
 
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
 
                             </AnimateHeight>
@@ -463,7 +500,7 @@ export class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
-                                <div style={{height:210, overflowY: "auto"}}>
+                                <div style={{height:300, overflowY: "auto"}}>
                                     {!this.state.vehicles ? <div></div> : (
                                         this.state.vehicles.map((vehicle) => { return (
                                             <div className="event-schedule d-flex bg-white rounded p-3 border" key={vehicle.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>

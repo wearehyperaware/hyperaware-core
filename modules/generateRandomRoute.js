@@ -4,7 +4,7 @@ var axios = require('axios');
 var geojsonTidy = require('@mapbox/geojson-tidy');
 
 module.exports = async (polygon, token) => {
-
+  console.log(polygon)
 
   var endpoints = generateRandomPoints(polygon).join(';');
   console.log(endpoints)
@@ -44,16 +44,15 @@ module.exports = async (polygon, token) => {
 
 
 function generateRandomPoints(polygon) {
-
-
-  let buffer = polygon;
+  console.log(polygon)
+  let buffer = polygon.geometry.coordinates // turf.buffer(polygon.geometry.coordinates, 10, {units: 'kilometers'}).features[0] // <- something weird going on there
 
   let border1 = turf.linestring(
     buffer.geometry.coordinates[0].slice(0, buffer.geometry.coordinates[0].length / 2)
   );
 
   let border2 = turf.linestring(
-    polygon.geometry.coordinates[0].slice(polygon.geometry.coordinates[0].length / 2, polygon.geometry.coordinates[0].length));
+    buffer.geometry.coordinates[0].slice(buffer.geometry.coordinates[0].length / 2, buffer.geometry.coordinates[0].length));
 
   var points = [turf.along(border1, Math.random() * turf.lineDistance(border1, 'kilometers'), 'kilometers'),
     turf.along(border2, Math.random() * turf.lineDistance(border2, 'kilometers'), 'kilometers')

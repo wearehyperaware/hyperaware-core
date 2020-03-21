@@ -7,16 +7,24 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
+const ethers = require('ethers');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
+const ZONE_REGISTER_ABI = require('./src/pages/jurisdiction-registry/zone-contract-details.js').abi
+const ZONE_REGISTER_ADDRESS = require('./src/pages/jurisdiction-registry/zone-contract-details.js').contractAddress
 const axios = require('axios').default
 const generateRandomRoute = require('./modules/generateRandomRoute')
-const mapboxtoken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA"
+const fetchDIDsAndGeometries = require('./modules/fetchDIDsAndGeometries');
+const addGeometriesToDidDocs = require('./modules/addGeometriesToDidDocs')
+const mapboxtoken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA'
 
-// Fetch registered zones from Zone Registry (Tezos?)
+// Fetch registered zones from Zone Registry
+var samplePoints = require('./data/samplePoints.json');
 const samplePolygons = require('./data/samplePolygons.json');
-const turfPolygons = [];
+const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
+// const sampleVehicles = require('./data/sampleVehicles.json')
+let turfPolygons = []
 
 async function slash(did) {
   let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
@@ -52,32 +60,12 @@ async function slash(did) {
 
 }
 
-
-samplePolygons.forEach((polygon) => {
-  // If polygons are FeatureCollections ...
-  if (polygon.type == "FeatureCollection") {
-    turfPolygons.push(turf.polygon(polygon.features[0].geometry.coordinates))
-  } else if (polygon.type == 'Feature') {
-    turfPolygons.push(turf.polygon(polygon.geometry.coordinates))
-  } else if (polygon.type == "Polygon") {
-    turfPolygons.push(polygon.coordinates)
-  } else {
-    console.log("Error with a polygon");
-  }
-});
-
-
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files from the React frontend app
-  server.use(express.static(path.join(__dirname, '/build')))
-}
-
 server.use(bodyParser.urlencoded({
   extended: false
 }));
-const PORT = process.env.PORT || 3001
-const http = server.listen(PORT, () => {
-  console.log('Express server and socket.io websocket are running on', PORT);
+
+const http = server.listen(3001, () => {
+  console.log('Express server and socket.io websocket are running on localhost:3001');
 });
 
 const io = require('socket.io')(http);
@@ -107,14 +95,13 @@ io.on('connection', async (client) => {
   });
 
   // Listen for results from enclave
-  worker.onMessage(async (message) => {
+  worker.onMessage((message) => {
     if (message.type === 'enteringNotification') {
       // If enclave detects a vehicle entering a zone, send that to the client
       client.emit('fetchNewPositionsFromServerResponse', message.notification)
     } else if (message.type === 'exitingNotification') {
       // If enclave detects a vehicle exiting a zone, send that to the client and slash vehicle
-      let slashHash = await slash(message.notification.vehicleDetails.id)
-      message.notification["slashHash"] = slashHash
+      // SLASH HERE //
       client.emit('fetchNewPositionsFromServerResponse', message.notification)
     } else if (message.type === 'updatePositions') {
       // When enclave finishes, get the new positions updated vehicle info and send to client
@@ -144,7 +131,6 @@ server.get('/api/getAllVehicles', async (req, res) => {
     let registeredVehicles = []
     // Iterate through the registered vehicles array and return each string
     console.log(numberOfRegisteredVehicles, "vehicles NOW")
-    let sampleRoutes = []
     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
       const vehicleID = await antenna.iotx.readContractByMethod({
           from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
@@ -173,6 +159,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
         ret.push(doc.data)
       }
     }
+    console.log(ret)
     res.send(ret)
   } catch (err) {
     console.log(err)
@@ -181,8 +168,36 @@ server.get('/api/getAllVehicles', async (req, res) => {
 
 
 server.get('/api/getAllPolygons', async (req, res) => {
-  res.send(samplePolygons) // Needs to be calling smart contracts to get polygons
-})
+
+// Set up connection with ZoneRegistry contract on Ethereum
+    const ethProvider = ethers.getDefaultProvider('ropsten');
+    const zoneContract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_ABI, ethProvider);
+
+
+// Simulated Fetch DID URIs:
+    var zoneAddresses = [
+        "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
+        "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
+        "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
+        "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD" // <- France
+    ];
+
+    // Fetch Zone DID Docs from addresses, and geojson from DID docs:
+    zoneDIDDocs = await fetchDIDsAndGeometries(zoneAddresses, zoneContract);
+    console.log('Zone DID Docs and geometries loaded');
+
+    zoneDIDDocs.map((did) => {
+        did.service.map((zone) => {
+            turfPolygons.push(turf.polygon(zone.geojson.features[0]));
+        });
+    });
+
+    // console.log(zoneDIDDocs.map((doc) => {
+    //     return doc.service
+    // }));
+
+    res.send(zoneDIDDocs)
+    })
 
 server.get('/api/getAllPoints', async (req, res) => {
   let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
@@ -205,7 +220,7 @@ server.get('/api/getAllPoints', async (req, res) => {
   // NEXT up: pull random Terrestrial polygon from the zones and generate a route through that ...
   let sampleRoutes = []
   for (let i = 0; i < numberOfRegisteredVehicles; i++) {
-    let route = await generateRandomRoute(turfPolygons[1], mapboxtoken)
+    let route = await generateRandomRoute(turfPolygons[Math.floor(Math.random() * turfPolygons.length)], mapboxtoken)
     sampleRoutes.push(route);
   }
 
@@ -243,3 +258,5 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+// Example get request to express server
+server.use('/', express.static(path.join(__dirname, 'public/home')));

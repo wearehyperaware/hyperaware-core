@@ -6,9 +6,9 @@ class Topbar extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
-            isOpen : false, 
-            page : false, 
+        this.state = {
+            isOpen : false,
+            page : false,
             landing : false,
             docs : false,
             new :false,
@@ -38,7 +38,7 @@ class Topbar extends Component {
             this.activateParentDropdown(matchingMenuItem);
          }
      }
- 
+
      activateParentDropdown = (item) => {
           const parent = item.parentElement;
           if (parent) {

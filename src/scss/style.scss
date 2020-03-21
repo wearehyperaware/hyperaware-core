@@ -47,7 +47,7 @@
 @import "contact";
 @import "footer";
 
-.Typist 
+.Typist
 {
     display: inline;
 }
@@ -135,7 +135,7 @@ input:checked + .slider:before {
 a {
  &:hover {
   cursor:pointer;
- } 
+ }
 }
 
 .back-to-top
@@ -159,7 +159,7 @@ a {
 .map,
 #overlay {
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
@@ -171,7 +171,7 @@ a {
 
 #overlay {
   /* position: relative; */
-  z-index: 99;
+  // z-index: 99;
   height: 100vh;
   width: 100%;
   pointer-events: none;
@@ -190,7 +190,7 @@ svg {
   border-left: 1px solid #aaa;
   left: 0;
   top: 650px;
-  position: absolute;
+  position: fixed;
   text-align: center;
   overflow: hidden;
   z-index: 999;
@@ -198,7 +198,7 @@ svg {
 
 .dashboard-main-buttons {
   z-index: 999;
-  position: absolute;
+  position: fixed;
   bottom: 40px;
   margin-left: 42%;
 }

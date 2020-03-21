@@ -7,7 +7,7 @@ import { Row, Col, Alert, Collapse  } from 'reactstrap';
 import Feature from './Feature';
 import Price from './Price';
 
-// Modal Video 
+// Modal Video
 import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 
 //Import Images
@@ -25,13 +25,14 @@ class Index extends Component {
             isOpen: false,
             Contactvisible : false
         }
-        this.openModal = this.openModal.bind(this);        
+        this.openModal = this.openModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
         event.preventDefault();
+        // Anything else here? 
         this.setState({Contactvisible : true});
-    }  
+    }
 
     openModal() {
         this.setState({ isOpen: true })
@@ -50,7 +51,7 @@ class Index extends Component {
        componentWillUnmount() {
         window.removeEventListener("scroll",this.scrollNavigation);
      }
-  
+
       scrollNavigation = () => {
           var doc = document.documentElement;
           var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
