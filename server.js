@@ -1,10 +1,12 @@
+const toRau = require("iotex-antenna/lib/account/utils").toRau;
+const Contract = require("iotex-antenna/lib/contract/contract").Contract
+const VehicleRegABI = require("./src/pages/vehicle-registration/ABI")
 const turf = require('./modules/turfModules')
 const buffer = require('@turf/buffer')
 const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
-var samplePoints = require('./data/samplePoints.json');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
@@ -16,7 +18,40 @@ const mapboxtoken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVw
 const samplePolygons = require('./data/samplePolygons.json');
 const turfPolygons = [];
 
-var sampleVehicles = [];
+async function slash(did) {
+  let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
+  let vehicleRegContract = new Contract(VehicleRegABI,"io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",{provider: antenna.iotx});
+
+  // Get vehicle's document
+  let uri = await antenna.iotx.readContractByMethod({
+    from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+    contractAddress: "io1zyksvtuqyxeadegsqsw6vsqrzr36cs7u2aa0ag",
+    abi: DID_REGISTER_ABI,
+    method: "getURI"
+  }, did);
+  let res = await axios.get(uri)
+
+  // Read owner from vehicle
+  let vehicleOwner = res.data.creator
+
+  // Slash owner (admin needs to use the private key of the owner of the VehicleRegistry contract)
+  let admin = await antenna.iotx.accounts.privateKeyToAccount(
+      "cd1ee30decfa0b4490642e92afccc00510256ef6c01ccb8989e5d186694ee3d5"
+  );
+  try {
+    let actionHash = await vehicleRegContract.methods.slash(toRau("0.1", "Iotx"), vehicleOwner, did, {
+      account: admin,
+      gasLimit: "1000000",
+      gasPrice: toRau("1", "Qev")
+    });
+    console.log("Slash occurs now on: ", vehicleOwner, "who owns", did, "Slashing action hash: ", actionHash)
+    return actionHash
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
 
 samplePolygons.forEach((polygon) => {
   // If polygons are FeatureCollections ...
@@ -72,13 +107,14 @@ io.on('connection', async (client) => {
   });
 
   // Listen for results from enclave
-  worker.onMessage((message) => {
+  worker.onMessage(async (message) => {
     if (message.type === 'enteringNotification') {
       // If enclave detects a vehicle entering a zone, send that to the client
       client.emit('fetchNewPositionsFromServerResponse', message.notification)
     } else if (message.type === 'exitingNotification') {
       // If enclave detects a vehicle exiting a zone, send that to the client and slash vehicle
-      // SLASH HERE //
+      let slashHash = await slash(message.notification.vehicleDetails.id)
+      message.notification["slashHash"] = slashHash
       client.emit('fetchNewPositionsFromServerResponse', message.notification)
     } else if (message.type === 'updatePositions') {
       // When enclave finishes, get the new positions updated vehicle info and send to client

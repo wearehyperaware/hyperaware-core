@@ -99,7 +99,7 @@ export class Dashboard extends React.Component {
       })
 
     socket.on('fetchNewPositionsFromServerResponse', (message) => {
-        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime)
+        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, message.slashHash)
     })
 
   }
@@ -122,7 +122,32 @@ export class Dashboard extends React.Component {
             })
     }
 
-     addNotification = (type, did, enterTime, exitTime, rate=0.007) => {
+     ellipsisText = (s, width) => {
+         const NARROW_WIDTH_HOME = 1279;
+         const NARROW_WIDTH = 768;
+         const MIN_SUB_LENGTH = 6;
+        if (s.length >= 60) {
+            const length = s.length;
+            const newLen = Math.floor(width / length) - 5;
+            return `${s.substr(0, 8)}...${s.substr(length - 5, 5)}`;
+        }
+
+        if (width > NARROW_WIDTH_HOME) {
+            return s;
+        }
+        const length = s.length;
+        const newLen = Math.floor(width / length) - 5;
+        const subLen = newLen >= MIN_SUB_LENGTH ? newLen : MIN_SUB_LENGTH;
+        if (length > 13) {
+            return `${s.substring(0, subLen)}...${s.substring(
+                length - subLen,
+                length
+            )}`;
+        }
+        return s;
+    }
+
+    addNotification = (type, did, enterTime, exitTime, hash, rate=0.007) => {
          const TIME_MULTIPLIER = 3.5
          let timeElapsedInMinutes
          if (type === 'exit') {
@@ -134,7 +159,8 @@ export class Dashboard extends React.Component {
         var notification_types = { enter: { alert: '! Entering', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
 
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
-        html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle will be charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> (Rate: ${rate} / second)` : html;
+        html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle has been charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> 
+        (Rate: ${rate} / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
 
          ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }

@@ -92,7 +92,6 @@ function translateAlong(path, j, did) {
           current_car.ever = true;
           car.classed('enter', true);
           increment('total');
-          slash(did)
         }
       } else if (current_car.inside && !turf.inside(p, zone)) {
         addNotification(current_car.color, j, 'exit', did);
@@ -148,36 +147,3 @@ function truncateDID(did) {
   return did.substr(0, 15) + "..." + did.substr(42, 8)
 }
 
-async function slash(did) {
-  let antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
-  let vehicleRegContract = new Contract(VehicleRegABI,process.env.REACT_APP_VEHICLE_REG_CONTRACT_ADDRESS,{provider: antenna.iotx});
-
-  // Get vehicle's document
-  let uri = await antenna.iotx.readContractByMethod({
-    from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
-    contractAddress: DIDRegDetails.contractAddress,
-    abi: DIDRegDetails.abi,
-    method: "getURI"
-    }, did);
-    let res = await axios.get(uri)
-
-  // Read owner from vehicle
-  let vehicleOwner = res.data.creator
-
-  // Slash owner (admin needs to use the private key of the owner of the VehicleRegistry contract)
-  let admin = await antenna.iotx.accounts.privateKeyToAccount(
-      process.env.REACT_APP_SLASH_ACCOUNT_PRIVATE_KEY
-  );
-  try {
-    // let actionHash = await vehicleRegContract.methods.slash(0.15, vehicleOwner, did, {
-    //   account: admin,
-    //   gasLimit: "1000000",
-    //   gasPrice: toRau("1", "Qev")
-    // });
-    // console.log("Slashing action hash: ", actionHash);
-   console.log("Slash occurs now on: ", vehicleOwner, "who owns", did)
-  } catch (err) {
-    console.log(err);
-  }
-
-}
