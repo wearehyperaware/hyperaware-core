@@ -383,7 +383,7 @@ export class Dashboard extends React.Component {
                                                 var zoneDID = this.state.zoneDIDs.find((didDoc) => {return didDoc.id == zone.geojson.features[0].properties.did})
                                                 // set event listener to zoom to zone on click ... 
                                                     return (
-                                                        <div /*onClick={ this.flyToZone(zone.geojson) }*/ className="zone-card event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                                        <div /*onClick={ this.flyToZone(zone.geojson) }*/ className="zone-card event-schedule d-flex bg-white rounded p-3 border" key={zone.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
                                                         <div className="float-left">
                                                             <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                                 <li className="day font-weight-bold mb-2">UK</li> {/* <- fix this */}
@@ -391,7 +391,7 @@ export class Dashboard extends React.Component {
                                                         </div>
                                                         <div className="content">
                                                             <h4 className="text-dark title" style={{marginBottom: '0px'}}>{ zone.name }</h4>
-                                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>{ zone.did }</div>
+                                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>{ zone.id }</div>
                                                             <p className="text-muted location-time">
                                                                 <span className="text-dark h6">Beneficiary: </span><a target="_blank" href= {"https://etherscan.io/address/" + zone.policies.beneficiary}> { this.truncateDID(zone.policies.beneficiary) }</a>
                                                                 <br />
