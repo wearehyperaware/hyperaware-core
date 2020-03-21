@@ -14,7 +14,6 @@ import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 import london_3d from '../../images/london_3d.png';
 import roundWhite from '../../images/shapes/round-white.png';
 import Typist from "react-typist";
-import contact from "../../images/contact.png";
 import Topbar from "../../components/Layout/Topbar";
 import FooterLight from "../../components/Layout/FooterLight";
 
@@ -191,7 +190,7 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card rounded shadow mb-2">
-                                                <Link to="#" onClick={() => this.setState({ col4: !this.state.col4, col5: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#" onClick={() => this.setState({ col4: !this.state.col4, col5: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col4 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingfive">
                                                         <h4 className="title mb-0 faq-question"> Are special sensors required? </h4>
                                                     </div>
@@ -204,7 +203,7 @@ class Index extends Component {
                                             </div>
 
                                             <div className="card rounded shadow mb-0">
-                                                <Link to="#" onClick={() => this.setState({ col5: !this.state.col5, col4: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col3 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
+                                                <Link to="#" onClick={() => this.setState({ col5: !this.state.col5, col4: false, col3: false, col2 : false, col1 : false })}  className={ this.state.col5 ? "faq position-relative collapsed text-primary" : "faq position-relative collapsed text-dark"  }>
                                                     <div className="card-header bg-light p-3" id="headingfive">
                                                         <h4 className="title mb-0 faq-question"> How is data privacy ensured? </h4>
                                                     </div>

@@ -32,6 +32,40 @@ const ethProvider = ethers.getDefaultProvider('ropsten');
 const zoneContract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_ABI, ethProvider);
 
 
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the React frontend app
+  server.use(express.static(path.join(__dirname, '/build')))
+}
+
+server.use(bodyParser.urlencoded({
+  extended: false
+}));
+const PORT = process.env.PORT || 3001
+const http = server.listen(PORT, () => {
+  console.log('Express server and socket.io websocket are running on', PORT);
+});
+
+const io = require('socket.io')(http);
+
+io.on('connection', async (client) => {
+  // Start enclave listener
+  const SecureWorker = require('./secureworker');
+  const worker = new SecureWorker('enclave.so', 'enclave-point-polygon-check.js');
+
+  let counter = 1;
+  // When we receive a request for new points, send the points and polygons into the enclave and run the check
+  client.on('fetchNewPositionsFromServer', function(points) {
+    worker.postMessage({
+      type: 'pointInPolygonCheck',
+      points,
+      turfPolygons,
+      samplePolygons,
+      counter
+    })
+    counter += 1;
+
+
+
 // Simulated Fetch DID URIs:
   var zoneAddresses = [
     "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
@@ -231,6 +265,10 @@ server.get('/api/getTotalStaked', async (req, res) => {
   })
 })
 
+if (process.env.NODE_ENV === 'production') {
+  // Anything that doesn't match the above, send back index.html
+  server.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/build/index.html'))
+  })
+}
 
-// Example get request to express server
-server.use('/', express.static(path.join(__dirname, 'public/home')));

@@ -13,7 +13,7 @@ import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import {Spinner} from "react-bootstrap";
 
-let CONTRACT_ADDRESS = 'io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx';
+let CONTRACT_ADDRESS = process.env.REACT_APP_VEHICLE_REG_CONTRACT_ADDRESS;
 let contract;
 let antenna
 let unlockedWallet
@@ -63,7 +63,7 @@ export class VehicleRegistration extends React.Component {
         document.getElementById('topnav').classList.add('bg-white');
         window.addEventListener("scroll", this.scrollNavigation, true);
 
-        antenna = new Antenna("http://api.testnet.iotex.one:80");
+        antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
 
         contract = new Contract(
             ABI,
