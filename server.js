@@ -108,6 +108,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
     let registeredVehicles = []
     // Iterate through the registered vehicles array and return each string
     console.log(numberOfRegisteredVehicles, "vehicles NOW")
+    let sampleRoutes = []
     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
       const vehicleID = await antenna.iotx.readContractByMethod({
           from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
@@ -117,27 +118,9 @@ server.get('/api/getAllVehicles', async (req, res) => {
         },
         i);
 
-      // Generates a route near LONDON right now ...
-      // NEXT up: pull random Terrestrial polygon from the zones and generate a route through that ...
-      let route = await generateRandomRoute(turfPolygons[1], mapboxtoken)
-      sampleVehicles.push(route);
-
-
       registeredVehicles.push(vehicleID)
     }
-    // console.log(sampleVehicles);
-    console.log(sampleVehicles)
-    let samplePts = sampleVehicles.map((line) => line.geometry.coordinates)
-    samplePoints = samplePts[0].map((col, i) => samplePts.map(function (row) {return { "coords": row[i]} }));
 
-    console.log('samplePts', samplePoints);
-    // samplePoints = sampleVehicles.map((line) => {
-    //   return [line.geometry.coordinates.map((point) => {
-    //     return {"coords": point}
-    //   })]
-    // })
-    // // console.log(samplePoints)
-    console.log("sampleVehicles", sampleVehicles)
     let ret = []
 
     // Get the DID documents associated with each
@@ -166,8 +149,34 @@ server.get('/api/getAllPolygons', async (req, res) => {
 })
 
 server.get('/api/getAllPoints', async (req, res) => {
-  res.send(samplePoints) // Should probably have a generateRoutes() function which generates random routes equal to the amount of registered vehicles.
-  // See mapbox directions API for potential solution.
+  let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
+  let numberOfRegisteredVehicles;
+  // Get total number of registered vehicles
+  try {
+    numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod({
+          from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
+          abi: VEHICLE_REGISTER_ABI,
+          contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
+          method: "getEveryRegisteredVehicle"
+        },
+        0);
+    numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
+  } catch (err) {
+    console.log(err)
+  }
+
+  // Generates a route near LONDON right now ...
+  // NEXT up: pull random Terrestrial polygon from the zones and generate a route through that ...
+  let sampleRoutes = []
+  for (let i = 0; i < numberOfRegisteredVehicles; i++) {
+    let route = await generateRandomRoute(turfPolygons[1], mapboxtoken)
+    sampleRoutes.push(route);
+  }
+
+  let samplePts = sampleRoutes.map((line) => line.geometry.coordinates);
+  let points = samplePts[0].map((col, i) => samplePts.map(function (row) {return { "coords": row[i]} }));
+
+  res.send(points)
 })
 
 server.get('/api/getTotalStaked', async (req, res) => {
