@@ -16,21 +16,14 @@
       "ISO3": "GBR",
       "borders": null
     },
-    "service": [
-      {
+    "service": [{
         "id": "did:example:123456789abcdefghi#london-congestion-zone",
         "type": "TerrestrialPolicyZoneGeometryService",
-        "zoneType": [
-          "urban",
-          "terrestrial"
-        ],
+        "zoneType": ["urban", "terrestrial"],
         "name": "London Congestion Zone",
         "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/london-congestion-zone.json",
         "policies": {
-          "subjectDevices": [
-            "road",
-            "commercial"
-          ],
+          "subjectDevices": ["road", "commercial"],
           "beneficiary": "0x456789123cdef...",
           "entryCharge": 0,
           "exitCharge": 0,
@@ -47,16 +40,11 @@
       {
         "id": "did:example:123456789abcdefghi#heathrow-restricted-airspace",
         "type": "AerialialPolicyZoneGeometryService",
-        "zoneType": [
-          "urban",
-          "aerial"
-        ],
+        "zoneType": ["urban", "aerial"],
         "name": "Heathrow Restricted Airspace",
         "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/heathrow-restricted-airspace.json",
         "policies": {
-          "subjectDevices": [
-            "uav"
-          ],
+          "subjectDevices": ["uav"],
           "beneficiary": "0x678912345fghi...",
           "entryCharge": 0,
           "exitCharge": 0,

@@ -203,6 +203,11 @@ export class Dashboard extends React.Component {
         map.fitBounds(turf.bbox(geojson));
     }
 
+    flyToZone = (geojson) => {
+        
+        map.fitBounds(turf.bbox(geojson));
+    }
+
     loadVehiclesAndZones = async (map) => {
         // Draw zone boundaries on map
         this.state.zones.forEach(function (zone) {
@@ -284,6 +289,8 @@ export class Dashboard extends React.Component {
             right: 800
         });
 
+ 
+
     }
 
     togglePrivacyMode = async (e) => {
@@ -339,6 +346,17 @@ export class Dashboard extends React.Component {
 
     handleAdvance = (e) => {
         e.preventDefault()
+
+        // OLD code ??? vv
+        // this.state.timestep += 1;
+
+        // // This hardcodes advance into the browser - there is no interaction
+        // // with the server ... this is NOT reflecting if the point is
+        // // inside a Zone in the browser
+        // updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
+
+        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
+
         socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zoneDIDs);
     }
 
@@ -392,6 +410,7 @@ export class Dashboard extends React.Component {
                 </div>
 
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
+
                     <Topbar/>
                 </div>
                 <div ref={this.overlay} className='overlay' id='overlay'/>

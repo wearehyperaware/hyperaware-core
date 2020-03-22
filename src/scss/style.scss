@@ -172,6 +172,21 @@ a {
   pointer-events: none;
 }
 
+.delete-zone:hover {
+    background: lightgrey;
+}
+
+.file-upload:after {
+  bottom: 0;
+  z-index: 3;
+  display: block;
+  height: calc(1.5em + .75rem);
+  content: "Browse";
+  background-color: #e9ecef;
+  border-left: inherit;
+  border-radius: 0 .25rem .25rem 0;
+}
+
 svg {
   position: absolute;
   width: 100%;
