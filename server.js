@@ -12,7 +12,7 @@ const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const ZONE_REGISTER_ABI = require('./src/pages/jurisdiction-registry/zone-contract-details.js').abi
-const ZONE_REGISTER_ADDRESS = require('./src/pages/jurisdiction-registry/zone-contract-details.js').contractAddress
+const ZONE_REGISTER_ADDRESS = require('./src/pages/jurisdiction-registry/zone-contract-details.js').address
 const axios = require('axios').default
 const generateRandomRoute = require('./modules/generateRandomRoute')
 const fetchDIDsAndGeometries = require('./modules/fetchDIDsAndGeometries');
@@ -177,11 +177,14 @@ server.get('/api/getAllPolygons', async (req, res) => {
 
 
 // Simulated Fetch DID URIs:
-    var zoneAddresses = [
-        "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
-        "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
-        "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
-        "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD" // <- France
+
+    var zoneAddresses = [ // @LEO -> can you set this up to fetch all registered DIDs?
+        // "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
+        // "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
+        // "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
+        // "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD", // <- France
+        "0xb7ec4260F21f6C1208Ef55ED4Afa550bCC37e5f5", // <- Wales
+        "0x26A398bd8429Da356198D0c16D91BDEF3bdbCd76" // <- Birmingham
     ];
 
     // Fetch Zone DID Docs from addresses, and geojson from DID docs:

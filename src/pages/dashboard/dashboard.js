@@ -289,14 +289,7 @@ export class Dashboard extends React.Component {
             right: 800
         });
 
-            let turfPolygons = geojsonMerge.merge(this.state.zones.map((zone) => {return zone.geojson}));
-            // let bbox = turf.bbox(turfPolygons);
-            map.fitBounds(turf.bbox(turfPolygons), {
-                top: 150,
-                bottom: 150,
-                left: 100,
-                right: 800
-            });
+ 
 
     }
 
