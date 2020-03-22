@@ -34,15 +34,15 @@ const saveToArweave = async document => {
     return Promise.reject(err);
   }
 };
-
-const readDocument = async url => {
+//returns resutl in javasctipt object
+const readFromArweave = async url => {
   try {
     let document = await $.get(url);
-    return document;
+    return JSON.parse(document);
   } catch (err) {
     return Promise.reject(err);
   }
 };
 
 window.saveToArweave = saveToArweave;
-window.readDocument = readDocument;
+window.readFromArweave = readFromArweave;

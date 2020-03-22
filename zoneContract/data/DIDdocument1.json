@@ -1,0 +1,34 @@
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:123456789abcdefghi",
+  "authentication": [
+    {
+      "id": "did:example:123456789abcdefghi#ACCOUNT1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:123456789abcdefghi",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "did:example:123456789abcdefghi#london-congestion-zone",
+      "name": "London Congestion Zone",
+      "serviceEndpoint": "https://arweave.com/235723ort7829829845723948",
+      "policies": {
+        "beneficiary": "0x456789123cdef...",
+        "chargePerMinute": 0.15,
+        "currency": "GBP"
+      }
+    },
+    {
+      "id": "did:example:123456789abcdefghi#heathrow-restricted-airspace",
+      "name": "Heathrow Restricted Airspace",
+      "serviceEndpoint": "https://arweave.com/43545324923847239847",
+      "policies": {
+        "beneficiary": "0x678912345fghi...",
+        "chargePerMinute": 0,
+        "currency": "GBP"
+      }
+    }
+  ]
+}
