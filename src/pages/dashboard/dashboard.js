@@ -78,9 +78,36 @@ export class Dashboard extends React.Component {
         vehicles = vehicles.data
         let zoneDIDs = await axios.get('/api/getAllPolygons');
         zoneDIDs = zoneDIDs.data;
-        let zones = zoneDIDs.map((did) => {return did.service.map((zone) => {return zone.geojson})}).flat();
+        let zones = zoneDIDs.map((did) => {return did.service.map((zone) => {
+            zone.geojson.features[0].properties.did = did.id;
+            return zone})}).flat();
         let positions = await axios.get('/api/getAllPoints')
-        positions = positions.data
+        positions = positions.data 
+
+        // Randomly assign a vehicle to a route
+        let mapping = {}
+        let seen = {}
+        for (let i in positions[0]) {
+            let vehicleIndex = Math.floor(Math.random() * vehicles.length)
+            while (vehicleIndex in seen) {
+                vehicleIndex = Math.floor(Math.random() * vehicles.length)
+            }
+            seen[vehicleIndex] = true
+            mapping[i] = vehicleIndex
+        }
+
+        // Add each vehicle to its assigned route
+
+        /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
+        * to have multiple routes and the. */
+
+        for (let i = 0; i < positions.length; i++) {
+            for (let j = 0; j < positions[0].length; j++) {
+                positions[i][j] = {...positions[i][j], vehicle: {within: false, ...vehicles[mapping[j]]}}
+            }
+        }
+
+
         await this.setState({zoneDIDs, zones, vehicles, positions, totalStaked})
 
         this.loadVehiclesAndZones(map)
@@ -135,9 +162,15 @@ export class Dashboard extends React.Component {
          ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
 
+    flyToZone = (geojson) => {
+        
+        map.fitBounds(turf.bbox(geojson));
+    }
+
     loadVehiclesAndZones = async (map) => {
         // Draw zone boundaries on map
         this.state.zones.forEach(function (zone) {
+            zone = zone.geojson;
             let zoneName = zone.features[0].properties.name,
                 // zoneAddress = zone.features[0].properties.tezosAddress,
                 zoneType = zone.features[0].properties.type
@@ -175,35 +208,14 @@ export class Dashboard extends React.Component {
 
             const { positions } = this.state
 
-            // Randomly assign a vehicle to a route
-            let mapping = {}
-            let seen = {}
-            for (let i in positions[0]) {
-                let vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
-                while (vehicleIndex in seen) {
-                    vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
-                }
-                seen[vehicleIndex] = true
-                mapping[i] = vehicleIndex
-            }
-
-            // Add each vehicle to its assigned route
-
-            /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
-            * to have multiple routes and the. */
-
-            for (let i = 0; i < positions.length; i++) {
-                for (let j = 0; j < positions[0].length; j++) {
-                    positions[i][j] = {...positions[i][j], vehicle: {within: false, ...this.state.vehicles[mapping[j]]}}
-                }
-            }
+            console.log('positions', positions)
 
             // Render each vehicle in its initial position
             for (let i in positions[0]) {
                 makeCar(positions[0][i].coords, positions[0][i].vehicle)
             }
 
-            let turfPolygons = geojsonMerge.merge(this.state.zones);
+            let turfPolygons = geojsonMerge.merge(this.state.zones.map((zone) => {return zone.geojson}));
             // let bbox = turf.bbox(turfPolygons);
             map.fitBounds(turf.bbox(turfPolygons), {
                 top: 150,
@@ -331,7 +343,7 @@ export class Dashboard extends React.Component {
                             <div className='row d-flex justify-content-center'>
                                 <div className='col-6'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        7
+                                        {this.state.zoneDIDs.length}
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Jurisdictions.
@@ -349,7 +361,7 @@ export class Dashboard extends React.Component {
                             <div className='row'>
                                 <div className='col-6'>
                                     <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        19
+                                        { this.state.zones.length }
                                     </h2>
                                     <div className='row d-flex justify-content-center'>
                                         Policy Zones.
@@ -366,45 +378,36 @@ export class Dashboard extends React.Component {
                             </div>
                             <AnimateHeight duration={500} height={this.state.heightZonesCard}>
                                 <div style={{height:300, overflowY: "auto"}}>
-                                        <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
-                                            <div className="float-left">
-                                                <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                    <li className="day font-weight-bold mb-2">UK</li>
-                                                </ul>
-                                            </div>
-                                            <div className="content">
-                                                <h4 className="text-dark title" style={{marginBottom: '0px'}}>Heathrow International Airport</h4>
-                                                <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
-                                                <p className="text-muted location-time">
-                                                    <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
-                                                    <br />
-                                                    <span className="text-dark h6">Charge: </span>0.07 GBP / minute
-                                                    <br />
-                                                    <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
-                                                </p>
+                                    { 
+                                        !this.state.zones ? <div></div> : (
+                                        
+                                            this.state.zones.map((zone) => { 
+                                                var zoneDID = this.state.zoneDIDs.find((didDoc) => {return didDoc.id == zone.geojson.features[0].properties.did})
+                                                // set event listener to zoom to zone on click ... 
+                                                    return (
+                                                        <div /*onClick={ this.flyToZone(zone.geojson) }*/ className="zone-card event-schedule d-flex bg-white rounded p-3 border" key={zone.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                                                        <div className="float-left">
+                                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                                <li className="day font-weight-bold mb-2">UK</li> {/* <- fix this */}
+                                                            </ul>
+                                                        </div>
+                                                        <div className="content">
+                                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>{ zone.name }</h4>
+                                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>{ zone.id }</div>
+                                                            <p className="text-muted location-time">
+                                                                <span className="text-dark h6">Beneficiary: </span><a target="_blank" href= {"https://etherscan.io/address/" + zone.policies.beneficiary}> { this.truncateDID(zone.policies.beneficiary) }</a>
+                                                                <br />
+                                                                <span className="text-dark h6">Charge: </span>{ zone.policies.chargePerMinute + " " + zone.policies.currency } / minute
+                                                                <br />
+                                                                <span className="text-dark h6">Zone Geometry: </span><a target="_blank" href= { zone.serviceEndpoint}> { this.truncateDID(zone.serviceEndpoint) }</a>
+                                                            </p>
+            
+                                                        </div>
+                                                    </div>
+                                                    )
+                                                })
 
-                                            </div>
-                                        </div>
-
-                                    <div className="event-schedule d-flex bg-white rounded p-3 border" style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
-                                        <div className="float-left">
-                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                <li className="day font-weight-bold mb-2">DE</li>
-                                            </ul>
-                                        </div>
-                                        <div className="content">
-                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>Berlin High Emission Area</h4>
-                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>tz0dsflksa938aslklkmalKLlknfdlkdl3223</div>
-                                            <p className="text-muted location-time">
-                                                <span className="text-dark h6">Administrator: </span>Civil Aviation Authority
-                                                <br />
-                                                <span className="text-dark h6">Charge: </span>0.043 EUR / minute
-                                                <br />
-                                                <span className="text-dark h6">Zone Geometry: </span>arweave.net/WdfkAi3a
-                                            </p>
-
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
 
                             </AnimateHeight>
