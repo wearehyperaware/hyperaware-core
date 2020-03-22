@@ -2,7 +2,7 @@ pragma solidity ^0.6.3;
 pragma experimental ABIEncoderV2;
 
 import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/contracts/math/SafeMath.sol";
-import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/contracts/ownership/Ownable.sol";
+import "https://raw.githubusercontent.com/OpenZeppelin/openzeppelin-contracts/master/contracts/access/Ownable.sol";
 
 contract VehicleRegistry is Ownable {
     using SafeMath for uint256;
@@ -119,7 +119,7 @@ contract VehicleRegistry is Ownable {
     }
 
 
-    function getVehicles(string memory ownerDID) public returns (string[] memory, uint256[] memory, uint256[] memory) {
+    function getAllVehiclesOfOwner(string memory ownerDID) public returns (string[] memory, uint256[] memory, uint256[] memory) {
         string[] memory ids = new string[](stakeholders[ownerDID].vehicles.length);
         uint256[] memory amounts = new uint256[](stakeholders[ownerDID].vehicles.length);
         uint256[] memory expires = new uint256[](stakeholders[ownerDID].vehicles.length);
@@ -134,7 +134,17 @@ contract VehicleRegistry is Ownable {
         return (ids, amounts, expires);
     }
 
-    function getEveryRegisteredVehicle() public view returns (uint256) {
+
+    function getSingleVehicleOfOwner(string memory ownerDID, uint256 idx) public view returns (string memory, uint256, uint256) {
+        Vehicle storage vehicle = stakeholders[ownerDID].vehicles[idx];
+        return (vehicle.id, vehicle.amount, vehicle.expires);
+    }
+
+    function getVehicleCountOfOwner(string memory ownerDID) public view returns (uint256) {
+        return  stakeholders[ownerDID].vehicles.length;
+    }
+
+    function numberOfRegisteredVehicles() public view returns (uint256) {
         return allVehicles.length;
     }
 

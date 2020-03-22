@@ -1,6 +1,5 @@
 const toRau = require("iotex-antenna/lib/account/utils").toRau;
 const Contract = require("iotex-antenna/lib/contract/contract").Contract
-const VehicleRegABI = require("./src/pages/vehicle-registration/ABI")
 const turf = require('./modules/turfModules')
 const buffer = require('@turf/buffer')
 const express = require('express');
@@ -25,10 +24,11 @@ const samplePolygons = require('./data/samplePolygons.json');
 const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
 // const sampleVehicles = require('./data/sampleVehicles.json')
 let turfPolygons = []
+let VEHICLE_REGISTER_ADDRESS = "io10m9n3kge7l9es3n4raq90m3thtr7futpp0t3ph"
 
 async function slash(did) {
     let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
-    let vehicleRegContract = new Contract(VehicleRegABI, "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx", {provider: antenna.iotx});
+    let vehicleRegContract = new Contract(VEHICLE_REGISTER_ABI, VEHICLE_REGISTER_ADDRESS, {provider: antenna.iotx});
 
     // Get vehicle's document
     let uri = await antenna.iotx.readContractByMethod({
@@ -44,7 +44,7 @@ async function slash(did) {
 
     // Slash owner (admin needs to use the private key of the owner of the VehicleRegistry contract)
     let admin = await antenna.iotx.accounts.privateKeyToAccount(
-        "cd1ee30decfa0b4490642e92afccc00510256ef6c01ccb8989e5d186694ee3d5"
+        "eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8"
     );
     try {
         let actionHash = await vehicleRegContract.methods.slash(toRau("0.1", "Iotx"), vehicleOwner, did, {
@@ -52,7 +52,7 @@ async function slash(did) {
             gasLimit: "1000000",
             gasPrice: toRau("1", "Qev")
         });
-        console.log("Slash occurs now on: ", vehicleOwner, "who owns", did, "Slashing action hash: ", actionHash)
+        console.log("Slash occurs now on:", vehicleOwner, "who owns", did, "Slashing action hash:", actionHash)
         return actionHash
     } catch (err) {
         console.log(err);
@@ -127,8 +127,8 @@ server.get('/api/getAllVehicles', async (req, res) => {
         let numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod({
                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
                 abi: VEHICLE_REGISTER_ABI,
-                contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
-                method: "getEveryRegisteredVehicle"
+                contractAddress: VEHICLE_REGISTER_ADDRESS,
+                method: "numberOfRegisteredVehicles"
             },
             0);
         numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
@@ -138,7 +138,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
             const vehicleID = await antenna.iotx.readContractByMethod({
                     from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
                     abi: VEHICLE_REGISTER_ABI,
-                    contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
+                    contractAddress: VEHICLE_REGISTER_ADDRESS,
                     method: "allVehicles"
                 },
                 i);
@@ -209,8 +209,8 @@ server.get('/api/getAllPoints', async (req, res) => {
         numberOfRegisteredVehicles = await antenna.iotx.readContractByMethod({
                 from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
                 abi: VEHICLE_REGISTER_ABI,
-                contractAddress: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx",
-                method: "getEveryRegisteredVehicle"
+                contractAddress: VEHICLE_REGISTER_ADDRESS,
+                method: "numberOfRegisteredVehicles"
             },
             0);
         numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
@@ -241,7 +241,7 @@ server.get('/api/getTotalStaked', async (req, res) => {
         data: {
             query: `
                   query {
-                          getAccount (address: "io1vrxvsyxc9wc6vq29rqrn37ev33p4v2rt00usnx"){
+                          getAccount (address: "${VEHICLE_REGISTER_ADDRESS}"){
                             accountMeta {
                               balance
                             }

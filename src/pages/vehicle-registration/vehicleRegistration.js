@@ -50,7 +50,8 @@ export class VehicleRegistration extends React.Component {
             height: 0,
             registrationLoaded: false,
             registrationLoading: false,
-            registrationMessage: ""
+            registrationMessage: "",
+            stakeAmount: 0
         };
     }
 
@@ -128,7 +129,7 @@ export class VehicleRegistration extends React.Component {
         );
         try {
             let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, {
-                amount: toRau("0.2", "iotx"),
+                amount: toRau(this.state.stakeAmount, "iotx"),
                 account: wallet,
                 gasLimit: "1000000",
                 gasPrice: toRau("1", "Qev")
@@ -155,26 +156,28 @@ export class VehicleRegistration extends React.Component {
     getVehicles = async (e) => {
         e.preventDefault()
         try {
-            let res = await antenna.iotx.readContractByMethod({
-                from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
-                contractAddress: CONTRACT_ADDRESS,
-                abi: ABI,
-                method: "getVehicles"
-            }, this.state.getVehiclesOwnerDID);
+            // Get vehicle count of owner
             let vehicles = []
-
-            // Output dids are mangled, need to find their locations inside the output string and extract them
-            let regex = /did:io:/gi, result, dids = [];
-            while ((result = regex.exec(res[0][0]))) {
-                dids.push(res[0][0].substr(result.index, 49));
-            }
-            // Prepare info for table
-            for (let i = 0; i < res[0].length; i++) {
-                let tmp = {}
-                tmp['did'] = dids[i]
-                tmp['amount'] = res[1][i].toString()
-                tmp['expiry'] = res[2][i].toString()
-                vehicles.push(tmp)
+            let vehicleCount = await antenna.iotx.readContractByMethod({
+                "from": "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
+                "abi": ABI,
+                "contractAddress": CONTRACT_ADDRESS,
+                "method": "getVehicleCountOfOwner",
+            }, this.state.getVehiclesOwnerDID);
+            console.log(vehicleCount.toString())
+            let res
+            for (let i = 0; i < vehicleCount; i++) {
+                res = await antenna.iotx.readContractByMethod({
+                    "from": "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
+                    "abi": ABI,
+                    "contractAddress": CONTRACT_ADDRESS,
+                    "method": "getSingleVehicleOfOwner",
+                }, this.state.getVehiclesOwnerDID, i);
+                vehicles.push({
+                    did: res[0],
+                    amount: res[1].toString(),
+                    expiry: res[2].toString()
+                })
             }
             this.setState({vehicles, height: 'auto'})
         } catch (err) {
@@ -195,19 +198,6 @@ export class VehicleRegistration extends React.Component {
             console.log(err);
         }
     };
-
-    listRegisteredVehicles = async (ownerDID) => {
-        try {
-            let actionHash = await contract.methods.updateHash(ownerDID, {
-                account: unlockedWallet.address,
-                gasLimit: "500000000",
-                gasPrice: "1"
-            });
-            return actionHash;
-        } catch (err) {
-            console.log(err);
-        }
-    }
 
     render() {
         return (
@@ -257,6 +247,13 @@ export class VehicleRegistration extends React.Component {
                                                 <input type="text" className="form-control" id="inputEmailDID"
                                                        placeholder="did:io:0xCA35b7d915458EV..."
                                                        onChange={e => this.setState({vehicleDID: e.target.value})}/>
+                                            </div>
+                                        </div>
+                                        <div className="form-row">
+                                            <div className="form-group col-md">
+                                                <label htmlFor="inputEmailDID">Stake Amount</label>
+                                                <input type="text" className="form-control" id="inputEmailDID"
+                                                       onChange={e => this.setState({stakeAmount: e.target.value})}/>
                                             </div>
                                         </div>
                                         <div className="form-row">

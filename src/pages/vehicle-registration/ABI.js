@@ -1,47 +1,5 @@
 module.exports = [
     {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "ownerDID",
-                "type": "string"
-            }
-        ],
-        "name": "deleteStakeholder",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "ownerDID",
-                "type": "string"
-            }
-        ],
-        "name": "getVehicles",
-        "outputs": [
-            {
-                "internalType": "string[]",
-                "name": "",
-                "type": "string[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
-            },
-            {
-                "internalType": "uint256[]",
-                "name": "",
-                "type": "uint256[]"
-            }
-        ],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -65,34 +23,6 @@ module.exports = [
         ],
         "name": "GetVehiclesEvent",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "ownerDID",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "vehicleDID",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "lockAmount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "lockTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "increaseStake",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
     },
     {
         "anonymous": false,
@@ -158,59 +88,6 @@ module.exports = [
         "type": "event"
     },
     {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "ownerDID",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "vehicleDID",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "lockTime",
-                "type": "uint256"
-            }
-        ],
-        "name": "registerVehicle",
-        "outputs": [],
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "renounceOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "slashAmount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "string",
-                "name": "slashedOwnerDID",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "slashedVehicleDID",
-                "type": "string"
-            }
-        ],
-        "name": "slash",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "anonymous": false,
         "inputs": [
             {
@@ -228,42 +105,6 @@ module.exports = [
         ],
         "name": "SlashEvent",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "newOwner",
-                "type": "address"
-            }
-        ],
-        "name": "transferOwnership",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "internalType": "string",
-                "name": "ownerDID",
-                "type": "string"
-            },
-            {
-                "internalType": "string",
-                "name": "vehicleDID",
-                "type": "string"
-            },
-            {
-                "internalType": "uint256",
-                "name": "withdrawAmount",
-                "type": "uint256"
-            }
-        ],
-        "name": "withdraw",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
     },
     {
         "anonymous": false,
@@ -323,8 +164,90 @@ module.exports = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "getEveryRegisteredVehicle",
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            }
+        ],
+        "name": "deleteStakeholder",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            }
+        ],
+        "name": "getAllVehiclesOfOwner",
+        "outputs": [
+            {
+                "internalType": "string[]",
+                "name": "",
+                "type": "string[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            },
+            {
+                "internalType": "uint256[]",
+                "name": "",
+                "type": "uint256[]"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "idx",
+                "type": "uint256"
+            }
+        ],
+        "name": "getSingleVehicleOfOwner",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            }
+        ],
+        "name": "getVehicleCountOfOwner",
         "outputs": [
             {
                 "internalType": "uint256",
@@ -336,16 +259,31 @@ module.exports = [
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "isOwner",
-        "outputs": [
+        "inputs": [
             {
-                "internalType": "bool",
-                "name": "",
-                "type": "bool"
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "vehicleDID",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lockAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lockTime",
+                "type": "uint256"
             }
         ],
-        "stateMutability": "view",
+        "name": "increaseStake",
+        "outputs": [],
+        "stateMutability": "payable",
         "type": "function"
     },
     {
@@ -393,6 +331,19 @@ module.exports = [
     },
     {
         "inputs": [],
+        "name": "numberOfRegisteredVehicles",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "owner",
         "outputs": [
             {
@@ -402,6 +353,95 @@ module.exports = [
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "vehicleDID",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "lockTime",
+                "type": "uint256"
+            }
+        ],
+        "name": "registerVehicle",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "slashAmount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "slashedOwnerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "slashedVehicleDID",
+                "type": "string"
+            }
+        ],
+        "name": "slash",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "newOwner",
+                "type": "address"
+            }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "ownerDID",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "vehicleDID",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "withdrawAmount",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]
