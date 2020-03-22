@@ -3,7 +3,7 @@
   "id": "did:example:123456789abcdefghi",
   "authentication": [
     {
-      "id": "did:example:123456789abcdefghi#keys-1",
+      "id": "did:example:123456789abcdefghi#ACCOUNT2",
       "type": "RsaVerificationKey2018",
       "controller": "did:example:123456789abcdefghi",
       "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"

@@ -1,60 +1,95 @@
 //jshint esversion:6
 window.addEventListener("load", async () => {
-    //modern dapp browser
-    if (window.ethereum) {
-        window.web3 = new Web3(ethereum);
-        await ethereum.enable();
-    } else {
-        // Non-dapp browsers…
-        console.log(
-            "Ethereum browser not detected.You should consider trying MetaMask!"
-        );
-    }
 
-    //https://arweave.net/tx/HU-KapDMU0NF5LXXgq_3N7BNNkS1DsxpaMOjBkUCfKk/data.txt
-    //sample dod doc on awreave
-    /********************** MAIN LOGIC on SUBMIT (pseudocode) ********************************/
-    try {
-        await initContract();
-        let selectedAddress = web3.eth.currentProvider.selectedAddress;
-        let exists = await isRegistered(selectedAddress);
-        console.log(exists);
-        if (exists) {
-            //fetch existing docuemnt from contract and read from arweave
-            let documentURI = await getURI(selectedAddress);
-            console.log(documentURI);
-            let DIDdocument = await readDocument(documentURI);
-            //update based on DIDdocument
-            //do sth e.g.) let updatedDIDdocument = DIDdocument.service.push(...)
-            let updatedDIDdocument = {};
-            // save to areweave
-            let updatedDocumentURI = await saveToArweave(
-                JSON.stringify(updatedDIDdocument, null, 2)
-            );
-            //save to contract
-            await register(
-                web3.utils.keccak256(updatedDocumentURI),
-                updatedDocumentURI
-            );
-            console.log("did updated!");
-        } else {
-            //load submitted GEOJSON
-            let geoJson = await $.getJSON("../data/countries/FRA.json");
-            console.log(geoJson);
-            let geoURI = await saveToArweave(JSON.stringify(geoJson, null, 2));
-            //create new DIDdoc based on the geoURI and save to areweave
-            let newDIDdocument = await $.getJSON("../data/DIDdocument.json");
-            let newDocumentURI = await saveToArweave(
-                JSON.stringify(newDIDdocument, null, 2)
-            );
-            //save to contract
-            await register(web3.utils.keccak256(newDIDdocument), newDocumentURI);
-            console.log("new did registerd!");
-        }
-    } catch (err) {
-        console.log(err);
-    }
+  //modern dapp browser
+  if (window.ethereum) {
+    window.web3 = new Web3(ethereum);
+    await ethereum.enable();
+  } else {
+    // Non-dapp browsers…
+    console.log(
+      "Ethereum browser not detected.You should consider trying MetaMask!"
+    );
+  }
+
+  //sample did doc on awreave that was saved using the logic below
+  //https://arweave.net/tx/oW_bnUbTPEDfBc9PBgxmsd-sO3TXWMhpdd7L-vkR55s/data.txt
+  /********************** MAIN LOGIC on SUBMIT ********************************/
+  try {
+    await initContract();
+    //window.registerZone = registerZone;
+    let FRA = await testMapping.get("FRA")();
+
+    //  when DID is not registered(creates a new doc and add frnce);
+    registerZone(FRA, "FRANCE", {
+      beneficiary: "0x456789123cdef...",
+      chargePerMinute: 0.15,
+      currency: "EURO"
+    });
+    /**** wait unitl the data is saved to arweave! this time the doc will be updated based on the old doc fetched*/
+    let BEL = await testMapping.get("BEL")();
+    registerZone(BEL, "BERILIN", {
+      beneficiary: "0x456789123cdef...",
+      chargePerMinute: 0.15,
+      currency: "EURO"
+    });
+
+    /** deregister can be done in a simmilar way using the register logic and deregister function **/
+
+    /** this will return all the uris registered!**/
+    let dids = await getExistingDIDs();
+    console.log(dids);
+  } catch (err) {
+    console.log(err);
+  }
 });
+
+/****************  abstracted functions  ************************/
+//https://arweave.net/tx/VBx-doFR_dh17izVIPDFCP1qQ3Xva87BUi7cZ_AiVJQ/data.txt
+const registerZone = async (geoJson, name, policies) => {
+  let selectedAddress = web3.eth.currentProvider.selectedAddress;
+  //check if already registered
+  let exists = await isRegistered(selectedAddress);
+  //save geojsonto arweave
+  console.log("mygeoJSON_URI");
+  let newGeoURI = await saveToArweave(JSON.stringify(geoJson, null, 2));
+  let newService = {
+    id: "did:example:" + selectedAddress,
+    name: name,
+    serviceEndpoint: newGeoURI,
+    policies: policies
+  };
+  window.newService = newService;
+  //await $.getJSON("../data/countries/FRA.json");
+  let newDoc;
+  if (exists) {
+    //fetch existing docuemnt from contract and read from arweave
+    let oldDocURI = await getURI(selectedAddress);
+    console.log(
+      "this account is already registered! the fetched doc uri ",
+      oldDocURI
+    );
+    let oldDoc = await readFromArweave(oldDocURI);
+    window.oldDoc = oldDoc;
+    window.oldDocURI = oldDocURI;
+    //update based on old did and new geoURI
+    oldDoc.service.push(newService);
+    newDoc = oldDoc;
+    console.log("updating doc...");
+  } else {
+    //create new DIDdoc based on new geoURI
+    newDoc = await testMapping.get(selectedAddress)();
+    newDoc.service.push(newService);
+    console.log("creating new doc...");
+  }
+  let newURI = await saveToArweave(JSON.stringify(newDoc, null, 2));
+  let newHash = web3.utils.keccak256(JSON.stringify(newDoc));
+  window.uri = newURI;
+  await register(newHash, newURI);
+  console.log("REGISTERED");
+};
+
+const deregisterZone = async () => {};
 
 //address and abi already loaded
 const initContract = async () => {
@@ -140,3 +175,42 @@ const getExistingAddrs = async () => {
     });
     window.returnedAddresses = value;
 };
+
+/**************************       testing mapping      **************************/
+let testMapping = new Map();
+testMapping.set("0xeb8a5755f2a9bcbe686b3d841405221ef21db855", async () => {
+  let res = await $.getJSON("../data/DIDdocument1.json");
+  return res;
+});
+testMapping.set("0xaf6c60f9569a5957b9e8679d7178b0e15e462e72", async () => {
+  let res = await $.getJSON("../data/DIDdocument1.json");
+  return res;
+});
+testMapping.set("0x694c631657345f75d412e84280ab62b202617d57", async () => {
+  let res = await $.getJSON("../data/DIDdocument3.json");
+  return res;
+});
+
+testMapping.set("FRA", async () => {
+  let res = await $.getJSON("../data/countries/FRA.json");
+  return res;
+});
+testMapping.set("DEU", async () => {
+  let res = await $.getJSON("../data/countries/DEU.json");
+  return res;
+});
+
+testMapping.set("BEL", async () => {
+  let res = await $.getJSON("../data/countries/BEL.json");
+  return res;
+});
+
+testMapping.set("GBR", async () => {
+  let res = await $.getJSON("../data/countries/GBR.json");
+  return res;
+});
+
+testMapping.set("LUX", async () => {
+  let res = await $.getJSON("../data/countries/LUX.json");
+  return res;
+});
