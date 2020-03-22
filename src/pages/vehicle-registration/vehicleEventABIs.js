@@ -9,10 +9,10 @@ module.exports = {
         "name": "vehicleDid",
         "type": "string"
     }, {
-            "indexed": false,
-            "name": "success",
-            "type": "bool"
-        }],
+        "indexed": false,
+        "name": "success",
+        "type": "bool"
+    }],
 
     WithdrawEvent: [{
         "indexed": false,

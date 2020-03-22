@@ -2,12 +2,14 @@
   {
     "@context": "https://www.w3.org/ns/did/v1",
     "id": "did:example:123456789abcdefghi",
-    "authentication": [{
-      "id": "did:example:123456789abcdefghi#keys-1",
-      "type": "RsaVerificationKey2018",
-      "controller": "did:example:123456789abcdefghi",
-      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
-    }],
+    "authentication": [
+      {
+        "id": "did:example:123456789abcdefghi#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }
+    ],
     "jurisdictionMetadata": {
       "jurisdictionName": "United Kingdom",
       "jurisdictionAddr": "0x123456789abcdefghi",
@@ -58,7 +60,10 @@
       {
         "id": "did:example:123456789abcdefghi#port-of-southampton",
         "type": "MaritimePolicyZoneGeometryService",
-        "zoneType": ["port", "maritime"],
+        "zoneType": [
+          "port",
+          "maritime"
+        ],
         "name": "Port of Southampton",
         "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/port-of-southampton.json",
         "policies": {
@@ -79,72 +84,90 @@
   {
     "@context": "https://www.w3.org/ns/did/v1",
     "id": "did:example:56789abcdefghigermany",
-    "authentication": [{
-      "id": "did:example:123456789abcdefghi#keys-1",
-      "type": "RsaVerificationKey2018",
-      "controller": "did:example:123456789abcdefghi",
-      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
-    }],
+    "authentication": [
+      {
+        "id": "did:example:123456789abcdefghi#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }
+    ],
     "jurisdictionMetadata": {
       "jurisdictionName": "Germany",
       "jurisdictionAddr": "56789abcdefghigermany",
       "ISO3": "DEU"
     },
-    "service": [{
-      "id": "did:example:56789abcdefghigermany#berlin-congestion-zone",
-      "type": "TerrestrialPolicyZoneGeometryService",
-      "zoneType": ["urban", "terrestrial"],
-      "name": "Berlin Congestion Zone",
-      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/berlin.json",
-      "policies": {
-        "subjectDevices": ["road", "commercial"],
-        "beneficiary": "0x6789123cdef...",
-        "entryCharge": 2,
-        "exitCharge": 0,
-        "chargePerMinute": 0.35,
-        "currency": "EUR",
-        "alerts": [
-          "0xKLlknfdlkdl322308aslklkdsflksa93mal",
-          "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
-          "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
-        ]
+    "service": [
+      {
+        "id": "did:example:56789abcdefghigermany#berlin-congestion-zone",
+        "type": "TerrestrialPolicyZoneGeometryService",
+        "zoneType": [
+          "urban",
+          "terrestrial"
+        ],
+        "name": "Berlin Congestion Zone",
+        "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/berlin.json",
+        "policies": {
+          "subjectDevices": [
+            "road",
+            "commercial"
+          ],
+          "beneficiary": "0x6789123cdef...",
+          "entryCharge": 2,
+          "exitCharge": 0,
+          "chargePerMinute": 0.35,
+          "currency": "EUR",
+          "alerts": [
+            "0xKLlknfdlkdl322308aslklkdsflksa93mal",
+            "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
+            "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
+          ]
+        }
       }
-    }]
+    ]
   },
   {
     "@context": "https://www.w3.org/ns/did/v1",
     "id": "did:example:789abcdefghijknetherlands",
-    "authentication": [{
-      "id": "did:example:789abcdefghijknetherlands#keys-1",
-      "type": "RsaVerificationKey2018",
-      "controller": "did:example:123456789abcdefghi",
-      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
-    }],
+    "authentication": [
+      {
+        "id": "did:example:789abcdefghijknetherlands#keys-1",
+        "type": "RsaVerificationKey2018",
+        "controller": "did:example:123456789abcdefghi",
+        "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+      }
+    ],
     "jurisdictionMetadata": {
       "jurisdictionName": "Netherlands",
       "jurisdictionAddr": "789abcdefghijknetherlands",
       "ISO3": "NLD"
     },
-    "service": [{
-      "id": "did:example:789abcdefghijknetherlands#rotterdam-port-zone",
-      "type": "MaritimePolicyZoneGeometryService",
-      "zoneType": ["port", "maritime"],
-      "name": "Port of Rotterdam",
-      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/rotterdam-port-zone.json",
-      "policies": {
-        "subjectDevices": ["ship"],
-        "beneficiary": "0x3678912cdef...",
-        "entryCharge": 2,
-        "exitCharge": 0,
-        "chargePerMinute": 0.35,
-        "currency": "EUR",
-        "alerts": [
-          "0xKLlknfdlkdl322308aslklkdsflksa93mal",
-          "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
-          "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
-        ]
+    "service": [
+      {
+        "id": "did:example:789abcdefghijknetherlands#rotterdam-port-zone",
+        "type": "MaritimePolicyZoneGeometryService",
+        "zoneType": [
+          "port",
+          "maritime"
+        ],
+        "name": "Port of Rotterdam",
+        "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/rotterdam-port-zone.json",
+        "policies": {
+          "subjectDevices": [
+            "ship"
+          ],
+          "beneficiary": "0x3678912cdef...",
+          "entryCharge": 2,
+          "exitCharge": 0,
+          "chargePerMinute": 0.35,
+          "currency": "EUR",
+          "alerts": [
+            "0xKLlknfdlkdl322308aslklkdsflksa93mal",
+            "0xnfdlkksa9lklkmalK0l38asLlkddl3223sf",
+            "0xlklkmal0KLlknfdlkdl3223dsflksa938as"
+          ]
+        }
       }
-    }]
+    ]
   }
-
 ]

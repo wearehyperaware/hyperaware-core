@@ -4,46 +4,50 @@ SecureWorker.importScripts('bundled-enclave-imports.js')
 
 SecureWorker.onMessage(function (message) {
     if (message.type === 'pointInPolygonCheck') {
-        let { points, turfPolygons, samplePolygons, counter } = message
+        let {points, dids, counter} = message
         let index = counter % points.length
         let newPositions = points[index]
 
         for (var j = 0; j < newPositions.length; j++) {
             let newPosition = newPositions[j];
 
-            for (var i = 0; i < turfPolygons.length; i++) {
+            for (var i = 0; i < dids.length; i++) {
 
-                let turfPolygon = turfPolygons[i];
-
+                let turfPolygon = turf.polygon(dids[i].service[0].geojson.features[0].geometry.coordinates)
+                let beneficiary = dids[i].service[0].policies.beneficiary
                 let turfPt = turf.point(newPosition.coords)
                 let within = booleanContains(turfPolygon, turfPt);
 
                 // If it wasn't already in, send notification
                 if (within && !newPosition.vehicle.within) {
-                    newPosition.vehicle['within'] = samplePolygons[i].features[0].properties.tezosAddress
+                    newPosition.vehicle['within'] = beneficiary
                     newPosition.vehicle['enterTime'] = new Date()
 
                     SecureWorker.postMessage({
                         type: 'enteringNotification',
-                        notification: {vehicleDetails: newPosition.vehicle,
-                        jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress,
-                        type: 'enter'}
+                        notification: {
+                            vehicleDetails: newPosition.vehicle,
+                            jurisdictionAddress: beneficiary,
+                            type: 'enter'
+                        }
                     })
 
-                    newPosition.owner = samplePolygons[i].features[0].properties.name;
-                    newPosition.address = samplePolygons[i].features[0].properties.tezosAddress;
+                    newPosition.owner = dids[i].service[0].name
+                    newPosition.address = beneficiary
                     break;
 
                     // If it was already in, but isn't anymore, slash and send exit notification
-                } else if (!within && newPosition.vehicle.within === samplePolygons[i].features[0].properties.tezosAddress) {
+                } else if (!within && newPosition.vehicle.within === beneficiary) {
                     console.log("Invoking iotx slash() fn for", newPosition.vehicle.id);
                     newPosition.vehicle['within'] = false
                     newPosition.vehicle['exitTime'] = new Date()
                     SecureWorker.postMessage({
                         type: 'exitingNotification',
-                        notification: {vehicleDetails: newPosition.vehicle,
-                        jurisdictionAddress: samplePolygons[i].features[0].properties.tezosAddress,
-                        type: 'exit'}
+                        notification: {
+                            vehicleDetails: newPosition.vehicle,
+                            jurisdictionAddress: beneficiary,
+                            type: 'exit'
+                        }
                     })
                 }
             }
@@ -56,7 +60,7 @@ SecureWorker.onMessage(function (message) {
             // Loop through entire points array and overwrite vehicle info so that at every point in the array we know
             // that the vehicle was previously detected as inside (or outside).
             for (let r in points) {
-                for (let s in points[index+1]) {
+                for (let s in points[index + 1]) {
                     if (points[r][s].vehicle.id === newPositions[i].vehicle.id) {
                         points[r][s].vehicle = newPositions[i].vehicle
                     }
@@ -65,7 +69,8 @@ SecureWorker.onMessage(function (message) {
         }
 
         SecureWorker.postMessage(
-            {   type: 'updatePositions',
+            {
+                type: 'updatePositions',
                 newPositions,
                 points
             })
