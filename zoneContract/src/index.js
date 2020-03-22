@@ -1,5 +1,6 @@
 //jshint esversion:6
 window.addEventListener("load", async () => {
+
   //modern dapp browser
   if (window.ethereum) {
     window.web3 = new Web3(ethereum);
@@ -92,87 +93,87 @@ const deregisterZone = async () => {};
 
 //address and abi already loaded
 const initContract = async () => {
-  contract = new web3.eth.Contract(abi, address);
-  // for testing purposes
-  window.methods = contract.methods;
-  window.someHash =
-    "0x6b22041934973b8dc2d68181b87f18ef085f739c793a99dd72062f97ec4e3c4f";
-  window.admin = "0xaf6c60f9569a5957b9e8679d7178b0e15e462e72";
-  window.metamask = web3.eth.currentProvider;
-  window.register = register;
-  window.deregister = deregister;
-  window.isRegistered = isRegistered;
-  window.getURI = getURI;
-  window.getExistingDIDs = getExistingDIDs;
+    contract = new web3.eth.Contract(abi, address);
+    // for testing purposes
+    window.methods = contract.methods;
+    window.someHash =
+        "0x6b22041934973b8dc2d68181b87f18ef085f739c793a99dd72062f97ec4e3c4f";
+    window.admin = "0xaf6c60f9569a5957b9e8679d7178b0e15e462e72";
+    window.metamask = web3.eth.currentProvider;
+    window.register = register;
+    window.deregister = deregister;
+    window.isRegistered = isRegistered;
+    window.getURI = getURI;
+    window.getExistingDIDs = getExistingDIDs;
 };
 
 /********************** MAIN CONTRACT FUNCTIONS ****************/
 //checks if a given address is registered, return boolean
 const isRegistered = async address => {
-  let value = await methods.isRegistered(address).call({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.returnedBool = value;
-  return value;
+    let value = await methods.isRegistered(address).call({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.returnedBool = value;
+    return value;
 };
 
 //given the hash and uri, registers a DID.
 //if already registered it updates, otherwise create a new one
 const register = async (hash, uri) => {
-  let receipt = await methods.register(hash, uri).send({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.registerReceipt = receipt;
-  return receipt;
+    let receipt = await methods.register(hash, uri).send({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.registerReceipt = receipt;
+    return receipt;
 };
 //deletes did of the specified address
 //the creater and the admin has the right
 const deregister = async address => {
-  let receipt = await methods.deregister(address).send({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.deregisterReceipt = receipt;
-  return receipt;
+    let receipt = await methods.deregister(address).send({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.deregisterReceipt = receipt;
+    return receipt;
 };
 //retrieves an uri of the given address
 const getURI = async address => {
-  let value = await methods.getURI(address).call({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.returnedURI = value;
-  return value;
+    let value = await methods.getURI(address).call({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.returnedURI = value;
+    return value;
 };
 
 //returns an array of EXISITING DIDs struct {exists(bool), hash(byte32), }
 const getExistingDIDs = async () => {
-  let value = await methods.getExistingDIDs().call({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.returnedDIDs = value;
-  return value;
+    let value = await methods.getExistingDIDs().call({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.returnedDIDs = value;
+    return value;
 };
 
 /********************* AVAILABLE FUNCTIONS BUT NOT THAT IMPORTANT *************************/
 
 const getHash = async address => {
-  let value = await methods.getHash(address).call({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.returnedHash = value;
+    let value = await methods.getHash(address).call({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.returnedHash = value;
 };
 
 const getExistingAddrs = async () => {
-  let value = await methods.getExistingAddrs().call({
-    from: metamask.selectedAddress,
-    gasPrice: "80000000000"
-  });
-  window.returnedAddresses = value;
+    let value = await methods.getExistingAddrs().call({
+        from: metamask.selectedAddress,
+        gasPrice: "80000000000"
+    });
+    window.returnedAddresses = value;
 };
 
 /**************************       testing mapping      **************************/

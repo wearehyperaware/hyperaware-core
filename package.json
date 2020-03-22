@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mapbox/geojson-merge": "^1.1.1",
     "@mapbox/geojson-tidy": "^1.0.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
@@ -10,11 +11,13 @@
     "@turf/boolean-contains": "^6.0.1",
     "@turf/buffer": "^5.1.5",
     "@turf/helpers": "^6.1.4",
+    "@turf/turf": "^5.1.6",
     "arweave": "^1.6.0",
     "bootstrap": "^4.3.1",
     "concurrently": "^5.1.0",
     "d3": "^3.5.16",
     "esm": "^3.2.25",
+    "ethers": "^4.0.46",
     "geojson-validation": "^0.2.1",
     "iotex-antenna": "0.25.0",
     "lodash.template": "^4.2.1",
@@ -29,7 +32,8 @@
     "react-countdown-now": "^2.1.1",
     "react-countup": "^4.2.2",
     "react-datepicker": "^2.9.6",
-    "react-dom": "^16.10.2",
+    "react-dom": "^16.8.6",
+    "react-mailchimp-subscribe": "^2.1.0",
     "react-modal-video": "^1.2.3",
     "react-parallax": "^2.2.4",
     "react-responsive-carousel": "^3.1.51",
@@ -44,17 +48,22 @@
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "secureworker": "^0.3.0",
+    "serviceworker": "^0.1.7",
     "socket.io": "^2.3.0",
     "turf": "^2.0.2",
     "web3": "^1.2.6"
   },
+  "resolutions": {
+    "@babel/preset-env": "^7.8.7"
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server",
+    "start-dev": "react-scripts start",
     "build": "react-scripts build",
     "server": "nodemon server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently --kill-others-on-fail \"yarn run server\" \"yarn run start\""
+    "dev": "concurrently --kill-others-on-fail \"yarn run server\" \"yarn run start-dev\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -70,5 +79,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "engines": {
+    "node": "13.1.0"
   }
 }

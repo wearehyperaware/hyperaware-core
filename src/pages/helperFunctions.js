@@ -28,19 +28,19 @@ export const readLog = async (abi, actionHash, antenna) => {
 
 };
 
-export const htmlIDFromDID = ( DID ) => {
-  return DID.replace(/:/g, '-');
+export const htmlIDFromDID = (DID) => {
+    return DID.replace(/:/g, '-');
 }
 
-export const didFromHTMLID = ( htmlID ) => {
-  return htmlID.replace(/-/g, ':');
+export const didFromHTMLID = (htmlID) => {
+    return htmlID.replace(/-/g, ':');
 }
 
 //Creates did document
 export const generateDocument = (entity, id, creator = "", imei = "", vehicleType = "", isPrivate = false) => {
     let document
     if (entity === "Device") {
-         document = {
+        document = {
             "@context": "https://w3id.org/did/v1",
             "id": id,
             "created": new Date(),
@@ -51,7 +51,7 @@ export const generateDocument = (entity, id, creator = "", imei = "", vehicleTyp
             "imei": imei
         };
     } else {
-         document = {
+        document = {
             "@context": "https://w3id.org/did/v1",
             "id": id,
             "created": new Date(),

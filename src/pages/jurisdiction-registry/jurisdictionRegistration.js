@@ -6,7 +6,9 @@ export class RegisterJurisdiction extends React.Component {
     componentDidMount() {
         // Dismiss loading bar
         document.getElementById("pageLoader").style.display = "block";
-        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+        setTimeout(function () {
+            document.getElementById("pageLoader").style.display = "none";
+        }, 1000);
 
         // Navbar scrolling
         document.body.classList = ""
@@ -16,13 +18,10 @@ export class RegisterJurisdiction extends React.Component {
 
     scrollNavigation = () => {
         var doc = document.documentElement;
-        var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        if(top > 80)
-        {
+        var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+        if (top > 80) {
             document.getElementById('topnav').classList.add('nav-sticky');
-        }
-        else
-        {
+        } else {
             document.getElementById('topnav').classList.remove('nav-sticky');
         }
     }
@@ -30,18 +29,17 @@ export class RegisterJurisdiction extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Topbar />
+                <Topbar/>
                 <div className='container'>
                     <div style={{marginTop: '100px',}}>
                         Jurisdiction Registry
                     </div>
-            </div>
-                <Footer />
+                </div>
+                <Footer/>
             </React.Fragment>
         )
     }
 }
-
 
 
 //
