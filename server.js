@@ -60,12 +60,19 @@ async function slash(did) {
 
 }
 
+if (process.env.NODE_ENV === 'production') {
+    // Serve static files from the React frontend app
+    server.use(express.static(path.join(__dirname, '/build')))
+}
+
 server.use(bodyParser.urlencoded({
   extended: false
 }));
 
-const http = server.listen(3001, () => {
-  console.log('Express server and socket.io websocket are running on localhost:3001');
+let PORT = process.env.PORT || 3001
+
+const http = server.listen(PORT, () => {
+  console.log(`Express server and socket.io websocket are running on localhost:${PORT}`);
 });
 
 const io = require('socket.io')(http);
@@ -253,5 +260,3 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-// Example get request to express server
-server.use('/', express.static(path.join(__dirname, 'public/home')));
