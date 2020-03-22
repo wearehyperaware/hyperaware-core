@@ -14,13 +14,11 @@ window.addEventListener("load", async () => {
 
   //sample did doc on awreave that was saved using the logic below
   //https://arweave.net/tx/oW_bnUbTPEDfBc9PBgxmsd-sO3TXWMhpdd7L-vkR55s/data.txt
-  /********************** MAIN LOGIC on SUBMIT ********************************/
+  /********************** EXAMPLE MAIN LOGIC ********************************/
   try {
     await initContract();
-    //window.registerZone = registerZone;
     let FRA = await testMapping.get("FRA")();
-
-    //  when DID is not registered(creates a new doc and add frnce);
+    // when DID is not registered(creates a new doc and add frnce);
     registerZone(FRA, "FRANCE", {
       beneficiary: "0x456789123cdef...",
       chargePerMinute: 0.15,
@@ -34,18 +32,28 @@ window.addEventListener("load", async () => {
       currency: "EURO"
     });
 
-    /** deregister can be done in a simmilar way using the register logic and deregister function **/
+    /** deregister zone **/
+    deregisterZone(
+      metamask.selectedAddress,
+      "did:example:123456789abcdefghi#heathrow-restricted-airspace"
+    );
+    /** deregister DID **/
+    deregisterDID(metamask.selectedAddress);
 
-    /** this will return all the uris registered!**/
+    /** this will return all the uris registered**/
     let dids = await getExistingDIDs();
     console.log(dids);
+
+    /** this will return uri of the given address**/
+    let uri = await getURI(metamask.selectedAddress);
+    console.log(uri);
   } catch (err) {
     console.log(err);
   }
 });
 
-/****************  abstracted functions  ************************/
-//https://arweave.net/tx/VBx-doFR_dh17izVIPDFCP1qQ3Xva87BUi7cZ_AiVJQ/data.txt
+/****************  MAIN functions using contract and arweave  ************************/
+//https://arweave.net/tx/o60cqJXhhs1EhUaaSV3iYappfph3ionxHUYakFgiUG0/data.txt
 const registerZone = async (geoJson, name, policies) => {
   let selectedAddress = web3.eth.currentProvider.selectedAddress;
   //check if already registered
@@ -53,43 +61,77 @@ const registerZone = async (geoJson, name, policies) => {
   //save geojsonto arweave
   console.log("mygeoJSON_URI");
   let newGeoURI = await saveToArweave(JSON.stringify(geoJson, null, 2));
-  let newService = {
-    id: "did:example:" + selectedAddress,
+  let newEndpoint = {
+    id: "did:example:" + selectedAddress + "#" + name,
     name: name,
     serviceEndpoint: newGeoURI,
     policies: policies
   };
-  window.newService = newService;
-  //await $.getJSON("../data/countries/FRA.json");
   let newDoc;
   if (exists) {
     //fetch existing docuemnt from contract and read from arweave
     let oldDocURI = await getURI(selectedAddress);
-    console.log(
-      "this account is already registered! the fetched doc uri ",
-      oldDocURI
-    );
     let oldDoc = await readFromArweave(oldDocURI);
-    window.oldDoc = oldDoc;
-    window.oldDocURI = oldDocURI;
     //update based on old did and new geoURI
-    oldDoc.service.push(newService);
+    oldDoc.service.push(newEndpoint);
     newDoc = oldDoc;
     console.log("updating doc...");
   } else {
     //create new DIDdoc based on new geoURI
     newDoc = await testMapping.get(selectedAddress)();
-    newDoc.service.push(newService);
+    newDoc.service.push(newEndpoint);
     console.log("creating new doc...");
   }
   let newURI = await saveToArweave(JSON.stringify(newDoc, null, 2));
   let newHash = web3.utils.keccak256(JSON.stringify(newDoc));
-  window.uri = newURI;
+
   await register(newHash, newURI);
   console.log("REGISTERED");
 };
 
-const deregisterZone = async () => {};
+const deregisterZone = async (address, zoneID) => {
+  let exists = await isRegistered(address);
+  if (exists) {
+    //fetch existing docuemnt from contract and read from arweave
+    let oldDocURI = await getURI(address);
+    let oldDoc = await readFromArweave(oldDocURI);
+    //delete serviceEndpoint with the given id
+    let matched = false;
+    oldDoc.service = oldDoc.service.filter(endpoint => {
+      if (endpoint.id === zoneID) {
+        matched = true;
+      } else {
+        return endpoint.id !== zoneID;
+      }
+    });
+    if (!matched) {
+      console.log("Zone not found!");
+      return;
+    }
+    let newDoc = oldDoc;
+    let newURI = await saveToArweave(JSON.stringify(newDoc, null, 2));
+    let newHash = web3.utils.keccak256(JSON.stringify(newDoc));
+    await register(newHash, newURI);
+    console.log("zone DELETED");
+  } else {
+    console.log("did document does not exist");
+  }
+};
+
+const deregisterDID = async address => {
+  let exists = await isRegistered(selectedAddress);
+  if (exists) {
+    try {
+      await deregister(address);
+    } catch (err) {
+      console.log(err);
+      console.log("not authorized to delete!");
+    }
+    console.log("DID DELETED");
+  } else {
+    console.log("did document does not exist");
+  }
+};
 
 //address and abi already loaded
 const initContract = async () => {
