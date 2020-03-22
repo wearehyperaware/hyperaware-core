@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter as Router, withRouter } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Route, Switch, BrowserRouter as Router, withRouter} from 'react-router-dom';
 
 // Import Css
 import './Apps.scss';
@@ -18,26 +18,26 @@ const Root = React.lazy(() => import('./pages/landing'));
 
 class App extends Component {
 
-  render() {
+    render() {
 
-    return (
-      <React.Fragment>  
-      <Router>
-          <React.Suspense fallback={<div></div>}>
-            <Switch>
-              <Route exact path="/" component={Root} />
-              <Route path="/demo/dashboard" component={Dashboard}/>
-              <Route path="/demo/vehicle-registration" component={VehicleRegistration}/>
-              <Route path="/demo/register-did" component={RegisterDID}/>
-              <Route path="/demo/jurisdiction-registration" component={RegisterJurisdiction}/>
-              <Route path="/demo/docs" component={Documentation} />
-              <Route path="/demo/tools" component={Tools} />
-            </Switch>
-          </React.Suspense>
-        </Router>
-      </React.Fragment>
-    );
-  }
+        return (
+            <React.Fragment>
+                <Router>
+                    <React.Suspense fallback={<div></div>}>
+                        <Switch>
+                            <Route exact path="/" component={Root}/>
+                            <Route path="/demo/dashboard" component={Dashboard}/>
+                            <Route path="/demo/vehicle-registration" component={VehicleRegistration}/>
+                            <Route path="/demo/register-did" component={RegisterDID}/>
+                            <Route path="/demo/jurisdiction-registration" component={RegisterJurisdiction}/>
+                            <Route path="/demo/docs" component={Documentation}/>
+                            <Route path="/demo/tools" component={Tools}/>
+                        </Switch>
+                    </React.Suspense>
+                </Router>
+            </React.Fragment>
+        );
+    }
 }
 
 export default withRouter(App);

@@ -1,49 +1,47 @@
 .carousel {
     margin-bottom: 26px;
 }
-.carousel-indicators
-{
+
+.carousel-indicators {
     margin-bottom: -26px;
 }
 
 
-.carousel-indicators li
-{
-   background-color: #000;
+.carousel-indicators li {
+    background-color: #000;
     background: blue;
     height: 10px;
     width: 10px;
     border-radius: 2px;
 }
-.carousel-indicators li.active
-{
-   background-color: #000;
+
+.carousel-indicators li.active {
+    background-color: #000;
     background: blue;
     height: 10px;
     width: 10px;
     border-radius: 2px;
     transform: rotate(45deg);
 }
-.leftControl
-{
-    display :none;
+
+.leftControl {
+    display: none;
 }
-.rightControl
-{
-    display :none;
+
+.rightControl {
+    display: none;
 }
-.right 
-{
-    display :none;
+
+.right {
+    display: none;
 }
-.left 
-{
-    display :none;
+
+.left {
+    display: none;
 }
 
 @media only screen and (max-width: 650px) {
-    .carousel-indicators
-    {
+    .carousel-indicators {
         margin-bottom: -0px;
     }
-  }
+}

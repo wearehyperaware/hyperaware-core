@@ -1,7 +1,7 @@
 // React Basic and Bootstrap
-import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Row, Col} from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 // import images
 import trucking from '../../images/trucking_photo.jpeg';
@@ -38,13 +38,13 @@ class Price extends Component {
         this.slider.goToSlide(4);
     };
     autoplay = () => {
-        this.setState({ autoplay: !this.state.autoplay });
+        this.setState({autoplay: !this.state.autoplay});
     };
     _changeIcon = () => {
-        let { leftIcon, rightIcon } = this.state;
-        leftIcon = leftIcon ? undefined : <span className="fa fa-glass" />;
-        rightIcon = rightIcon ? undefined : <span className="fa fa-music" />;
-        this.setState({ leftIcon, rightIcon });
+        let {leftIcon, rightIcon} = this.state;
+        leftIcon = leftIcon ? undefined : <span className="fa fa-glass"/>;
+        rightIcon = rightIcon ? undefined : <span className="fa fa-music"/>;
+        this.setState({leftIcon, rightIcon});
     };
 
     render() {
@@ -56,7 +56,9 @@ class Price extends Component {
                             <Col className="text-center">
                                 <div className="section-title mb-60">
                                     <h4 className="main-title mb-4">Use Cases</h4>
-                                    <p className="text-muted para-desc mb-0 mx-auto">Use <span className="text-primary font-weight-bold">Hyperaware</span> to unlock value and ensure compliance in multiple industries and scenarios.</p>
+                                    <p className="text-muted para-desc mb-0 mx-auto">Use <span
+                                        className="text-primary font-weight-bold">Hyperaware</span> to unlock value and
+                                        ensure compliance in multiple industries and scenarios.</p>
                                 </div>
                             </Col>
                         </Row>
@@ -76,16 +78,18 @@ class Price extends Component {
                                             <div className="bg-light rounded">
                                                 <Row className="align-items-center">
                                                     <Col lg={6}>
-                                                        <img src={maritime} className="rounded img-fluid" alt="" />
+                                                        <img src={maritime} className="rounded img-fluid" alt=""/>
                                                     </Col>
 
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
-                                                            <h4 className="title mb-4">International Maritime Activity</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <h4 className="title mb-4">International Maritime
+                                                                Activity</h4>
+                                                            <p className="text-muted para-desc mb-0">With <span
+                                                                className="text-primary font-weight-bold">Hyperaware</span>,
+                                                                track and securely govern maritime assets - no matter
+                                                                where they are in the world.</p>
+
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -95,16 +99,17 @@ class Price extends Component {
                                             <div className="bg-light rounded">
                                                 <Row className="align-items-center">
                                                     <Col lg={6}>
-                                                        <img src={drones} className="rounded img-fluid" alt="" />
+                                                        <img src={drones} className="rounded img-fluid" alt=""/>
                                                     </Col>
 
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
-                                                            <h4 className="title mb-4">Drone and Airspace Management</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <h4 className="title mb-4">Drone and Airspace
+                                                                Management</h4>
+                                                            <p className="text-muted para-desc mb-0"><span
+                                                                className="text-primary font-weight-bold">Hyperaware</span> ensures
+                                                                that all connected drones and UAVs have access to
+                                                                accurate, up-to-date no-fly zones.</p>
                                                         </div>
                                                     </Col>
                                                 </Row>
@@ -114,16 +119,17 @@ class Price extends Component {
                                             <div className="bg-light rounded">
                                                 <Row className="align-items-center">
                                                     <Col lg={6}>
-                                                        <img src={trucking} className="rounded img-fluid" alt="" />
+                                                        <img src={trucking} className="rounded img-fluid" alt=""/>
                                                     </Col>
 
                                                     <Col lg={6}>
                                                         <div className="section-title p-5">
                                                             <h4 className="title mb-4">International Logistics</h4>
-                                                            <p className="text-muted para-desc mb-0">Placeholder description</p>
-                                                            <div className="mt-4 pt-2">
-                                                                <Link to="#" className="btn btn-outline-primary">Read More <i className="mdi mdi-chevron-right"></i></Link>
-                                                            </div>
+                                                            <p className="text-muted para-desc mb-0">With <span
+                                                                className="text-primary font-weight-bold">Hyperaware</span> customs
+                                                                agencies can control borders more safely and
+                                                                efficiently, and logistics companies know more.</p>
+
                                                         </div>
                                                     </Col>
                                                 </Row>

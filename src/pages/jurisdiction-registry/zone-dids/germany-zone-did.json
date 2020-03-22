@@ -1,0 +1,24 @@
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:0x3985dE49147725D64407d14c3430bd1dC9c11f04",
+  "authentication": [
+    {
+      "id": "did:example:0x3985dE49147725D64407d14c3430bd1dC9c11f04#keys-1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:123456789abcdefghi",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "did:example:0x3985dE49147725D64407d14c3430bd1dC9c11f04#berlin-congestion-zone",
+      "name": "Berlin Congestion Zone",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/berlin.json",
+      "policies": {
+        "beneficiary": "0xC8995cCb6166210Dc954640a2f91887C715BB6CB",
+        "chargePerMinute": 0.35,
+        "currency": "EUR"
+      }
+    }
+  ]
+}
