@@ -16,14 +16,14 @@ import car from '../../images/icon/car.svg'
 import ship from '../../images/icon/ship.svg'
 import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
-import { getStartEnd } from "./getPath";
+import {getStartEnd} from "./getPath";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 let socket
 if (process.env.NODE_ENV === 'production') {
-     socket = connect(window.location.hostname)
+    socket = connect(window.location.hostname)
 } else {
-     socket = connect('http://localhost:3001');
+    socket = connect('http://localhost:3001');
 }
 
 export var map
@@ -55,24 +55,26 @@ export class Dashboard extends React.Component {
 
     async componentDidMount() {
 
-      // Dismiss loading bar
-      document.getElementById("pageLoader").style.display = "block";
-      document.getElementById('topnav').classList.add('bg-white');
-        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+        // Dismiss loading bar
+        document.getElementById("pageLoader").style.display = "block";
+        document.getElementById('topnav').classList.add('bg-white');
+        setTimeout(function () {
+            document.getElementById("pageLoader").style.display = "none";
+        }, 1000);
 
-      var screenWidth = document.documentElement.clientWidth;
-      var screenHeight = document.documentElement.clientHeight;
+        var screenWidth = document.documentElement.clientWidth;
+        var screenHeight = document.documentElement.clientHeight;
 
-      // map loads with different zoom / center depending on the type of device
-      var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
-      var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        // map loads with different zoom / center depending on the type of device
+        var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
+        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
 
-      map = new mapboxgl.Map({
-        container: this.mapContainer,
-        style: 'mapbox://styles/mapbox/light-v10',
-        zoom,
-        center,
-      });
+        map = new mapboxgl.Map({
+            container: this.mapContainer,
+            style: 'mapbox://styles/mapbox/light-v10',
+            zoom,
+            center,
+        });
 
         let totalStaked = await axios.get('/api/getTotalStaked')
         totalStaked = totalStaked.data.totalStaked
@@ -80,9 +82,12 @@ export class Dashboard extends React.Component {
         vehicles = vehicles.data
         let zoneDIDs = await axios.get('/api/getAllPolygons');
         zoneDIDs = zoneDIDs.data;
-        let zones = zoneDIDs.map((did) => {return did.service.map((zone) => {
-            zone.geojson.features[0].properties.did = did.id;
-            return zone})}).flat();
+        let zones = zoneDIDs.map((did) => {
+            return did.service.map((zone) => {
+                zone.geojson.features[0].properties.did = did.id;
+                return zone
+            })
+        }).flat();
         let positions = await axios.get('/api/getAllPoints')
         positions = positions.data
 
@@ -114,22 +119,22 @@ export class Dashboard extends React.Component {
 
         this.loadVehiclesAndZones(map)
 
-      socket.on('updatePositions', async (newPositions, newPointsArrayToUpdateState) => {
-        await this.setState({positions: newPointsArrayToUpdateState})
-        updatePositions(newPositions);
-      })
+        socket.on('updatePositions', async (newPositions, newPointsArrayToUpdateState) => {
+            await this.setState({positions: newPointsArrayToUpdateState})
+            updatePositions(newPositions);
+        })
 
-      map.on('move', () => {
-        this.updateMap();
-      })
+        map.on('move', () => {
+            this.updateMap();
+        })
 
-    socket.on('fetchNewPositionsFromServerResponse', (message, slashHash) => {
-        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash)
-    })
+        socket.on('fetchNewPositionsFromServerResponse', (message, slashHash) => {
+            this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash)
+        })
 
-  }
+    }
 
-     updateMap = () => {
+    updateMap = () => {
         // d3Projection = getD3();
         // path.projection(d3Projection)
 
@@ -147,10 +152,10 @@ export class Dashboard extends React.Component {
             })
     }
 
-     ellipsisText = (s, width) => {
-         const NARROW_WIDTH_HOME = 1279;
-         const NARROW_WIDTH = 768;
-         const MIN_SUB_LENGTH = 6;
+    ellipsisText = (s, width) => {
+        const NARROW_WIDTH_HOME = 1279;
+        const NARROW_WIDTH = 768;
+        const MIN_SUB_LENGTH = 6;
         if (s.length >= 60) {
             const length = s.length;
             const newLen = Math.floor(width / length) - 5;
@@ -172,22 +177,25 @@ export class Dashboard extends React.Component {
         return s;
     }
 
-    addNotification = (type, did, enterTime, exitTime, hash, rate=0.007) => {
-         const TIME_MULTIPLIER = 3.5
-         let timeElapsedInMinutes
-         if (type === 'exit') {
-             timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
+    addNotification = (type, did, enterTime, exitTime, hash, rate = 0.007) => {
+        const TIME_MULTIPLIER = 3.5
+        let timeElapsedInMinutes
+        if (type === 'exit') {
+            timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
 
-         }
+        }
         var color = type === 'exit' ? "#2f55d4 !important" : "#6c757d"
         var ticker = d3.selectAll('#ticker');
-        var notification_types = { enter: { alert: '! Entering', message: 'entering' }, exit: { alert: '✓ Leaving', message: 'exiting' } };
+        var notification_types = {
+            enter: {alert: '! Entering', message: 'entering'},
+            exit: {alert: '✓ Leaving', message: 'exiting'}
+        };
 
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
         html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle has been charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> 
         (Rate: ${rate} / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
 
-         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+        ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
 
     flyToZone = (geojson) => {
@@ -231,48 +239,50 @@ export class Dashboard extends React.Component {
 
         })
 
-            // Set up svg canvas
-            d3.select('#overlay').append('svg');
+        // Set up svg canvas
+        d3.select('#overlay').append('svg');
 
-            const { positions } = this.state
+        const {positions} = this.state
 
-            // Randomly assign a vehicle to a route
-            let mapping = {}
-            let seen = {}
-            for (let i in positions[0]) {
-                let vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
-                while (vehicleIndex in seen) {
-                    vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
-                }
-                seen[vehicleIndex] = true
-                mapping[i] = vehicleIndex
+        // Randomly assign a vehicle to a route
+        let mapping = {}
+        let seen = {}
+        for (let i in positions[0]) {
+            let vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
+            while (vehicleIndex in seen) {
+                vehicleIndex = Math.floor(Math.random() * this.state.vehicles.length)
             }
+            seen[vehicleIndex] = true
+            mapping[i] = vehicleIndex
+        }
 
-            // Add each vehicle to its assigned route
+        // Add each vehicle to its assigned route
 
-            /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
-            * to have multiple routes and the. */
+        /*  Make sure that we only generate one route per vehicle, because we don't allow one vehicle
+        * to have multiple routes. */
 
-            for (let i = 0; i < positions.length; i++) {
-                for (let j = 0; j < positions[0].length; j++) {
-                    positions[i][j] = {...positions[i][j], vehicle: {within: false, ...this.state.vehicles[mapping[j]]}}
-                }
+        for (let i = 0; i < positions.length; i++) {
+            for (let j = 0; j < positions[0].length; j++) {
+                positions[i][j] = {...positions[i][j], vehicle: {within: false, ...this.state.vehicles[mapping[j]]}}
             }
+        }
 
-            // Render each vehicle in its initial position
-            for (let i in positions[0]) {
-              console.log(positions[0][i])
-                makeCar(positions[0][i].coords, positions[0][i].vehicle)
-            }
+        // Render each vehicle in its initial position
+        for (let i in positions[0]) {
+            console.log(positions[0][i])
+            makeCar(positions[0][i].coords, positions[0][i].vehicle)
+        }
 
-            let turfPolygons = geojsonMerge.merge(this.state.zones.map((zone) => {return zone.geojson}));
-            // let bbox = turf.bbox(turfPolygons);
-            map.fitBounds(turf.bbox(turfPolygons), {
-                top: 150,
-                bottom: 150,
-                left: 100,
-                right: 800
-            });
+        let turfPolygons = geojsonMerge.merge(this.state.zones.map((zone) => {
+            return zone.geojson
+        }));
+        // let bbox = turf.bbox(turfPolygons);
+        map.fitBounds(turf.bbox(turfPolygons), {
+            top: 150,
+            bottom: 150,
+            left: 100,
+            right: 800
+        });
 
     }
 
@@ -298,7 +308,7 @@ export class Dashboard extends React.Component {
 
     }
 
-     getRandomColor = () => {
+    getRandomColor = () => {
         var colors = d3.scale.category10().range();
         var max = colors.length;
         return colors[Math.floor(Math.random() * max)];
@@ -309,7 +319,7 @@ export class Dashboard extends React.Component {
         let counter = 0
         vehicles.forEach((vehicle) => {
             if (!(vehicle.creator in seen)) {
-                seen[vehicle.creator]= true
+                seen[vehicle.creator] = true
                 counter += 1
             }
         })
@@ -327,21 +337,12 @@ export class Dashboard extends React.Component {
         }
     }
 
-     handleAdvance = (e) => {
+    handleAdvance = (e) => {
         e.preventDefault()
-
-        // this.state.timestep += 1;
-
-        // This hardcodes advance into the browser - there is no interaction
-        // with the server ... this is NOT reflecting if the point is
-        // inside a Zone in the browser
-        // updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
-
         socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zoneDIDs);
-
     }
 
-     truncateDID = (did) => {
+    truncateDID = (did) => {
         return did.substr(0, 15) + "..." + did.substr(42, 8)
     }
 
@@ -349,14 +350,24 @@ export class Dashboard extends React.Component {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightZonesCard === 'auto' ? '0%' : 'auto'
-        this.setState({heightZonesCard: height, zonesChevron: chevronIcon, heightVehiclesCard: '0%', vehiclesChevron: 'mdi-chevron-double-down'})
+        this.setState({
+            heightZonesCard: height,
+            zonesChevron: chevronIcon,
+            heightVehiclesCard: '0%',
+            vehiclesChevron: 'mdi-chevron-double-down'
+        })
     }
 
     expandVehiclesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.vehiclesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
         let height = this.state.heightVehiclesCard === 'auto' ? '0%' : 'auto'
-        this.setState({heightVehiclesCard: height, vehiclesChevron: chevronIcon, heightZonesCard: '0%', zonesChevron: 'mdi-chevron-double-down'})
+        this.setState({
+            heightVehiclesCard: height,
+            vehiclesChevron: chevronIcon,
+            heightZonesCard: '0%',
+            zonesChevron: 'mdi-chevron-double-down'
+        })
     }
 
     render() {
@@ -365,16 +376,19 @@ export class Dashboard extends React.Component {
                 <div id='sidebar' className='sidebar'>
                     <div className='clearfix'>
                         <div className='screen'>
-                            <div className='metriclabel small space-top2 space-bottom2' style={{color: '#363636'}}>Notifications</div>
+                            <div className='metriclabel small space-top2 space-bottom2'
+                                 style={{color: '#363636'}}>Notifications
+                            </div>
                             <div className='ticker dark small text-left' id='ticker'>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className='d-flex justify-content-center dashboard-main-buttons' >
+                <div className='d-flex justify-content-center dashboard-main-buttons'>
                     <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
-                    <button className='btn btn-primary mx-2' onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
+                    <button className='btn btn-primary mx-2'
+                            onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
                 </div>
 
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
@@ -382,163 +396,196 @@ export class Dashboard extends React.Component {
                 </div>
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
-                    <Col lg={7} style={{width:'550px', marginTop: '110px', marginLeft: '72.5%'}}>
+                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '72.5%'}}>
 
-                        <div className="studio-home bg-white shadow mt-4 " style={{paddingTop:'16px', paddingLeft: '8px'}}>
-                            <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
-                            <div className='row d-flex justify-content-center'>
-                                <div className='col-6'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        {this.state.zoneDIDs.length}
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Jurisdictions.
-                                    </div>
-                                </div>
-                                <div className='col-6 text-center'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        51
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Vehicles in zones.
-                                    </div>
+                    <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
+                        <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
+                        <div className='row d-flex justify-content-center'>
+                            <div className='col-6'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    {this.state.zoneDIDs.length}
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Jurisdictions.
                                 </div>
                             </div>
-                            <div className='row'>
-                                <div className='col-6'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        { this.state.zones.length }
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Policy Zones.
-                                    </div>
-                                </div>
-                                <div className='col-6'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        £1945
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Charges Collected Today.
-                                    </div>
+                            <div className='col-6 text-center'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    51
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Vehicles in zones.
                                 </div>
                             </div>
-                            <AnimateHeight duration={500} height={this.state.heightZonesCard}>
-                                <div style={{height:300, overflowY: "auto"}}>
-                                    {
-                                        !this.state.zones ? <div></div> : (
+                        </div>
+                        <div className='row'>
+                            <div className='col-6'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    {this.state.zones.length}
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Policy Zones.
+                                </div>
+                            </div>
+                            <div className='col-6'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    £1945
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Charges Collected Today.
+                                </div>
+                            </div>
+                        </div>
+                        <AnimateHeight duration={500} height={this.state.heightZonesCard}>
+                            <div style={{height: 300, overflowY: "auto"}}>
+                                {
+                                    !this.state.zones ? <div></div> : (
 
-                                            this.state.zones.map((zone) => {
-                                                var zoneDID = this.state.zoneDIDs.find((didDoc) => {return didDoc.id == zone.geojson.features[0].properties.did})
-                                                // set event listener to zoom to zone on click ...
-                                                    return (
-                                                        <div /*onClick={ this.flyToZone(zone.geojson) }*/ className="zone-card event-schedule d-flex bg-white rounded p-3 border" key={zone.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
-                                                        <div className="float-left">
-                                                            <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                                <li className="day font-weight-bold mb-2">UK</li> {/* <- fix this */}
-                                                            </ul>
-                                                        </div>
-                                                        <div className="content">
-                                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>{ zone.name }</h4>
-                                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>{ zone.id }</div>
-                                                            <p className="text-muted location-time">
-                                                                <span className="text-dark h6">Beneficiary: </span><a target="_blank" href= {"https://etherscan.io/address/" + zone.policies.beneficiary}> { this.truncateDID(zone.policies.beneficiary) }</a>
-                                                                <br />
-                                                                <span className="text-dark h6">Charge: </span>{ zone.policies.chargePerMinute + " " + zone.policies.currency } / minute
-                                                                <br />
-                                                                <span className="text-dark h6">Zone Geometry: </span><a target="_blank" href= { zone.serviceEndpoint}> { this.truncateDID(zone.serviceEndpoint) }</a>
-                                                            </p>
-
-                                                        </div>
+                                        this.state.zones.map((zone) => {
+                                            var zoneDID = this.state.zoneDIDs.find((didDoc) => {
+                                                return didDoc.id == zone.geojson.features[0].properties.did
+                                            })
+                                            // set event listener to zoom to zone on click ...
+                                            return (
+                                                <div /*onClick={ this.flyToZone(zone.geojson) }*/
+                                                    className="zone-card event-schedule d-flex bg-white rounded p-3 border"
+                                                    key={zone.id} style={{
+                                                    marginLeft: '40px',
+                                                    marginTop: '25px',
+                                                    marginRight: '20px'
+                                                }}>
+                                                    <div className="float-left">
+                                                        <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
+                                                            <li className="day font-weight-bold mb-2">UK</li>
+                                                            {/* <- fix this */}
+                                                        </ul>
                                                     </div>
-                                                    )
-                                                })
+                                                    <div className="content">
+                                                        <h4 className="text-dark title"
+                                                            style={{marginBottom: '0px'}}>{zone.name}</h4>
+                                                        <div style={{
+                                                            fontSize: '10px',
+                                                            marginBottom: '18px'
+                                                        }}>{zone.id}</div>
+                                                        <p className="text-muted location-time">
+                                                            <span className="text-dark h6">Beneficiary: </span><a
+                                                            target="_blank"
+                                                            href={"https://etherscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
+                                                            <br/>
+                                                            <span
+                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " " + zone.policies.currency} /
+                                                            minute
+                                                            <br/>
+                                                            <span className="text-dark h6">Zone Geometry: </span><a
+                                                            target="_blank"
+                                                            href={zone.serviceEndpoint}> {this.truncateDID(zone.serviceEndpoint)}</a>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
 
                                     )}
-                                </div>
+                            </div>
 
-                            </AnimateHeight>
-                        </div>
-                        <div className="container-fluid">
-                            <Row>
-                                <div className="home-shape-arrow">
-                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
-                                    {/* eslint-disable jsx-a11y/anchor-is-valid */}
-                                    <a href="" className="mouse-down" onClick={this.expandZonesCard}><i className={`mdi ${this.state.zonesChevron} arrow-icon mover text-dark h5`}></i></a>
-                                </div>
-                            </Row>
-                        </div>
-                    </Col>
-                    <Col lg={7} style={{width:'550px', marginLeft: '72.5%'}}>
-                        <div className="studio-home bg-white shadow mt-5 " style={{paddingTop:'8px', paddingLeft: '8px'}}>
-                            <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
-                            <div className='row d-flex justify-content-center'>
-                                <div className='col-6'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        {this.state.vehicles ? this.state.vehicles.length : "..."}
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Vehicles Registered.
-                                    </div>
-                                </div>
-                                <div className='col-6 text-center'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Entities.
-                                    </div>
+                        </AnimateHeight>
+                    </div>
+                    <div className="container-fluid">
+                        <Row>
+                            <div className="home-shape-arrow">
+                                <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block"/>
+                                {/* eslint-disable jsx-a11y/anchor-is-valid */}
+                                <a href="" className="mouse-down" onClick={this.expandZonesCard}><i
+                                    className={`mdi ${this.state.zonesChevron} arrow-icon mover text-dark h5`}></i></a>
+                            </div>
+                        </Row>
+                    </div>
+                </Col>
+                <Col lg={7} style={{width: '550px', marginLeft: '72.5%'}}>
+                    <div className="studio-home bg-white shadow mt-5 " style={{paddingTop: '8px', paddingLeft: '8px'}}>
+                        <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span>
+                        </h2>
+                        <div className='row d-flex justify-content-center'>
+                            <div className='col-6'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    {this.state.vehicles ? this.state.vehicles.length : "..."}
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Vehicles Registered.
                                 </div>
                             </div>
-                            <div className='row'>
-                                <div className='col'>
-                                    <h2 className='row heading text-primary d-flex justify-content-center'>
-                                        {this.state.totalStaked} IOTX
-                                    </h2>
-                                    <div className='row d-flex justify-content-center'>
-                                        Staked in Contract.
-                                    </div>
+                            <div className='col-6 text-center'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Entities.
                                 </div>
                             </div>
-                            <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
-                                <div style={{height:300, overflowY: "auto"}}>
-                                    {!this.state.vehicles ? <div></div> : (
-                                        this.state.vehicles.map((vehicle) => { return (
-                                            <div className="event-schedule d-flex bg-white rounded p-3 border" key={vehicle.id} style={{marginLeft: '40px', marginTop:'25px', marginRight: '20px'}}>
+                        </div>
+                        <div className='row'>
+                            <div className='col'>
+                                <h2 className='row heading text-primary d-flex justify-content-center'>
+                                    {this.state.totalStaked} IOTX
+                                </h2>
+                                <div className='row d-flex justify-content-center'>
+                                    Staked in Contract.
+                                </div>
+                            </div>
+                        </div>
+                        <AnimateHeight duration={500} height={this.state.heightVehiclesCard}>
+                            <div style={{height: 300, overflowY: "auto"}}>
+                                {!this.state.vehicles ? <div></div> : (
+                                    this.state.vehicles.map((vehicle) => {
+                                        return (
+                                            <div className="event-schedule d-flex bg-white rounded p-3 border"
+                                                 key={vehicle.id}
+                                                 style={{marginLeft: '40px', marginTop: '25px', marginRight: '20px'}}>
                                                 <div className="float-left">
                                                     <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                         <li className="day font-weight-bold mb-2">
                                                             <div className="image position-relative d-inline-block">
-                                                                <img src={this.getVehicleIcon(vehicle.vehicleType)} alt="" style={{height: '40px', width: '40px'}}/>
+                                                                <img src={this.getVehicleIcon(vehicle.vehicleType)}
+                                                                     alt="" style={{height: '40px', width: '40px'}}/>
                                                             </div>
                                                         </li>
                                                     </ul>
                                                 </div>
-                                            <div className="content">
-                                            <h4 className="text-dark title" style={{marginBottom: '0px'}}>ID: {this.truncateDID(vehicle.id)}</h4>
-                                            <div style={{fontSize: '10px', marginBottom: '18px'}}>Owner: {this.truncateDID(vehicle.creator)}</div>
-                                            <p className="text-muted location-time">
-                                                <span className="text-dark h6">Registered: </span>{new Date(vehicle.created).toLocaleString()}
-                                                <br />
-                                                <span className="text-dark h6">Vehicle Type: </span>{vehicle.vehicleType}
-                                                <br />
-                                                <span className="text-dark h6">IMEI: </span>{vehicle.imei}
-                                            </p>
+                                                <div className="content">
+                                                    <h4 className="text-dark title"
+                                                        style={{marginBottom: '0px'}}>ID: {this.truncateDID(vehicle.id)}</h4>
+                                                    <div style={{
+                                                        fontSize: '10px',
+                                                        marginBottom: '18px'
+                                                    }}>Owner: {this.truncateDID(vehicle.creator)}</div>
+                                                    <p className="text-muted location-time">
+                                                        <span
+                                                            className="text-dark h6">Registered: </span>{new Date(vehicle.created).toLocaleString()}
+                                                        <br/>
+                                                        <span
+                                                            className="text-dark h6">Vehicle Type: </span>{vehicle.vehicleType}
+                                                        <br/>
+                                                        <span className="text-dark h6">IMEI: </span>{vehicle.imei}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            </div>
-                                        )})
-                                    )}
-                                </div>
-                            </AnimateHeight>
-                        </div>
-                        <div className="container-fluid">
-                            <Row>
-                                <div className="home-shape-arrow">
-                                    <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block" />
-                                    <a className="mouse-down" onClick={this.expandVehiclesCard}><i className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>
-                                </div>
-                            </Row>
-                        </div>
-                    </Col>
+                                        )
+                                    })
+                                )}
+                            </div>
+                        </AnimateHeight>
+                    </div>
+                    <div className="container-fluid">
+                        <Row>
+                            <div className="home-shape-arrow">
+                                <img src={arrowBottom} alt="Hyperaware" className="img-fluid mx-auto d-block"/>
+                                <a className="mouse-down" onClick={this.expandVehiclesCard}><i
+                                    className={`mdi ${this.state.vehiclesChevron} arrow-icon mover text-dark h5`}></i></a>
+                            </div>
+                        </Row>
+                    </div>
+                </Col>
             </div>
         )
     }

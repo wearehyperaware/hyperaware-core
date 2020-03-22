@@ -4,7 +4,7 @@ SecureWorker.importScripts('bundled-enclave-imports.js')
 
 SecureWorker.onMessage(function (message) {
     if (message.type === 'pointInPolygonCheck') {
-        let { points, dids, counter } = message
+        let {points, dids, counter} = message
         let index = counter % points.length
         let newPositions = points[index]
 
@@ -25,9 +25,11 @@ SecureWorker.onMessage(function (message) {
 
                     SecureWorker.postMessage({
                         type: 'enteringNotification',
-                        notification: {vehicleDetails: newPosition.vehicle,
-                        jurisdictionAddress: beneficiary,
-                        type: 'enter'}
+                        notification: {
+                            vehicleDetails: newPosition.vehicle,
+                            jurisdictionAddress: beneficiary,
+                            type: 'enter'
+                        }
                     })
 
                     newPosition.owner = dids[i].service[0].name
@@ -41,9 +43,11 @@ SecureWorker.onMessage(function (message) {
                     newPosition.vehicle['exitTime'] = new Date()
                     SecureWorker.postMessage({
                         type: 'exitingNotification',
-                        notification: {vehicleDetails: newPosition.vehicle,
-                        jurisdictionAddress: beneficiary,
-                        type: 'exit'}
+                        notification: {
+                            vehicleDetails: newPosition.vehicle,
+                            jurisdictionAddress: beneficiary,
+                            type: 'exit'
+                        }
                     })
                 }
             }
@@ -56,7 +60,7 @@ SecureWorker.onMessage(function (message) {
             // Loop through entire points array and overwrite vehicle info so that at every point in the array we know
             // that the vehicle was previously detected as inside (or outside).
             for (let r in points) {
-                for (let s in points[index+1]) {
+                for (let s in points[index + 1]) {
                     if (points[r][s].vehicle.id === newPositions[i].vehicle.id) {
                         points[r][s].vehicle = newPositions[i].vehicle
                     }
@@ -65,7 +69,8 @@ SecureWorker.onMessage(function (message) {
         }
 
         SecureWorker.postMessage(
-            {   type: 'updatePositions',
+            {
+                type: 'updatePositions',
                 newPositions,
                 points
             })

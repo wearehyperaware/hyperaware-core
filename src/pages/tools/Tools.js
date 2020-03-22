@@ -22,7 +22,9 @@ export class Tools extends React.Component {
     componentDidMount() {
         // Dismiss loading bar
         document.getElementById("pageLoader").style.display = "block";
-        setTimeout(function () { document.getElementById("pageLoader").style.display = "none"; }, 1000);
+        setTimeout(function () {
+            document.getElementById("pageLoader").style.display = "none";
+        }, 1000);
 
         // Navbar scrolling
         document.body.classList = ""
@@ -32,13 +34,10 @@ export class Tools extends React.Component {
 
     scrollNavigation = () => {
         var doc = document.documentElement;
-        var top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-        if(top > 80)
-        {
+        var top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+        if (top > 80) {
             document.getElementById('topnav').classList.add('nav-sticky');
-        }
-        else
-        {
+        } else {
             document.getElementById('topnav').classList.remove('nav-sticky');
         }
     }
@@ -69,60 +68,63 @@ export class Tools extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <Topbar />
+                <Topbar/>
                 <div className='container'>
                     <div className='card' style={{marginTop: '100px', marginBottom: '3rem'}}>
                         <div className='card-header'>Create IoTeX Accounts
                         </div>
                         <div className='card-body'>
                             <form className='form-group'>
-                                    <div className="input-group mb-3">
-                                        <select className="custom-select form-control" id="inputGroupSelect01" onChange={e => this.setState({accountsToCreate: e.target.value})}>
-                                            <option defaultValue='1' >Create 1 account</option>
-                                            <option value="2">Create 2 accounts</option>
-                                            <option value="3">Create 3 accounts</option>
-                                            <option value="4">Create 4 accounts</option>
-                                            <option value="5">Create 5 accounts</option>
-                                        </select>
-                                        <div className="input-group-append">
-                                            <button className="btn btn-primary submitBnt"
-                                                   htmlFor="inputGroupSelect01" onClick={this.handleCreateAccounts}>Create</button>
-                                        </div>
+                                <div className="input-group mb-3">
+                                    <select className="custom-select form-control" id="inputGroupSelect01"
+                                            onChange={e => this.setState({accountsToCreate: e.target.value})}>
+                                        <option defaultValue='1'>Create 1 account</option>
+                                        <option value="2">Create 2 accounts</option>
+                                        <option value="3">Create 3 accounts</option>
+                                        <option value="4">Create 4 accounts</option>
+                                        <option value="5">Create 5 accounts</option>
+                                    </select>
+                                    <div className="input-group-append">
+                                        <button className="btn btn-primary submitBnt"
+                                                htmlFor="inputGroupSelect01" onClick={this.handleCreateAccounts}>Create
+                                        </button>
                                     </div>
-                                    <div>
-                                        <p>Generate IoTeX testnet accounts to register DIDs and Vehicles with. Each account generated is automatically sent 2 IOTX.</p>
-                                    </div>
-                                    <div className="col">
-                                        <AnimateHeight duration={500} height={this.state.height}>
-                                            {
-                                                <table className="table">
-                                                    <thead className="thead-dark">
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Address</th>
-                                                        <th scope="col">Private Key</th>
+                                </div>
+                                <div>
+                                    <p>Generate IoTeX testnet accounts to register DIDs and Vehicles with. Each account
+                                        generated is automatically sent 2 IOTX.</p>
+                                </div>
+                                <div className="col">
+                                    <AnimateHeight duration={500} height={this.state.height}>
+                                        {
+                                            <table className="table">
+                                                <thead className="thead-dark">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Address</th>
+                                                    <th scope="col">Private Key</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {this.state.createdAccounts.map((currentElement, i) => (
+                                                    <tr key={currentElement.address}>
+                                                        <th scope="row">{i + 1}</th>
+                                                        <td>{currentElement.address}</td>
+                                                        <td>{currentElement.privateKey}</td>
                                                     </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    {this.state.createdAccounts.map((currentElement, i) => (
-                                                        <tr key={currentElement.address}>
-                                                            <th scope="row">{i + 1}</th>
-                                                            <td>{currentElement.address}</td>
-                                                            <td>{currentElement.privateKey}</td>
-                                                        </tr>
-                                                    ))
-                                                    }
-                                                    </tbody>
-                                                </table>
-                                            }
-                                        </AnimateHeight>
-                                    </div>
+                                                ))
+                                                }
+                                                </tbody>
+                                            </table>
+                                        }
+                                    </AnimateHeight>
+                                </div>
                             </form>
                         </div>
                     </div>
 
                 </div>
-                <Footer />
+                <Footer/>
             </React.Fragment>
         )
     }

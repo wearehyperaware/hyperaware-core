@@ -1,6 +1,6 @@
 // React Basic and Bootstrap
-import React, { Component } from 'react';
-import {  Col } from 'reactstrap';
+import React, {Component} from 'react';
+import {Col} from 'reactstrap';
 
 // Import Images 
 import client1 from '../../images/client/1.png';
@@ -14,37 +14,36 @@ class Partner extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-        }
+        this.state = {}
     }
 
     render() {
         return (
             <React.Fragment>
-                            <Col lg={2} md={2} className="col-6 text-center">
-                                <img src={client1} height="70" alt="" />
-                            </Col>
+                <Col lg={2} md={2} className="col-6 text-center">
+                    <img src={client1} height="70" alt=""/>
+                </Col>
 
-                            <Col lg={2} md={2}  className="col-6 text-center">
-                                <img src={client2} height="70" alt="" />
-                            </Col>
+                <Col lg={2} md={2} className="col-6 text-center">
+                    <img src={client2} height="70" alt=""/>
+                </Col>
 
-                            <Col lg={2} md={2}  className="col-6 text-center mt-4 mt-sm-0">
-                                <img src={client3} height="70" alt="" />
-                            </Col>
+                <Col lg={2} md={2} className="col-6 text-center mt-4 mt-sm-0">
+                    <img src={client3} height="70" alt=""/>
+                </Col>
 
-                            <Col lg={2} md={2}  className="col-6 text-center mt-4 mt-sm-0">
-                                <img src={client4} height="70" alt="" />
-                            </Col>
+                <Col lg={2} md={2} className="col-6 text-center mt-4 mt-sm-0">
+                    <img src={client4} height="70" alt=""/>
+                </Col>
 
-                            <Col lg={2} md={2}  className="col-6 text-center mt-4 mt-sm-0">
-                                <img src={client5} height="70" alt="" />
-                            </Col>
+                <Col lg={2} md={2} className="col-6 text-center mt-4 mt-sm-0">
+                    <img src={client5} height="70" alt=""/>
+                </Col>
 
-                            <Col lg={2} md={2}  className="col-6 text-center mt-4 mt-sm-0">
-                                <img src={client6} height="70" alt="" />
-                            </Col>
-                   </React.Fragment>
+                <Col lg={2} md={2} className="col-6 text-center mt-4 mt-sm-0">
+                    <img src={client6} height="70" alt=""/>
+                </Col>
+            </React.Fragment>
         );
     }
 }
