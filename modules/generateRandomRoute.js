@@ -4,10 +4,8 @@ var axios = require('axios');
 var geojsonTidy = require('@mapbox/geojson-tidy');
 
 module.exports = async (polygon, token) => {
-  console.log(polygon)
 
   var endpoints = generateRandomPoints(polygon).join(';');
-  console.log(endpoints)
   var directions_url = 'https://api.tiles.mapbox.com/v4/directions/mapbox.driving/' + endpoints + '.json?access_token=' + token;
 
   let route = await axios.get(directions_url)
@@ -30,10 +28,11 @@ module.exports = async (polygon, token) => {
     ]
   };
 
-
+  let max = 15
+  let min = 8
 
   return geojsonTidy.tidy(feat, {
-    maximumPoints: 10
+    maximumPoints: 10 // Math.floor(Math.random() * (max - min + 1)) + min
   }).features[0]
 
 
@@ -44,7 +43,6 @@ module.exports = async (polygon, token) => {
 
 
 function generateRandomPoints(polygon) {
-  console.log(polygon)
   let buffer = polygon.geometry.coordinates // turf.buffer(polygon.geometry.coordinates, 10, {units: 'kilometers'}).features[0] // <- something weird going on there
 
   let border1 = turf.linestring(

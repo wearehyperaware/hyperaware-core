@@ -123,8 +123,8 @@ export class Dashboard extends React.Component {
         this.updateMap();
       })
 
-    socket.on('fetchNewPositionsFromServerResponse', (message) => {
-        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, message.slashHash)
+    socket.on('fetchNewPositionsFromServerResponse', (message, slashHash) => {
+        this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash)
     })
 
   }
@@ -330,14 +330,14 @@ export class Dashboard extends React.Component {
      handleAdvance = (e) => {
         e.preventDefault()
 
-        this.state.timestep += 1;
+        // this.state.timestep += 1;
 
         // This hardcodes advance into the browser - there is no interaction
         // with the server ... this is NOT reflecting if the point is
         // inside a Zone in the browser
-        updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
+        // updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
 
-        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
+        socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zoneDIDs);
 
     }
 

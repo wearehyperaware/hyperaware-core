@@ -77,32 +77,29 @@ io.on('connection', async (client) => {
 
   let counter = 1;
   // When we receive a request for new points, send the points and polygons into the enclave and run the check
-  client.on('fetchNewPositionsFromServer', function(points) {
-    worker.postMessage({
+  client.on('fetchNewPositionsFromServer', function(points, dids) {
+      worker.postMessage({
       type: 'pointInPolygonCheck',
       points,
-      turfPolygons,
-      samplePolygons,
+      dids,
       counter
     })
     counter += 1;
 
-
     // We'll add the non-enclave tests and event emission here
-
-
 
   });
 
   // Listen for results from enclave
-  worker.onMessage((message) => {
+  worker.onMessage(async (message) => {
     if (message.type === 'enteringNotification') {
       // If enclave detects a vehicle entering a zone, send that to the client
       client.emit('fetchNewPositionsFromServerResponse', message.notification)
     } else if (message.type === 'exitingNotification') {
       // If enclave detects a vehicle exiting a zone, send that to the client and slash vehicle
-      // SLASH HERE //
-      client.emit('fetchNewPositionsFromServerResponse', message.notification)
+
+      let hash = await slash(message.notification.vehicleDetails.id)
+      client.emit('fetchNewPositionsFromServerResponse', message.notification, hash)
     } else if (message.type === 'updatePositions') {
       // When enclave finishes, get the new positions updated vehicle info and send to client
       client.emit('updatePositions', message.newPositions, message.points)
@@ -130,7 +127,6 @@ server.get('/api/getAllVehicles', async (req, res) => {
     numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
     let registeredVehicles = []
     // Iterate through the registered vehicles array and return each string
-    console.log(numberOfRegisteredVehicles, "vehicles NOW")
     for (let i = 0; i < numberOfRegisteredVehicles; i++) {
       const vehicleID = await antenna.iotx.readContractByMethod({
           from: "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld",
@@ -159,7 +155,6 @@ server.get('/api/getAllVehicles', async (req, res) => {
         ret.push(doc.data)
       }
     }
-    console.log(ret)
     res.send(ret)
   } catch (err) {
     console.log(err)
