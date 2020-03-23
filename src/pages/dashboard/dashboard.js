@@ -321,17 +321,37 @@ export class Dashboard extends React.Component {
         return colors[Math.floor(Math.random() * max)];
     }
 
-    getEntityCount = (vehicles) => {
-        let seen = {}
-        let counter = 0
-        vehicles.forEach((vehicle) => {
-            if (!(vehicle.creator in seen)) {
-                seen[vehicle.creator] = true
-                counter += 1
+    // getEntityCount = (vehicles) => {
+    //     let seen = {}
+    //     let counter = 0
+    //     vehicles.forEach((vehicle) => {
+    //         if (!(vehicle.creator in seen)) {
+    //             seen[vehicle.creator] = true
+    //             counter += 1
+    //         }
+    //     })
+    //     return counter
+    // }
+
+    getCtVehiclesInZones = () => {
+
+        if (this.state.positions.length > 0) {
+
+            let ct = 0;
+            for (let v of this.state.positions[this.state.currentPos]) {
+
+                if (v.vehicle.within) {
+                    ct += 1;
+                }
             }
-        })
-        return counter
+            return ct;
+
+        } else {
+            return '...';
+        }
     }
+
+
 
     getVehicleIcon = (vehicleType) => {
         let type = vehicleType.toLowerCase()
@@ -430,7 +450,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    51
+                                    { this.getCtVehiclesInZones() }
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Vehicles in zones.
@@ -536,7 +556,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
+                                    {this.state.zoneDIDs ? this.state.zoneDIDs.length : "..."}
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Entities.
