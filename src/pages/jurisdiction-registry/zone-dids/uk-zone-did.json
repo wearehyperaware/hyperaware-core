@@ -1,0 +1,44 @@
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:123456789abcdefghi",
+  "authentication": [
+    {
+      "id": "did:example:123456789abcdefghi#keys-1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:123456789abcdefghi",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "did:example:123456789abcdefghi#london-congestion-zone",
+      "name": "London Congestion Zone",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/london-congestion-zone.json",
+      "policies": {
+        "beneficiary": "0x058462918eE04F48F8c1C6d717F700620B9d2bb2",
+        "chargePerMinute": 0.15,
+        "currency": "GBP"
+      }
+    },
+    {
+      "id": "did:example:123456789abcdefghi#heathrow-restricted-airspace",
+      "name": "Heathrow Restricted Airspace",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/heathrow-restricted-airspace.json",
+      "policies": {
+        "beneficiary": "0x058462918eE04F48F8c1C6d717F700620B9d2bb2",
+        "chargePerMinute": 0.1,
+        "currency": "GBP"
+      }
+    },
+    {
+      "id": "did:example:123456789abcdefghi#port-of-southampton",
+      "name": "Port of Southampton",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/fetch-geometries/data/zones/port-of-southampton.json",
+      "policies": {
+        "beneficiary": "0x058462918eE04F48F8c1C6d717F700620B9d2bb2",
+        "chargePerMinute": 1.0,
+        "currency": "GBP"
+      }
+    }
+  ]
+}

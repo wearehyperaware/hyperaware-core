@@ -1,6 +1,6 @@
 // React Basic and Bootstrap
-import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
+import React, {Component} from 'react';
+import {Row, Col} from 'reactstrap';
 
 // RBCarousel Declare
 import RBCarousel from "react-bootstrap-carousel";
@@ -73,36 +73,33 @@ class Testi extends Component {
         this.slider.goToSlide(4);
     };
     autoplay = () => {
-        this.setState({ autoplay: !this.state.autoplay });
+        this.setState({autoplay: !this.state.autoplay});
     };
     _changeIcon = () => {
-        let { leftIcon, rightIcon } = this.state;
-        leftIcon = leftIcon ? undefined : <span className="fa fa-glass" />;
-        rightIcon = rightIcon ? undefined : <span className="fa fa-music" />;
-        this.setState({ leftIcon, rightIcon });
+        let {leftIcon, rightIcon} = this.state;
+        leftIcon = leftIcon ? undefined : <span className="fa fa-glass"/>;
+        rightIcon = rightIcon ? undefined : <span className="fa fa-music"/>;
+        this.setState({leftIcon, rightIcon});
     };
 
     componentDidMount() {
         window.addEventListener("resize", this.updateWindowSize);
         this.updateWindowSize();
     }
-    
+
     // Make sure to remove the DOM listener when the component is unmounted.
     componentWillUnmount() {
-        window.removeEventListener("resize",this.updateWindowSize);
-     }
+        window.removeEventListener("resize", this.updateWindowSize);
+    }
 
-      
-   
+
     updateWindowSize = () => {
         if (window.outerWidth >= 1230) {
-            this.setState({ itemCount: 3, cols: 4 });
-        }
-        else if (window.outerWidth >= 970 && window.outerWidth < 1230) {
-            this.setState({ itemCount: 2, cols: 6 });
-        }
-        else if (window.outerWidth <= 970) {
-            this.setState({ itemCount: 1, cols: 12 });
+            this.setState({itemCount: 3, cols: 4});
+        } else if (window.outerWidth >= 970 && window.outerWidth < 1230) {
+            this.setState({itemCount: 2, cols: 6});
+        } else if (window.outerWidth <= 970) {
+            this.setState({itemCount: 1, cols: 12});
         }
     }
 
@@ -125,7 +122,7 @@ class Testi extends Component {
                 <div className={`col-md-${this.state.cols}`} key={items[i].id}>
                     <div className="customer-testi m-2 text-center p-4 rounded shadow">
                         <p className="text-muted h6 font-italic">" {items[i].description} "</p>
-                        <img src={items[i].image} height="90" className="" alt="" />
+                        <img src={items[i].image} height="90" className="" alt=""/>
                         <ul className="list-unstyled mb-0 mt-3">
                             <li className="list-inline-item"><i className="mdi mdi-star text-warning"></i></li>
                             <li className="list-inline-item"><i className="mdi mdi-star text-warning"></i></li>
@@ -133,7 +130,8 @@ class Testi extends Component {
                             <li className="list-inline-item"><i className="mdi mdi-star text-warning"></i></li>
                             <li className="list-inline-item"><i className="mdi mdi-star text-warning"></i></li>
                         </ul>
-                        <h6 className="text-primary">- {items[i].title} <small className="text-muted">Manager</small></h6>
+                        <h6 className="text-primary">- {items[i].title} <small className="text-muted">Manager</small>
+                        </h6>
                     </div>
                 </div>
             );
@@ -159,7 +157,9 @@ class Testi extends Component {
                             <Col className="text-center">
                                 <div className="section-title mb-60">
                                     <h4 className="main-title mb-4">Our Happy Customers </h4>
-                                    <p className="text-muted para-desc mx-auto mb-0">Start working with <span className="text-primary font-weight-bold">Landrick</span> that can provide everything you need to generate awareness, drive traffic, connect.</p>
+                                    <p className="text-muted para-desc mx-auto mb-0">Start working with <span
+                                        className="text-primary font-weight-bold">Landrick</span> that can provide
+                                        everything you need to generate awareness, drive traffic, connect.</p>
                                 </div>
                             </Col>
                         </Row>

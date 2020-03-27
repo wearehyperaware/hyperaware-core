@@ -47,19 +47,17 @@
 @import "contact";
 @import "footer";
 
-.Typist
-{
-    display: inline;
-}
-li.active > a
-{
-    color:#2f55d4 !important
+.Typist {
+  display: inline;
 }
 
-.main-slider > .slides
-{
-    margin-left: 0!important;
-    padding-left: 0!important;
+li.active > a {
+  color: #2f55d4 !important
+}
+
+.main-slider > .slides {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
 }
 
 /* The switch - the box around the slider */
@@ -123,37 +121,34 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-.nav-link
-{
-    border-radius: 10px!important;
+.nav-link {
+  border-radius: 10px !important;
 }
 
 .pagination .active a {
-    color: #ffffff!important;
+  color: #ffffff !important;
 }
 
 a {
- &:hover {
-  cursor:pointer;
- }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-.back-to-top
-{
-    line-height: 31px !important;
-}
-.progress-bar
-{
-    background-color: #2f55d4;
+.back-to-top {
+  line-height: 31px !important;
 }
 
-#mt-1
-{
-    margin-top: 5px!important;
+.progress-bar {
+  background-color: #2f55d4;
 }
-#mb-1
-{
-    margin-top: 5px!important;
+
+#mt-1 {
+  margin-top: 5px !important;
+}
+
+#mb-1 {
+  margin-top: 5px !important;
 }
 
 .map,
@@ -177,6 +172,21 @@ a {
   pointer-events: none;
 }
 
+.delete-zone:hover {
+    background: lightgrey;
+}
+
+.file-upload:after {
+  bottom: 0;
+  z-index: 3;
+  display: block;
+  height: calc(1.5em + .75rem);
+  content: "Browse";
+  background-color: #e9ecef;
+  border-left: inherit;
+  border-radius: 0 .25rem .25rem 0;
+}
+
 svg {
   position: absolute;
   width: 100%;
@@ -185,7 +195,7 @@ svg {
 
 .sidebar {
   width: 700px;
-  height:320px;
+  height: 320px;
   padding: 10px;
   border-left: 1px solid #aaa;
   left: 0;
@@ -334,7 +344,7 @@ circle.enter {
 }
 
 .text-custom {
-    color: #2f55d4;
+  color: #2f55d4;
 }
 
 .icon.big.close {

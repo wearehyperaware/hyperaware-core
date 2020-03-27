@@ -1,0 +1,24 @@
+{
+  "@context": "https://www.w3.org/ns/did/v1",
+  "id": "did:example:0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD",
+  "authentication": [
+    {
+      "id": "did:example:0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD#keys-1",
+      "type": "RsaVerificationKey2018",
+      "controller": "did:example:0x375ef39Fe23128a42992d5cad5a166Ab04C20A88",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY...END PUBLIC KEY-----\r\n"
+    }
+  ],
+  "service": [
+    {
+      "id": "did:example:0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD#paris-congestion-zone",
+      "name": "Paris Congestion Zone",
+      "serviceEndpoint": "https://raw.githubusercontent.com/johnx25bd/LBL-FutureOfBlockchain2020/new-fetch-geometries/data/zones/paris.json",
+      "policies": {
+        "beneficiary": "0xd983ED08d48f622d63A981b4d1D426EFCa2fb152",
+        "chargePerMinute": 0.35,
+        "currency": "EUR"
+      }
+    }
+  ]
+}
