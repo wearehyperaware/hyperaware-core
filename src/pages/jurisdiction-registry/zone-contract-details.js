@@ -1,6 +1,6 @@
 //deployer: 0xaf6c60f9569a5957b9e8679d7178b0e15e462e72
 module.exports = {
-    address: "0xf6f64cbe7b1928fc5299f11a14cb2150efd6919d",
+    address: "0x71C91Bd9773EEedd706C4d4e73c48f7344C10738", //<- fresh deployment | Leos -> "0xf6f64cbe7b1928fc5299f11a14cb2150efd6919d",
     abi: [
     {
         inputs: [],
