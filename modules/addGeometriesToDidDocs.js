@@ -28,12 +28,30 @@ module.exports = async (didDocsArray) => {
         // if there's no serviceEndpoint, return a promise that resolves to
         // a notice that there is none to maintain consistency in indices ... ??
     }
+    
+    // Promise.all(promises)
+    //     .then((data) => {
+    //         console.log(data)
+    //     }).catch((err) => { console.log(err)})
+    // // console.log(resultss)
 
     try {
         let responses = await Promise.all(promises)
         let resData = responses.map((res) => {
-            return res.data
+            if (res.data.type == "Feature") {
+                return {
+                    "type": "FeatureCollection",
+                    "properties": res.data.properties,
+                    "features": [
+                        res.data
+                    ]
+                }
+            } else {
+                return res.data
+            }
         });
+
+        console.log('redData', resData);
 
         let ijson = 0;
 

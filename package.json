@@ -16,6 +16,7 @@
     "bootstrap": "^4.3.1",
     "concurrently": "^5.1.0",
     "d3": "^3.5.16",
+    "d3-scale-chromatic": "^1.5.0",
     "esm": "^3.2.25",
     "ethers": "^4.0.46",
     "geojson-validation": "^0.2.1",

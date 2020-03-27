@@ -1,5 +1,6 @@
 import React from 'react'
 import d3 from 'd3'
+import { schemeCategory10 } from 'd3-scale-chromatic';
 import mapboxgl from 'mapbox-gl'
 import * as turf from '@turf/turf'
 import geojsonMerge from '@mapbox/geojson-merge'
@@ -49,6 +50,7 @@ export class Dashboard extends React.Component {
             vehiclesChevron: "mdi-chevron-double-down",
             isPrivacyMode: true,
             totalStaked: 0,
+            totalCharges: 0.0,
             timestep: 0
         };
     }
@@ -84,7 +86,11 @@ export class Dashboard extends React.Component {
         zoneDIDs = zoneDIDs.data;
         let zones = zoneDIDs.map((did) => {
             return did.service.map((zone) => {
-                zone.geojson.features[0].properties.did = did.id;
+                if (typeof zone.geojson.features != 'undefined') {
+                    zone.geojson.features[0].properties.did = did.id;
+                } else {
+                    zone.geojson.properties.did = did.id;
+                }
                 return zone
             })
         }).flat();
@@ -153,6 +159,8 @@ export class Dashboard extends React.Component {
     }
 
     ellipsisText = (s, width) => {
+
+        console.log(s, width);
         const NARROW_WIDTH_HOME = 1279;
         const NARROW_WIDTH = 768;
         const MIN_SUB_LENGTH = 6;
@@ -182,7 +190,7 @@ export class Dashboard extends React.Component {
         let timeElapsedInMinutes
         if (type === 'exit') {
             timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
-
+            this.state.totalCharges += Number((rate * timeElapsedInMinutes * 60).toFixed(2));
         }
         var color = type === 'exit' ? "#2f55d4 !important" : "#6c757d"
         var ticker = d3.selectAll('#ticker');
@@ -194,27 +202,51 @@ export class Dashboard extends React.Component {
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
         html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle has been charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> 
         (Rate: ${rate} / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
-
+        
         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
 
     flyToZone = (geojson) => {
 
-        map.fitBounds(turf.bbox(geojson));
+        map.fitBounds(turf.bbox(geojson), {
+            padding: {
+                left: 100,
+                top: 100,
+                bottom: 100,
+                right: 500
+            }
+        });
     }
 
-    flyToZone = (geojson) => {
+    // flyToZone = (geojson) => {
         
-        map.fitBounds(turf.bbox(geojson));
-    }
+    //     map.fitBounds(turf.bbox(geojson));
+    // }
 
     loadVehiclesAndZones = async (map) => {
         // Draw zone boundaries on map
+        let didsArray = this.state.zoneDIDs.map(function(e) { return e.id; });
+
         this.state.zones.forEach(function (zone) {
+
+            let zoneName = zone.id.split('#')[1],
+                did = zone.id.split('#')[0],
+                didIndex = didsArray.indexOf(did);
+            
             zone = zone.geojson;
-            let zoneName = zone.features[0].properties.name,
+
+            if (typeof zone.features == "undefined") {
+                zone = {
+                    type: "FeatureCollection",
+                    features: [
+                        zone
+                    ]
+                }
+            }
+
+            // let zoneName = zone.features[0].properties.name,
                 // zoneAddress = zone.features[0].properties.tezosAddress,
-                zoneType = zone.features[0].properties.type
+             let   zoneType = "terrestrial";
 
             map.addSource('zone-' + zoneName.toLowerCase(), {
                 type: 'geojson',
@@ -228,7 +260,7 @@ export class Dashboard extends React.Component {
                 paint: {
                     'line-width': 5,
                     'line-opacity': .5,
-                    'line-color': zoneType === 'maritime' ? 'blue' : 'orange'
+                    'line-color': schemeCategory10[didIndex % 10]
                 }
             });
 
@@ -238,7 +270,7 @@ export class Dashboard extends React.Component {
                 type: 'fill',
                 paint: {
                     'fill-opacity': .1,
-                    'fill-color': zoneType === 'maritime' ? 'blue' : 'orange'
+                    'fill-color': schemeCategory10[didIndex % 10]
                 }
             });
 
@@ -282,12 +314,7 @@ export class Dashboard extends React.Component {
             return zone.geojson
         }));
         // let bbox = turf.bbox(turfPolygons);
-        map.fitBounds(turf.bbox(turfPolygons), {
-            top: 150,
-            bottom: 150,
-            left: 100,
-            right: 800
-        });
+        this.flyToZone(turfPolygons);
 
  
 
@@ -321,17 +348,37 @@ export class Dashboard extends React.Component {
         return colors[Math.floor(Math.random() * max)];
     }
 
-    getEntityCount = (vehicles) => {
-        let seen = {}
-        let counter = 0
-        vehicles.forEach((vehicle) => {
-            if (!(vehicle.creator in seen)) {
-                seen[vehicle.creator] = true
-                counter += 1
+    // getEntityCount = (vehicles) => {
+    //     let seen = {}
+    //     let counter = 0
+    //     vehicles.forEach((vehicle) => {
+    //         if (!(vehicle.creator in seen)) {
+    //             seen[vehicle.creator] = true
+    //             counter += 1
+    //         }
+    //     })
+    //     return counter
+    // }
+
+    getCtVehiclesInZones = () => {
+
+        if (this.state.positions.length > 0) {
+
+            let ct = 0;
+            for (let v of this.state.positions[this.state.currentPos]) {
+
+                if (v.vehicle.within) {
+                    ct += 1;
+                }
             }
-        })
-        return counter
+            return ct;
+
+        } else {
+            return '...';
+        }
     }
+
+
 
     getVehicleIcon = (vehicleType) => {
         let type = vehicleType.toLowerCase()
@@ -430,7 +477,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    51
+                                    { this.getCtVehiclesInZones() }
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Vehicles in zones.
@@ -448,7 +495,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    £1945
+                                    {this.state.totalCharges.toFixed(2)}
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Charges Collected Today.
@@ -536,7 +583,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
+                                    {this.state.zoneDIDs ? this.state.zoneDIDs.length : "..."}
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Entities.

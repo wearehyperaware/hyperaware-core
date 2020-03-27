@@ -24,7 +24,7 @@ export default function (position, vehicleInfo) {
 
 
     let color = vehicleInfo.vehicleType.includes("Ship") ? 'green' : "purple"; // color based on vehicleDID creator ID?
-    return createCar(position, htmlIDFromDID(vehicleInfo.id), getRandomColor(), vehicleInfo.isPrivateVehicle);
+    return createCar(position, htmlIDFromDID(vehicleInfo.id), getRandomColor(), vehicleInfo);
 
 
     //
@@ -42,14 +42,18 @@ export default function (position, vehicleInfo) {
     // };
 }
 
-function createCar(coords, id, color, isPrivate) {
-    console.log(coords);
+function createCar(coords, id, color, vehicle) {
+    console.log(vehicle);
     let new_car
-    if (isPrivate === true) {
+    if (vehicle.isPrivateVehicle === true) {
         new_car = d3.select('svg')
             .append('circle')
             .attr('id', id)
-            .attr('isPrivateVehicle', isPrivate)
+            .classed('inzone', function () {
+                if ( vehicle.within) { 
+                    return  true
+                } else {return false; }  })
+            .attr('isPrivateVehicle', vehicle.isPrivateVehicle)
             .attr('data-coords', coords.toString())
             .attr('fill', 'transparent')
             .attr('stroke', 'transparent')
@@ -65,7 +69,11 @@ function createCar(coords, id, color, isPrivate) {
         new_car = d3.select('svg')
             .append('circle')
             .attr('id', id)
-            .attr('isPrivateVehicle', isPrivate)
+            .classed('inzone', function () {
+                if ( vehicle.within) { 
+                    return  true
+                } else {return false; }  })            
+            .attr('isPrivateVehicle', vehicle.isPrivateVehicle)
             .attr('data-coords', coords.toString())
             .attr('fill', color)
             .attr('r', 50)
