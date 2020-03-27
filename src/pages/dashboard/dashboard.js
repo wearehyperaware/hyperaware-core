@@ -348,17 +348,17 @@ export class Dashboard extends React.Component {
         return colors[Math.floor(Math.random() * max)];
     }
 
-    // getEntityCount = (vehicles) => {
-    //     let seen = {}
-    //     let counter = 0
-    //     vehicles.forEach((vehicle) => {
-    //         if (!(vehicle.creator in seen)) {
-    //             seen[vehicle.creator] = true
-    //             counter += 1
-    //         }
-    //     })
-    //     return counter
-    // }
+    getEntityCount = (vehicles) => {
+        let seen = {}
+        let counter = 0
+        vehicles.forEach((vehicle) => {
+            if (!(vehicle.creator in seen)) {
+                seen[vehicle.creator] = true
+                counter += 1
+            }
+        })
+        return counter
+    }
 
     getCtVehiclesInZones = () => {
 
@@ -374,7 +374,7 @@ export class Dashboard extends React.Component {
             return ct;
 
         } else {
-            return '...';
+            return 0;
         }
     }
 
@@ -393,17 +393,6 @@ export class Dashboard extends React.Component {
 
     handleAdvance = (e) => {
         e.preventDefault()
-
-        // OLD code ??? vv
-        // this.state.timestep += 1;
-
-        // // This hardcodes advance into the browser - there is no interaction
-        // // with the server ... this is NOT reflecting if the point is
-        // // inside a Zone in the browser
-        // updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
-
-        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
-
         socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zoneDIDs);
     }
 
@@ -583,7 +572,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.zoneDIDs ? this.state.zoneDIDs.length : "..."}
+                                    {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Entities.
