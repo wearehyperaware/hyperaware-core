@@ -8,6 +8,8 @@ import geojsonMerge from '@mapbox/geojson-merge'
 import Web3 from 'web3'
 import Arweave from 'arweave/web'
 import zoneContract from './zone-contract-details.js'
+import {findIndex,without} from 'lodash';
+
 
 // React Components
 import React from 'react'
@@ -454,29 +456,26 @@ export class RegisterJurisdiction extends React.Component {
 
     }
 
-    deleteZone = (event) => {
-        // Delete zone from this.state.zones
-        event.preventDefault()
-        // clear state variables
-        this.resetNewZoneStateVariables()
+    deleteZone = (zone) => {
+        /*
+            because each card is created using a map function on the zones [] 
 
-        // Remove geojson layer
-        let dataZoneId = 'x'; // <- this is what I need access to.
+            so I pass each zone to this function and use the without function provided by lodash 
+            to eliminate the zone from the []
+         */
+        let tempZones = this.state.zones;
 
-        // This will enable us to select the zone from the this.state.zones array
-        let zoneToDelete = this.state.zones.find((zone) => {
-            // I think this is roughly right. 
-            if (zone.layerId) {
-                return zone.layerId == dataZoneId;
-            } else {
-                return this.state.didDoc.id + '#' + dataZoneId == zone.id;
-            }
-        });
+        tempZones.without(tempZones,zone);
 
-        let zoneId = 'x'; // Not sure exactly how to pull this need to revisit
+        let zoneLayerId = zone.layerId; 
 
-        map.removeLayer('zone-border-layer-' + zoneId);
-        map.removeLayer('zone-fill-layer-' + zoneId);
+        /*
+            Not quite sure how the removeLayer function works but I guess you are looking for layerId
+            Correct me if I'm wrong
+         */
+
+        map.removeLayer('zone-border-' + zoneLayerId);
+        map.removeLayer('zone-fill-' + zoneLayerId);
 
         // Remove zone object from this.state.zones; 
         
@@ -850,12 +849,14 @@ export class RegisterJurisdiction extends React.Component {
                                                     <div className="floatRight col-2">
                                                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                             <li className="delete-zone" 
-                                                            onClick= {e => { this.deleteZone(e) /* 
+                                                            onClick= {this.deleteZone(zone) /* 
                                                                             @TONY ^^^ Trying to get access to html element attributes 
                                                                             inside the function call, mainly the data-zoneid on the parent div.
                                                                             I've written code to be executed inside the deleteZone definition.
-                                                            
-                                                            */  }}
+
+                                                                            @John I think this should work, just not quite sure if removeLayer() works
+                                                                            Sorry my node doesnt work properly so can't test it locally
+                                                            */  }
                                                             style={{
                                                                 fontSize: '18px',
                                                                 width: '30px',
