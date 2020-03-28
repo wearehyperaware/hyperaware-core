@@ -4,10 +4,12 @@ import connect from 'socket.io-client';
 import * as turf from '@turf/turf'
 import d3 from 'd3'
 import axios from 'axios'
+import GJV from 'geojson-validation'
 import geojsonMerge from '@mapbox/geojson-merge'
 import Web3 from 'web3'
 import Arweave from 'arweave/web'
 import zoneContract from './zone-contract-details.js'
+import {without} from 'lodash';
 
 // React Components
 import React from 'react'
@@ -106,6 +108,8 @@ export class RegisterJurisdiction extends React.Component {
             zoom,
             center,
         });
+
+        window.map = map;
 
 
         // Log in with metamask
@@ -354,7 +358,8 @@ export class RegisterJurisdiction extends React.Component {
     addGeojsonToMap = async (zone) => {
 
         let id, geojson;
-        if (zone.geojson) {
+        console.log(zone);
+        if (typeof zone.geojson != 'undefined') {
 
             geojson = zone.geojson;
             id = zone.id.split('#')[1];
@@ -378,7 +383,7 @@ export class RegisterJurisdiction extends React.Component {
                 paint: {
                     'line-width': 5,
                     'line-opacity': 1,
-                    'line-color': 'yellow'
+                    'line-color': "#2443ac"
                 }
         })
 
@@ -388,7 +393,7 @@ export class RegisterJurisdiction extends React.Component {
             type: 'fill',
                 paint: {
                     'fill-opacity': .3,
-                    'fill-color': 'yellow'
+                    'fill-color': '#2443ac'
                 }
         });
 
@@ -400,9 +405,67 @@ export class RegisterJurisdiction extends React.Component {
 
         let geojson = await processFile(event.target.files[0]);
 
+
         // Test geojson validity
             // If error, set form to invalid and return
+        if (GJV.valid(geojson)) {
 
+            console.log('VALID GEOJSON')
+
+            if (geojson.type == "FeatureCollection") {
+                if ((geojson.features[0].type == 'Feature') && 
+                (geojson.features[0].geometry.type == 'Polygon')) {
+                    console.log("great!!")
+                } else if (geojson.features[0].type == 'Polygon') {
+                        geojson = {
+                            type: "FeatureCollection",
+                            features: {
+                                type: "Feature", 
+                                geometry: geojson.features[0]
+                            }
+                        }
+                        console.log("Great!")
+                } else {
+                    d3.select('#geojson-input')
+                        .classed('is-invalid', true);
+                    
+                    alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like.");
+
+                    return;
+                }
+           
+            } else if (geojson.type == 'Feature' && geojson.geometry.type == 'Polygon') {
+                geojson = {
+                    type: "FeatureCollection",
+                    features: [
+                        geojson
+                    ]
+                }
+            } else if (geojson.type == "Polygon") {
+                geojson = {
+                    type: "FeatureCollection", 
+                    features: [
+                        { type: "Feature", 
+                        properties: {},
+                        geometry: geojson }
+                    ]
+                }
+            } else {
+                d3.select('#geojson-input')
+                    .classed('is-invalid', true);
+                
+                alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like.");
+
+                return;
+            }
+        } else {
+            d3.select('#geojson-input')
+                    .classed('is-invalid', true);
+                
+                alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like, or geojsonlint.com to test validity.");
+
+                return;
+        }
 
         // Add geojson layer to map:
         // this.state.zoneName;
@@ -412,12 +475,14 @@ export class RegisterJurisdiction extends React.Component {
         
         this.state.newZoneCt += 1;
 
+        console.log('geojson', JSON.stringify(geojson));
         map.fitBounds(turf.bbox(geojson)) // <- figure out padding
 
 
         this.setState({zoneGeojson: geojson });
 
         d3.select('#geojson-input')
+            .classed('is-invalid', false)
             .classed('is-valid', true)
             .attr('disabled', true);
 
@@ -454,29 +519,21 @@ export class RegisterJurisdiction extends React.Component {
 
     }
 
-    deleteZone = (event) => {
+    deleteZone = (zone) => {
         // Delete zone from this.state.zones
-        event.preventDefault()
-        // clear state variables
-        this.resetNewZoneStateVariables()
+        let tempZones = this.state.zones; 
 
-        // Remove geojson layer
-        let dataZoneId = 'x'; // <- this is what I need access to.
+        tempZones = without(tempZones,zone);
 
-        // This will enable us to select the zone from the this.state.zones array
-        let zoneToDelete = this.state.zones.find((zone) => {
-            // I think this is roughly right. 
-            if (zone.layerId) {
-                return zone.layerId == dataZoneId;
-            } else {
-                return this.state.didDoc.id + '#' + dataZoneId == zone.id;
-            }
-        });
+        this.setState({zones : tempZones});
 
-        let zoneId = 'x'; // Not sure exactly how to pull this need to revisit
+        
 
-        map.removeLayer('zone-border-layer-' + zoneId);
-        map.removeLayer('zone-fill-layer-' + zoneId);
+        let layerId = zone.layerId; // Not sure exactly how to pull this need to revisit
+        console.log("Layer ID for deleted zone: "+layerId);
+
+        map.removeLayer('zone-border-' + layerId);
+        map.removeLayer('zone-fill-' + layerId);
 
         // Remove zone object from this.state.zones; 
         
@@ -502,7 +559,7 @@ export class RegisterJurisdiction extends React.Component {
             name: this.state.zoneName,
             serviceEndpoint: null,
             geojson: this.state.zoneGeojson,
-            layerId: 'layer-' + String(this.state.newZoneCt),
+            layerId: 'layer-' + String(this.state.newZoneCt-1),
             policies: {
                 beneficiary: this.state.zoneBeneficiary,
                 chargePerMinute: this.state.zoneCharge,
@@ -850,12 +907,14 @@ export class RegisterJurisdiction extends React.Component {
                                                     <div className="floatRight col-2">
                                                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                             <li className="delete-zone" 
-                                                            onClick= {e => { this.deleteZone(e) /* 
+                                                            onClick= {e => this.deleteZone(zone) /* 
                                                                             @TONY ^^^ Trying to get access to html element attributes 
                                                                             inside the function call, mainly the data-zoneid on the parent div.
                                                                             I've written code to be executed inside the deleteZone definition.
-                                                            
-                                                            */  }}
+
+                                                                            @John I think this should work, just not quite sure if removeLayer() works
+                                                                            Sorry my node doesnt work properly so can't test it locally
+                                                            */  }
                                                             style={{
                                                                 fontSize: '18px',
                                                                 width: '30px',
