@@ -70,11 +70,12 @@ class Feature extends Component {
 
                                     <div className="content mt-4">
                                         <h4 className="title-2">(Optionally) Privacy Preserving</h4>
-                                        <p className="text-muted mb-0">If you need to ensure confidentiality of
-                                            location, but still need to prove where
-                                            something <span className="text-custom">isn't</span>, <span
-                                                className="text-primary font-weight-bold">Hyperaware</span> has your
-                                            back.</p>
+                                        <p className="text-muted mb-0">If you need to 
+                                            ensure <span className="text-custom">confidentiality</span> of
+                                            location, but still need to prove where something is or is 
+                                            not, <span className="text-primary font-weight-bold">Hyperaware</span> is
+                                            for you. 
+                                        </p>
                                     </div>
                                 </div>
                             </Col>
@@ -91,7 +92,7 @@ class Feature extends Component {
                                             className="text-primary font-weight-bold">Hyperaware</span> uses <span
                                             className="text-custom">Intel SGX </span>
                                             technology and <span className="text-custom">Trusted Computing</span> to
-                                            ensure that data collected is tamper-proof at the site of collection.</p>
+                                            ensure that data collected is digitally signed and tamper-proof from the moment of collection.</p>
                                     </div>
                                 </div>
                             </Col>
@@ -105,9 +106,9 @@ class Feature extends Component {
                                     <div className="content mt-4">
                                         <h4 className="title-2">Automatically Actionable</h4>
                                         <p className="text-muted mb-0">Our <span
-                                            className="text-custom">Smart Contracts</span> ensure that when conditions
+                                            className="text-custom">smart contracts</span> ensure that when conditions
                                             are violated, action is taken
-                                            automatically based on the agreed predefined criteria.</p>
+                                            automatically based on agreed predefined criteria.</p>
                                     </div>
                                 </div>
                             </Col>

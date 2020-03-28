@@ -106,7 +106,7 @@ class Index extends Component {
                                             </h1>
                                             <p className="para-desc mx-auto mb-0">What is it? <span
                                                 className="text-custom font-weight-bold">Hyperaware</span> is a
-                                                decentralized application to govern connected devices and their data
+                                                decentralized application for governing connected devices and their data
                                                 based on their physical location.
 
                                             </p>
@@ -173,9 +173,12 @@ class Index extends Component {
                                                 </Link>
                                                 <Collapse isOpen={this.state.col1}>
                                                     <div className="card-body">
-                                                        <p className="text-muted mb-0 faq-ans">There are many variations
-                                                            of passages of Lorem Ipsum available, but the majority have
-                                                            suffered alteration in some form.</p>
+                                                        <p className="text-muted mb-0 faq-ans"><span
+                                                            className="text-primary font-weight">Hyperaware</span> is a fully functional decentralized 
+                                                            application. With the demo you can <a href="/demo/vehicle-registration">register a vehicle</a> as a commercial 
+                                                            entity, <a href="/demo/jurisdiction-registration">register
+                                                            a policy zone</a> as a jurisdiction authority and view the <a href='/demo/dashboard'>interactive dashboard</a> visualizing all 
+                                                            zones and vehicles.</p>
                                                     </div>
                                                 </Collapse>
                                             </div>
@@ -196,9 +199,12 @@ class Index extends Component {
                                                 </Link>
                                                 <Collapse isOpen={this.state.col2}>
                                                     <div className="card-body">
-                                                        <p className="text-muted mb-0 faq-ans">There are many variations
-                                                            of passages of Lorem Ipsum available, but the majority have
-                                                            suffered alteration in some form.</p>
+                                                        <p className="text-muted mb-0 faq-ans">We randomly generate routes in our
+                                                        demo to simulate how the system would function. Our deployed systems collect data
+                                                        from location sensors embedded in the assets they are tracking. To ensure the privacy and 
+                                                        integrity of location data, we have integrated with <a href="https://www.iotex.io/">IoTeX</a>'s 
+                                                        trusted IoT device, the <a href="https://www.iotex.io/securehardware">Pebble Tracker</a> -
+                                                        but we can integrate our systems with any location tracker or connected sensor.</p>
                                                     </div>
                                                 </Collapse>
                                             </div>
@@ -219,9 +225,12 @@ class Index extends Component {
                                                 </Link>
                                                 <Collapse isOpen={this.state.col3}>
                                                     <div className="card-body">
-                                                        <p className="text-muted mb-0 faq-ans">There are many variations
-                                                            of passages of Lorem Ipsum available, but the majority have
-                                                            suffered alteration in some form.</p>
+                                                        <p className="text-muted mb-0 faq-ans"><span
+                                                            className="text-primary font-weight">Hyperaware</span>'s Private 
+                                                            Location Analytics Engine  is agnostic to the source of location 
+                                                            information - we can integrate with existing GPS trackers. For advanced
+                                                            features like our Private Location Tracking we can install special devices
+                                                            on your vehicles.</p>
                                                     </div>
                                                 </Collapse>
                                             </div>
@@ -242,9 +251,12 @@ class Index extends Component {
                                                 </Link>
                                                 <Collapse isOpen={this.state.col4}>
                                                     <div className="card-body">
-                                                        <p className="text-muted mb-0 faq-ans">There are many variations
-                                                            of passages of Lorem Ipsum available, but the majority have
-                                                            suffered alteration in some form.</p>
+                                                        <p className="text-muted mb-0 faq-ans"><span
+                                                            className="text-primary font-weight">Hyperaware</span> can add value to firms
+                                                            and governments by integrating with existing systems. Advanced features like 
+                                                            Private Location Tracking and our secure location analytics may require special 
+                                                            "trusted IoT" devices to be installed. We'd love to discuss your specific use 
+                                                            case to understand how we could help.</p>
                                                     </div>
                                                 </Collapse>
                                             </div>
@@ -265,9 +277,13 @@ class Index extends Component {
                                                 </Link>
                                                 <Collapse isOpen={this.state.col5}>
                                                     <div className="card-body">
-                                                        <p className="text-muted mb-0 faq-ans">There are many variations
-                                                            of passages of Lorem Ipsum available, but the majority have
-                                                            suffered alteration in some form.</p>
+                                                        <p className="text-muted mb-0 faq-ans">With <span
+                                                            className="text-primary font-weight">Hyperaware</span>'s Private Location Tracking system,
+                                                        location information is digitally signed and encrypted on the edge sensor, inside a secure enclave.
+                                                        This gives the device owner complete control over who can access their location data. Furthermore,
+                                                        the <span className="text-primary font-weight">Hyperaware</span> Private Location Analytics
+                                                        Engine is able to securely analyze encrypted location information, maintaining privacy while still
+                                                        enabling us to prove where it is - or is not.</p>
                                                     </div>
                                                 </Collapse>
                                             </div>

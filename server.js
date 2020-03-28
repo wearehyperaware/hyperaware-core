@@ -111,7 +111,7 @@ io.on('connection', async (client) => {
             // If enclave detects a vehicle exiting a zone, send that to the client and slash vehicle
             console.log(message.notification.rate)
             let hash = await slash(message.notification.vehicleDetails.id, message.notification.vehicleDetails.enterTime, message.notification.vehicleDetails.exitTime, message.notification.rate)
-            // client.emit('fetchNewPositionsFromServerResponse', message.notification, hash)
+            client.emit('fetchNewPositionsFromServerResponse', message.notification, hash)
         } else if (message.type === 'updatePositions') {
             // When enclave finishes, get the new positions updated vehicle info and send to client
             client.emit('updatePositions', message.newPositions, message.points)

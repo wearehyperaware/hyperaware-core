@@ -4,17 +4,20 @@ import connect from 'socket.io-client';
 import * as turf from '@turf/turf'
 import d3 from 'd3'
 import axios from 'axios'
+import GJV from 'geojson-validation'
 import geojsonMerge from '@mapbox/geojson-merge'
 import Web3 from 'web3'
 import Arweave from 'arweave/web'
 import zoneContract from './zone-contract-details.js'
+import {without} from 'lodash';
+import ZoneCard from './ZoneCard'
 
 // React Components
 import React from 'react'
-import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 import AnimateHeight from "react-animate-height";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
@@ -46,7 +49,7 @@ export class RegisterJurisdiction extends React.Component {
                 authentication: [],
                 service: []
             },
-            zones: [],
+            zones: undefined,
             zoneName: "",
             zoneAdmin: "",
             zoneBeneficiary: "",
@@ -65,6 +68,8 @@ export class RegisterJurisdiction extends React.Component {
         }
 
         this.deleteZone = this.deleteZone.bind(this);
+        this.truncateAddress = this.truncateAddress.bind(this);
+        this.zoomToZone = this.zoomToZone.bind(this);
     }
     async componentDidMount() {
 
@@ -97,8 +102,8 @@ export class RegisterJurisdiction extends React.Component {
         var screenHeight = document.documentElement.clientHeight;
 
         // map loads with different zoom / center depending on the type of device
-        var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
-        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        var zoom = 3.4;
+        var center =  [24.56900802672635, 51.27714197030792];
 
         map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -106,6 +111,8 @@ export class RegisterJurisdiction extends React.Component {
             zoom,
             center,
         });
+
+        window.map = map;
 
 
         // Log in with metamask
@@ -136,7 +143,7 @@ export class RegisterJurisdiction extends React.Component {
                     );
 
                 zones.map((zone) => this.addGeojsonToMap(zone))
-                this.setState({ zones });// = [...this.state.zones, DIDdocument.service];
+                this.setState({ zones : zones});// = [...this.state.zones, DIDdocument.service];
 
                 console.log(DIDdocument)
                 //update based on DIDdocument
@@ -354,10 +361,12 @@ export class RegisterJurisdiction extends React.Component {
     addGeojsonToMap = async (zone) => {
 
         let id, geojson;
-        if (zone.geojson) {
+
+        if (typeof zone.geojson != 'undefined') {
 
             geojson = zone.geojson;
             id = zone.id.split('#')[1];
+            zone.layerId = id;
 
         } else {
             geojson = zone;
@@ -376,9 +385,21 @@ export class RegisterJurisdiction extends React.Component {
             source: 'zone-' + id,
             type: 'line',
                 paint: {
-                    'line-width': 5,
                     'line-opacity': 1,
-                    'line-color': 'yellow'
+                    'line-color': "#2443ac",
+                    'line-width': [
+                        'interpolate',
+                        ['exponential', 0.5],
+                        ['zoom'],
+                        3,
+                        1,
+                        7,
+                        2,
+                        15,
+                        3,
+                        22,
+                        5
+                        ]
                 }
         })
 
@@ -388,11 +409,15 @@ export class RegisterJurisdiction extends React.Component {
             type: 'fill',
                 paint: {
                     'fill-opacity': .3,
-                    'fill-color': 'yellow'
+                    'fill-color': '#2443ac'
                 }
         });
 
         
+    }
+
+    zoomToZone = (geojson) => {
+        map.fitBounds(turf.bbox(geojson));
     }
     
 
@@ -400,24 +425,106 @@ export class RegisterJurisdiction extends React.Component {
 
         let geojson = await processFile(event.target.files[0]);
 
+
         // Test geojson validity
             // If error, set form to invalid and return
+        if (GJV.valid(geojson)) {
 
+            console.log('VALID GEOJSON')
+
+            if (geojson.type === "FeatureCollection") {
+                if ((geojson.features[0].type === 'Feature') && 
+                (geojson.features[0].geometry.type === 'Polygon')) {
+                    console.log("great!!")
+                } else if (geojson.features[0].type === 'Polygon') {
+                        geojson = {
+                            type: "FeatureCollection",
+                            features: {
+                                type: "Feature", 
+                                geometry: geojson.features[0]
+                            }
+                        }
+                        console.log("Great!")
+                } else {
+                    d3.select('#geojson-input')
+                        .classed('is-invalid', true);
+                    
+                    alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like.");
+
+                    return;
+                }
+           
+            } else if (geojson.type === 'Feature' && geojson.geometry.type === 'Polygon') {
+                geojson = {
+                    type: "FeatureCollection",
+                    features: [
+                        geojson
+                    ]
+                }
+            } else if (geojson.type === "Polygon") {
+                geojson = {
+                    type: "FeatureCollection", 
+                    features: [
+                        { type: "Feature", 
+                        properties: {},
+                        geometry: geojson }
+                    ]
+                }
+            } else {
+                d3.select('#geojson-input')
+                    .classed('is-invalid', true);
+                
+                alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like.");
+
+                return;
+            }
+        } else {
+            d3.select('#geojson-input')
+                    .classed('is-invalid', true);
+                
+                alert("Please upload a valid GeoJSON polygon geometry. Go to geojson.io to create one if you'd like, or geojsonlint.com to test validity.");
+
+                return;
+        }
 
         // Add geojson layer to map:
         // this.state.zoneName;
 
+        // // Fetch the 2-letter country code from Mapbox geocoder
+        // let centroid = turf.centroid(geojson);
+        // let mbURI = "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+        //     String(centroid.geometry.coordinates.join('%2C')) +
+        //     ".json?access_token=" + mapboxgl.accessToken + 
+        //     "&cachebuster=1585391923576&autocomplete=true&types=country&limit=1"
 
+        // console.log(mbURI)
+
+        // let geocode = await fetch(mbURI, { mode: 'no-cors' }); // <- something wrong here
+
+        // geocode = geocode.json();
+        // console.log(geocode) 
+        // let countryCode = geocode.features[0].properties.short_code;
+        // geojson.properties.countryCode = countryCode;
+        
         this.addGeojsonToMap(geojson)
         
         this.state.newZoneCt += 1;
 
-        map.fitBounds(turf.bbox(geojson)) // <- figure out padding
+        console.log('geojson', JSON.stringify(geojson));
+        map.fitBounds(turf.bbox(geojson), {
+            padding: {
+                top: 150,
+                bottom: 50,
+                left: 50,
+                right: 500
+            }
+        }) // <- figure out padding
 
 
         this.setState({zoneGeojson: geojson });
 
         d3.select('#geojson-input')
+            .classed('is-invalid', false)
             .classed('is-valid', true)
             .attr('disabled', true);
 
@@ -454,29 +561,22 @@ export class RegisterJurisdiction extends React.Component {
 
     }
 
-    deleteZone = (event) => {
+    deleteZone = (zone) => {
         // Delete zone from this.state.zones
-        event.preventDefault()
-        // clear state variables
-        this.resetNewZoneStateVariables()
+        let tempZones = this.state.zones; 
 
-        // Remove geojson layer
-        let dataZoneId = 'x'; // <- this is what I need access to.
+        tempZones = without(tempZones,zone);
 
-        // This will enable us to select the zone from the this.state.zones array
-        let zoneToDelete = this.state.zones.find((zone) => {
-            // I think this is roughly right. 
-            if (zone.layerId) {
-                return zone.layerId == dataZoneId;
-            } else {
-                return this.state.didDoc.id + '#' + dataZoneId == zone.id;
-            }
-        });
+        this.setState({zones : tempZones});
 
-        let zoneId = 'x'; // Not sure exactly how to pull this need to revisit
+        
 
-        map.removeLayer('zone-border-layer-' + zoneId);
-        map.removeLayer('zone-fill-layer-' + zoneId);
+        let layerId = zone.layerId ; // Not sure exactly how to pull this need to revisit
+        console.log("Layer ID for deleted zone: "+layerId);
+
+
+        map.removeLayer('zone-border-' + layerId);
+        map.removeLayer('zone-fill-' + layerId);
 
         // Remove zone object from this.state.zones; 
         
@@ -490,19 +590,18 @@ export class RegisterJurisdiction extends React.Component {
     // }
     // On Add zone. form submit
     addZoneFromForm = async (event) => {
+
         event.preventDefault();
 
-        console.log(event)
-
-        // Validate form?  
-
+        
+        
         // Build service object
         let zoneObject = {
             id: this.state.didDoc.id + "#" + this.kebabify(this.state.zoneName),
             name: this.state.zoneName,
             serviceEndpoint: null,
             geojson: this.state.zoneGeojson,
-            layerId: 'layer-' + String(this.state.newZoneCt),
+            layerId: 'layer-' + String(this.state.newZoneCt-1),
             policies: {
                 beneficiary: this.state.zoneBeneficiary,
                 chargePerMinute: this.state.zoneCharge,
@@ -562,12 +661,15 @@ export class RegisterJurisdiction extends React.Component {
     }
 
     resetNewZoneStateVariables = () => {
-        this.state.zoneName =  "";
-        this.state.zoneAdmin = "";
-        this.state.zoneBeneficiary = "";
-        this.state.zoneCharge = "";
-        this.state.zoneCurrency = "";
-        this.state.zoneGeojson = {};
+        this.setState({
+            zoneName : "",
+            zoneAdmin : "",
+            zoneBeneficiary : "",
+            zoneCharge : "",
+            zoneCurrency : "",
+            zoneGeojson : {},
+        })
+
     }
 
 
@@ -617,7 +719,14 @@ export class RegisterJurisdiction extends React.Component {
         });
 
         let zonesBbox = turf.bbox(geojsonMerge.merge(zonesGeometries));
-        map.fitBounds(zonesBbox);
+        map.fitBounds(zonesBbox, {
+            padding: {
+                left: 100,
+                bottom: 75,
+                top: 150,
+                right: 500
+            }
+        });
 
     }
     
@@ -689,16 +798,14 @@ export class RegisterJurisdiction extends React.Component {
     render() {
         return (
             <div>
-                
-
-
+                <Topbar/>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
+                    
 
-                    <Topbar/>
                 </div>
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
-                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '65%'}}>
+                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%', marginBottom: "40px"}}>
 
                     <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
                         <h2 className='d-flex' style={{marginLeft: 40}}>Zone Registry<span className="text-primary">.</span></h2>
@@ -809,70 +916,21 @@ export class RegisterJurisdiction extends React.Component {
                             </div>
                             <h4 className='d-flex' style={{marginLeft: 40}}>Zones<span className="text-primary">.</span></h4>
                                 {
-                                    !this.state.zones ? <div></div> : (
-                                        this.state.zones.map((zone) => {
-
-
+                                    !this.state.zones ? 
+                                    <Alert variant = 'primary'>
+                                        <Spinner animation="border" role="status" variant = "light">
+                                        </Spinner> 
+                                         Fetching zone geometries from the permaweb...
+                                    </Alert>
+                                  : (
+                                        this.state.zones.map((zone) => {                                 
                                             return (
-                                            <div /*onClick={ this.flyToZone(zone.geojson) }*/
-                                                    id={ (zone.serviceEndpoint ?  zone.id.split('#')[1] : String(zone.layerId) ) + '-card' }
-                                                    data-zoneid = { zone.serviceEndpoint ? zone.id.split('#')[1] : String(zone.layerId)  }
-                                                    key={ zone.id.split('#')[1]}
-                                                    className="zone-card event-schedule d-flex bg-white rounded p-3 border"
-                                                    style={{
-                                                        marginLeft: '40px',
-                                                        marginTop: '5px',
-                                                        marginRight: '20px',
-                                                        marginBottom: '20px'
-                                                    }}>
-                                                <div className="row">
-                                                    <div className="float-left col-2">
-                                                        <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                            <li className="day font-weight-bold mb-2">UK</li>
-                                                            {/* <- fix this */}
-                                                        </ul>
-                                                    </div>
-                                                    <div className="content col-8">
-                                                        <h4 className="text-dark title"
-                                                            style={{marginBottom: '0px'}}>{ zone.name }</h4>
-                                                        
-                                                        <p className="text-muted location-time">
-                                                            <span className="text-dark h6">Beneficiary: </span><a
-                                                            target="_blank"
-                                                            href= {"https://iotxplorer.io/address/" + zone.policies.beneficiary }>{ this.truncateAddress(zone.policies.beneficiary) }</a>
-                                                            <br/>
-                                                            <span
-                                                                className="text-dark h6">Charge: </span>{ zone.policies.currency} { zone.policies.chargePerMinute } / minute
-                                                            <br/>
-                                                        </p>
-            
-                                                    </div>
-                                                    <div className="floatRight col-2">
-                                                        <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                            <li className="delete-zone" 
-                                                            onClick= {e => { this.deleteZone(e) /* 
-                                                                            @TONY ^^^ Trying to get access to html element attributes 
-                                                                            inside the function call, mainly the data-zoneid on the parent div.
-                                                                            I've written code to be executed inside the deleteZone definition.
-                                                            
-                                                            */  }}
-                                                            style={{
-                                                                fontSize: '18px',
-                                                                width: '30px',
-                                                                height: '30px',
-                                                                borderRadius: '30px',
-                                                                /* background: #e9edfa; */
-                                                                lineHeight: '25px',
-                                                                border: '2px solid #ffffff',
-                                                                boxShadow: '0px 0px 2px 0.25px #4466d8',
-                                                                cursor: 'pointer'
-                                                             }}
-                                                             
-                                                            >x</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ZoneCard 
+                                                    zone={zone}
+                                                    deleteZone = {this.deleteZone}
+                                                    truncateAddress = {this.truncateAddress}
+                                                    zoomToZone = {this.zoomToZone}
+                                                />
                                             )
                                         })
                                     )

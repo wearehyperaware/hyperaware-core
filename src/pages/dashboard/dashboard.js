@@ -68,8 +68,8 @@ export class Dashboard extends React.Component {
         var screenHeight = document.documentElement.clientHeight;
 
         // map loads with different zoom / center depending on the type of device
-        var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
-        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        var zoom = 3.4;
+        var center =  [24.56900802672635, 51.27714197030792];
 
         map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -256,9 +256,21 @@ export class Dashboard extends React.Component {
                 source: 'zone-' + zoneName.toLowerCase(),
                 type: 'line',
                 paint: {
-                    'line-width': 5,
                     'line-opacity': .5,
-                    'line-color': schemeCategory10[didIndex % 10]
+                    'line-color': schemeCategory10[didIndex % 10],
+                    'line-width': [
+                        'interpolate',
+                        ['exponential', 0.5],
+                        ['zoom'],
+                        3,
+                        1,
+                        7,
+                        2,
+                        15,
+                        3,
+                        22,
+                        5
+                    ]
                 }
             });
 
@@ -333,7 +345,7 @@ export class Dashboard extends React.Component {
             let circles = d3.selectAll('circle')
             circles[0].forEach((circle) => {
                 if (circle.attributes['isPrivateVehicle'].value === 'true') {
-                    d3.select(circle).attr('fill', this.getRandomColor()).attr('stroke', '#fff')
+                    d3.select(circle).attr('fill', "#2f55d4").attr('stroke', '#fff')
                 }
             })
         }
@@ -398,6 +410,10 @@ export class Dashboard extends React.Component {
         return did.substr(0, 15) + "..." + did.substr(42, 8)
     }
 
+    truncateZoneID = (did) => {
+        return did.substr(0, 15) + "..." + did.slice(42)
+    }
+
     expandZonesCard = (e) => {
         e.preventDefault()
         let chevronIcon = this.state.zonesChevron === 'mdi-chevron-double-down' ? 'mdi-chevron-double-up' : 'mdi-chevron-double-down'
@@ -443,13 +459,13 @@ export class Dashboard extends React.Component {
                             onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
                 </div>
 
-                <div ref={el => this.mapContainer = el} className='map' id='map'>
+                <Topbar/>
 
-                    <Topbar/>
-                </div>
+                <div ref={el => this.mapContainer = el} className='map' id='map'></div>
+
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
-                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '72.5%'}}>
+                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%'}}>
 
                     <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
@@ -519,14 +535,14 @@ export class Dashboard extends React.Component {
                                                         <div style={{
                                                             fontSize: '10px',
                                                             marginBottom: '18px'
-                                                        }}>{zone.id}</div>
+                                                        }}>{this.truncateZoneID(zone.id)}</div>
                                                         <p className="text-muted location-time">
                                                             <span className="text-dark h6">Beneficiary: </span><a
                                                             target="_blank"
-                                                            href={"https://etherscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
+                                                            href={"https://testnet.iotexscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
                                                             <br/>
                                                             <span
-                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " ⬡"} /
+                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " IOTX"} /
                                                             minute
                                                             <br/>
                                                             <span className="text-dark h6">Zone Geometry: </span><a
@@ -555,7 +571,7 @@ export class Dashboard extends React.Component {
                         </Row>
                     </div>
                 </Col>
-                <Col lg={7} style={{width: '550px', marginLeft: '72.5%'}}>
+                <Col lg={7} style={{width: '550px', marginLeft: '66.5%'}}>
                     <div className="studio-home bg-white shadow mt-5 " style={{paddingTop: '8px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span>
                         </h2>
