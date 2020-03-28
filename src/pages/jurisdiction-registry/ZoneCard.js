@@ -15,21 +15,31 @@ export default class ZoneCard extends React.Component{
                         marginRight: '20px',
                         marginBottom: '20px'
                     }}
+<<<<<<< HEAD
             >
                 <div className="row">
                     <div 
                         className="float-left col-2"
                         onClick = {e => this.props.zoomToZone(this.props.zone.geojson)}
                     >
+=======
+                    onClick = {e => this.props.zoomToZone(this.props.zone.geojson)}>
+                <div className="row">
+                    <div className="float-left col-2">
+>>>>>>> 18653848e118f62db5ba089e9aa5aeaf691a33f9
                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                             <li className="day font-weight-bold mb-2">UK</li>
                             {/* <- fix this */}
                         </ul>
                     </div>
+<<<<<<< HEAD
                     <div 
                         className="content col-8"
                         onClick = {e => this.props.zoomToZone(this.props.zone.geojson)}
                     >
+=======
+                    <div className="content col-8">
+>>>>>>> 18653848e118f62db5ba089e9aa5aeaf691a33f9
                         <h4 className="text-dark title"
                             style={{marginBottom: '0px'}}>{ this.props.zone.name }</h4>
                         {this.props.zone.serviceEndpoint ? 
