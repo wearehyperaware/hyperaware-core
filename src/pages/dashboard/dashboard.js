@@ -61,6 +61,7 @@ export class Dashboard extends React.Component {
         // Dismiss loading bar
         document.getElementById("pageLoader").style.display = "block";
         document.getElementById('topnav').classList.add('bg-white');
+
         setLoadingText()
 
         var screenWidth = document.documentElement.clientWidth;
@@ -158,28 +159,33 @@ export class Dashboard extends React.Component {
     }
 
     ellipsisText = (s, width) => {
-        const NARROW_WIDTH_HOME = 1279;
-        const NARROW_WIDTH = 768;
-        const MIN_SUB_LENGTH = 6;
-        if (s.length >= 60) {
+        try {
+            const NARROW_WIDTH_HOME = 1279;
+            const NARROW_WIDTH = 768;
+            const MIN_SUB_LENGTH = 6;
+            if (s.length >= 60) {
+                const length = s.length;
+                const newLen = Math.floor(width / length) - 5;
+                return `${s.substr(0, 8)}...${s.substr(length - 5, 5)}`;
+            }
+
+            if (width > NARROW_WIDTH_HOME) {
+                return s;
+            }
             const length = s.length;
             const newLen = Math.floor(width / length) - 5;
-            return `${s.substr(0, 8)}...${s.substr(length - 5, 5)}`;
-        }
-
-        if (width > NARROW_WIDTH_HOME) {
+            const subLen = newLen >= MIN_SUB_LENGTH ? newLen : MIN_SUB_LENGTH;
+            if (length > 13) {
+                return `${s.substring(0, subLen)}...${s.substring(
+                    length - subLen,
+                    length
+                )}`;
+            }
             return s;
+        } catch(err) {
+            console.error(err)
+            return "...";
         }
-        const length = s.length;
-        const newLen = Math.floor(width / length) - 5;
-        const subLen = newLen >= MIN_SUB_LENGTH ? newLen : MIN_SUB_LENGTH;
-        if (length > 13) {
-            return `${s.substring(0, subLen)}...${s.substring(
-                length - subLen,
-                length
-            )}`;
-        }
-        return s;
     }
 
     addNotification = (type, did, enterTime, exitTime, hash, rate = 0.007) => {
@@ -323,7 +329,14 @@ export class Dashboard extends React.Component {
             return zone.geojson
         }));
         // let bbox = turf.bbox(turfPolygons);
-        this.flyToZone(turfPolygons);
+        
+        document.getElementById("pageLoader").style.display = "none";
+        document.getElementById("loading-text").style.display = "none";
+
+        setTimeout( () => {
+            this.flyToZone(turfPolygons); 
+        }, 800)
+
 
  
 
@@ -515,7 +528,7 @@ export class Dashboard extends React.Component {
                                             })
                                             // set event listener to zoom to zone on click ...
                                             return (
-                                                <div /*onClick={ this.flyToZone(zone.geojson) }*/
+                                                <div /* onClick={ this.flyToZone(zone.geojson) } */
                                                     className="zone-card event-schedule d-flex bg-white rounded p-3 border"
                                                     key={zone.id} style={{
                                                     marginLeft: '40px',

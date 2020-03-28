@@ -209,6 +209,10 @@ server.get('/api/getAllPolygons', async (req, res) => {
     });
 
     // Fetch Zone DID Docs from addresses, and geojson from DID docs:
+        // We should refactor this to maintain an up-to-date list of zones in the server
+        // Listening for an event from Ethereum. When an event happens, push the new zone
+        // to the list and push the new list to the browser. Auto-update in the browser 
+        // when a new zone is registered.
     zoneDIDDocs = await fetchDIDsAndGeometries(zoneAddresses, zoneContract);
     //console.log('Zone DID Docs and geometries loaded', zoneDIDDocs);
 
