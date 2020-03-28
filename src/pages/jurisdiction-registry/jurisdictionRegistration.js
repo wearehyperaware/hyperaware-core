@@ -497,7 +497,7 @@ export class RegisterJurisdiction extends React.Component {
             name: this.state.zoneName,
             serviceEndpoint: null,
             geojson: this.state.zoneGeojson,
-            layerId: 'layer-' + String(this.state.newZoneCt),
+            layerId: 'layer-' + String(this.state.newZoneCt-1),
             policies: {
                 beneficiary: this.state.zoneBeneficiary,
                 chargePerMinute: this.state.zoneCharge,
@@ -845,12 +845,14 @@ export class RegisterJurisdiction extends React.Component {
                                                     <div className="floatRight col-2">
                                                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                             <li className="delete-zone" 
-                                                            onClick= {e => { this.deleteZone(zone) /* 
+                                                            onClick= {e => this.deleteZone(zone) /* 
                                                                             @TONY ^^^ Trying to get access to html element attributes 
                                                                             inside the function call, mainly the data-zoneid on the parent div.
                                                                             I've written code to be executed inside the deleteZone definition.
-                                                            
-                                                            */  }}
+
+                                                                            @John I think this should work, just not quite sure if removeLayer() works
+                                                                            Sorry my node doesnt work properly so can't test it locally
+                                                            */  }
                                                             style={{
                                                                 fontSize: '18px',
                                                                 width: '30px',
