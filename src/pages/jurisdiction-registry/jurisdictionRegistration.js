@@ -99,8 +99,8 @@ export class RegisterJurisdiction extends React.Component {
         var screenHeight = document.documentElement.clientHeight;
 
         // map loads with different zoom / center depending on the type of device
-        var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
-        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        var zoom = 3.4;
+        var center =  [24.56900802672635, 51.27714197030792];
 
         map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -358,11 +358,12 @@ export class RegisterJurisdiction extends React.Component {
     addGeojsonToMap = async (zone) => {
 
         let id, geojson;
-        console.log(zone);
+
         if (typeof zone.geojson != 'undefined') {
 
             geojson = zone.geojson;
             id = zone.id.split('#')[1];
+            zone.layerId = id;
 
         } else {
             geojson = zone;
@@ -381,9 +382,21 @@ export class RegisterJurisdiction extends React.Component {
             source: 'zone-' + id,
             type: 'line',
                 paint: {
-                    'line-width': 5,
                     'line-opacity': 1,
-                    'line-color': "#2443ac"
+                    'line-color': "#2443ac",
+                    'line-width': [
+                        'interpolate',
+                        ['exponential', 0.5],
+                        ['zoom'],
+                        3,
+                        1,
+                        7,
+                        2,
+                        15,
+                        3,
+                        22,
+                        5
+                        ]
                 }
         })
 
@@ -470,13 +483,35 @@ export class RegisterJurisdiction extends React.Component {
         // Add geojson layer to map:
         // this.state.zoneName;
 
+        // // Fetch the 2-letter country code from Mapbox geocoder
+        // let centroid = turf.centroid(geojson);
+        // let mbURI = "https://api.mapbox.com/geocoding/v5/mapbox.places/" +
+        //     String(centroid.geometry.coordinates.join('%2C')) +
+        //     ".json?access_token=" + mapboxgl.accessToken + 
+        //     "&cachebuster=1585391923576&autocomplete=true&types=country&limit=1"
 
+        // console.log(mbURI)
+
+        // let geocode = await fetch(mbURI, { mode: 'no-cors' }); // <- something wrong here
+
+        // geocode = geocode.json();
+        // console.log(geocode) 
+        // let countryCode = geocode.features[0].properties.short_code;
+        // geojson.properties.countryCode = countryCode;
+        
         this.addGeojsonToMap(geojson)
         
         this.state.newZoneCt += 1;
 
         console.log('geojson', JSON.stringify(geojson));
-        map.fitBounds(turf.bbox(geojson)) // <- figure out padding
+        map.fitBounds(turf.bbox(geojson), {
+            padding: {
+                top: 150,
+                bottom: 50,
+                left: 50,
+                right: 500
+            }
+        }) // <- figure out padding
 
 
         this.setState({zoneGeojson: geojson });
@@ -529,7 +564,7 @@ export class RegisterJurisdiction extends React.Component {
 
         
 
-        let layerId = zone.layerId; // Not sure exactly how to pull this need to revisit
+        let layerId = zone.layerId ; // Not sure exactly how to pull this need to revisit
         console.log("Layer ID for deleted zone: "+layerId);
 
         map.removeLayer('zone-border-' + layerId);
@@ -547,12 +582,11 @@ export class RegisterJurisdiction extends React.Component {
     // }
     // On Add zone. form submit
     addZoneFromForm = async (event) => {
+
         event.preventDefault();
 
-        console.log(event)
-
-        // Validate form?  
-
+        
+        
         // Build service object
         let zoneObject = {
             id: this.state.didDoc.id + "#" + this.kebabify(this.state.zoneName),
@@ -674,7 +708,14 @@ export class RegisterJurisdiction extends React.Component {
         });
 
         let zonesBbox = turf.bbox(geojsonMerge.merge(zonesGeometries));
-        map.fitBounds(zonesBbox);
+        map.fitBounds(zonesBbox, {
+            padding: {
+                left: 100,
+                bottom: 75,
+                top: 150,
+                right: 500
+            }
+        });
 
     }
     
