@@ -18,6 +18,7 @@ import ship from '../../images/icon/ship.svg'
 import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import {getStartEnd} from "./getPath";
+import {setLoadingText} from "./loadingText";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 let socket
@@ -60,9 +61,7 @@ export class Dashboard extends React.Component {
         // Dismiss loading bar
         document.getElementById("pageLoader").style.display = "block";
         document.getElementById('topnav').classList.add('bg-white');
-        setTimeout(function () {
-            document.getElementById("pageLoader").style.display = "none";
-        }, 1000);
+        setLoadingText()
 
         var screenWidth = document.documentElement.clientWidth;
         var screenHeight = document.documentElement.clientHeight;
@@ -135,7 +134,7 @@ export class Dashboard extends React.Component {
         })
 
         socket.on('fetchNewPositionsFromServerResponse', (message, slashHash) => {
-            this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash)
+            this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash, message.rate)
         })
 
     }
@@ -199,7 +198,7 @@ export class Dashboard extends React.Component {
 
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
         html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle has been charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> 
-        (Rate: ${rate} / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
+        (Rate: ${rate} IOTX / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
         
         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
