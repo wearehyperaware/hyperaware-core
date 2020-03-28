@@ -58,7 +58,7 @@ class Price extends Component {
                                     <h4 className="main-title mb-4">Use Cases</h4>
                                     <p className="text-muted para-desc mb-0 mx-auto">Use <span
                                         className="text-primary font-weight-bold">Hyperaware</span> to unlock value and
-                                        ensure compliance in multiple industries and scenarios.</p>
+                                        ensure compliance <br /> in multiple industries and scenarios.</p>
                                 </div>
                             </Col>
                         </Row>
