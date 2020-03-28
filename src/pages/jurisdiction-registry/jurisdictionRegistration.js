@@ -9,6 +9,7 @@ import geojsonMerge from '@mapbox/geojson-merge'
 import Web3 from 'web3'
 import Arweave from 'arweave/web'
 import zoneContract from './zone-contract-details.js'
+import {without} from 'lodash';
 
 // React Components
 import React from 'react'
@@ -107,6 +108,8 @@ export class RegisterJurisdiction extends React.Component {
             zoom,
             center,
         });
+
+        window.map = map;
 
 
         // Log in with metamask
@@ -516,29 +519,21 @@ export class RegisterJurisdiction extends React.Component {
 
     }
 
-    deleteZone = (event) => {
+    deleteZone = (zone) => {
         // Delete zone from this.state.zones
-        event.preventDefault()
-        // clear state variables
-        this.resetNewZoneStateVariables()
+        let tempZones = this.state.zones; 
 
-        // Remove geojson layer
-        let dataZoneId = 'x'; // <- this is what I need access to.
+        tempZones = without(tempZones,zone);
 
-        // This will enable us to select the zone from the this.state.zones array
-        let zoneToDelete = this.state.zones.find((zone) => {
-            // I think this is roughly right. 
-            if (zone.layerId) {
-                return zone.layerId == dataZoneId;
-            } else {
-                return this.state.didDoc.id + '#' + dataZoneId == zone.id;
-            }
-        });
+        this.setState({zones : tempZones});
 
-        let zoneId = 'x'; // Not sure exactly how to pull this need to revisit
+        
 
-        map.removeLayer('zone-border-layer-' + zoneId);
-        map.removeLayer('zone-fill-layer-' + zoneId);
+        let layerId = zone.layerId; // Not sure exactly how to pull this need to revisit
+        console.log("Layer ID for deleted zone: "+layerId);
+
+        map.removeLayer('zone-border-' + layerId);
+        map.removeLayer('zone-fill-' + layerId);
 
         // Remove zone object from this.state.zones; 
         
@@ -564,7 +559,7 @@ export class RegisterJurisdiction extends React.Component {
             name: this.state.zoneName,
             serviceEndpoint: null,
             geojson: this.state.zoneGeojson,
-            layerId: 'layer-' + String(this.state.newZoneCt),
+            layerId: 'layer-' + String(this.state.newZoneCt-1),
             policies: {
                 beneficiary: this.state.zoneBeneficiary,
                 chargePerMinute: this.state.zoneCharge,
@@ -912,12 +907,14 @@ export class RegisterJurisdiction extends React.Component {
                                                     <div className="floatRight col-2">
                                                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
                                                             <li className="delete-zone" 
-                                                            onClick= {e => { this.deleteZone(e) /* 
+                                                            onClick= {e => this.deleteZone(zone) /* 
                                                                             @TONY ^^^ Trying to get access to html element attributes 
                                                                             inside the function call, mainly the data-zoneid on the parent div.
                                                                             I've written code to be executed inside the deleteZone definition.
-                                                            
-                                                            */  }}
+
+                                                                            @John I think this should work, just not quite sure if removeLayer() works
+                                                                            Sorry my node doesnt work properly so can't test it locally
+                                                            */  }
                                                             style={{
                                                                 fontSize: '18px',
                                                                 width: '30px',
