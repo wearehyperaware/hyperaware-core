@@ -789,14 +789,13 @@ export class RegisterJurisdiction extends React.Component {
             <div>
                 
 
-
+                <Topbar/>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
 
-                    <Topbar/>
                 </div>
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
-                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '65%'}}>
+                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%', marginBottom: "40px"}}>
 
                     <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
                         <h2 className='d-flex' style={{marginLeft: 40}}>Zone Registry<span className="text-primary">.</span></h2>
