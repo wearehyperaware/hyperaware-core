@@ -46,6 +46,7 @@ SecureWorker.onMessage(function (message) {
                         notification: {
                             vehicleDetails: newPosition.vehicle,
                             jurisdictionAddress: beneficiary,
+                            rate: dids[i].service[0].policies.chargePerMinute,
                             type: 'exit'
                         }
                     })

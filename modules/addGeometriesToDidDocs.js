@@ -8,7 +8,7 @@ returns Promise.all() promise that resolves to an array of geojson objects ...
 
 module.exports = async (didDocsArray) => {
 
-    console.log("Add GEOMETRIES CALLED")
+    //console.log("Add GEOMETRIES CALLED")
     // create array of promises
     let promises = [];
 
@@ -51,7 +51,7 @@ module.exports = async (didDocsArray) => {
             }
         });
 
-        console.log('redData', resData);
+        //console.log('redData', resData);
 
         let ijson = 0;
 

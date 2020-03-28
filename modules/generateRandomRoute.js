@@ -70,7 +70,6 @@ function generateRandomPoints(polygon) {
         var points = [turf.along(border1, Math.random() * length(border1, {units: 'kilometers'}), {units: 'kilometers'}),
                             turf.along(border2, Math.random() * length(border2, {units: 'kilometers'}), {units: 'kilometers'})
                         ];
-        console.log('points', points)
         return points.map(function (feat) {
             return feat.geometry.coordinates;
         });

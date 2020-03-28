@@ -159,8 +159,6 @@ export class Dashboard extends React.Component {
     }
 
     ellipsisText = (s, width) => {
-
-        console.log(s, width);
         const NARROW_WIDTH_HOME = 1279;
         const NARROW_WIDTH = 768;
         const MIN_SUB_LENGTH = 6;
@@ -186,7 +184,7 @@ export class Dashboard extends React.Component {
     }
 
     addNotification = (type, did, enterTime, exitTime, hash, rate = 0.007) => {
-        const TIME_MULTIPLIER = 3.5
+        const TIME_MULTIPLIER = 5
         let timeElapsedInMinutes
         if (type === 'exit') {
             timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
@@ -528,7 +526,7 @@ export class Dashboard extends React.Component {
                                                             href={"https://etherscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
                                                             <br/>
                                                             <span
-                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " " + zone.policies.currency} /
+                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " ⬡"} /
                                                             minute
                                                             <br/>
                                                             <span className="text-dark h6">Zone Geometry: </span><a
@@ -582,7 +580,7 @@ export class Dashboard extends React.Component {
                         <div className='row'>
                             <div className='col'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.totalStaked} IOTX
+                                    {Math.round(this.state.totalStaked).toLocaleString()} IOTX
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Staked in Contract.
