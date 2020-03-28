@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
-const ethers = require('ethers');
+const Web3 = require('web3');
 const Antenna = require('iotex-antenna')
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
@@ -171,29 +171,49 @@ server.get('/api/getAllVehicles', async (req, res) => {
 
 server.get('/api/getAllPolygons', async (req, res) => {
 
-// Set up connection with ZoneRegistry contract on Ethereum
-    const ethProvider = ethers.getDefaultProvider('ropsten');
-    const zoneContract = new ethers.Contract(ZONE_REGISTER_ADDRESS, ZONE_REGISTER_ABI, ethProvider);
+    // Set up connection with ZoneRegistry contract on Ethereum
 
+    const ropstenProvider = new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/799a48033afc4389a1576386aee584dd");
+    const web3 = new Web3(ropstenProvider);
 
-// Simulated Fetch DID URIs:
+    const SERVER_PRIVATE_KEY = "0xa6e027a167eed0a181893685e7bbfbc8d41d0017c9abf0eab8ec4f66ebe4848b";
+    const serverWallet = web3.eth.accounts.privateKeyToAccount(SERVER_PRIVATE_KEY);
 
-    var zoneAddresses = [ // @LEO -> can you set this up to fetch all registered DIDs?
-        // "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
-        // "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
-        // "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
-        // "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD", // <- France
-        "0xb7ec4260F21f6C1208Ef55ED4Afa550bCC37e5f5", // <- Wales
-        "0x26A398bd8429Da356198D0c16D91BDEF3bdbCd76" // <- Birmingham
-    ];
+    let isListening = await web3.eth.net.isListening();
+    console.log('isListening', isListening);
+    console.log(serverWallet)
+    const zoneContract =  new web3.eth.Contract(ZONE_REGISTER_ABI, ZONE_REGISTER_ADDRESS)
+
+    // Simulated Fetch DID URIs:
+
+        // var zoneAddresses = [ // @LEO -> can you set this up to fetch all registered DIDs?
+        //     // "0x77DB10B97bbcE20656d386624ACb5469E57Dd21b", // <- UK
+        //     // "0x375ef39Fe23128a42992d5cad5a166Ab04C20A88", // <- Netherlands
+        //     // "0x3985dE49147725D64407d14c3430bd1dC9c11f04",  // <- Germany
+        //     // "0xe0eE166374DcD88e3dFE50E3f72005CEE37F64BD", // <- France
+        //     "0xb7ec4260F21f6C1208Ef55ED4Afa550bCC37e5f5", // <- Wales
+        //     "0x26A398bd8429Da356198D0c16D91BDEF3bdbCd76" // <- Birmingham
+        // ];
+
+    let zoneAddresses = await zoneContract.methods.getExistingDIDs().call({
+        from: serverWallet.address,
+        gasPrice: "80000000000"
+    });
+
+    console.log(zoneAddresses);
 
     // Fetch Zone DID Docs from addresses, and geojson from DID docs:
     zoneDIDDocs = await fetchDIDsAndGeometries(zoneAddresses, zoneContract);
-    console.log('Zone DID Docs and geometries loaded');
+    console.log('Zone DID Docs and geometries loaded', zoneDIDDocs);
 
     zoneDIDDocs.map((did) => {
         did.service.map((zone) => {
-            turfPolygons.push(turf.polygon(zone.geojson.features[0]));
+            console.log('service zone', zone)
+            if (zone.geojson.type == 'FeatureCollection') {
+                turfPolygons.push(zone.geojson.features[0]);
+            } else if (zone.geojson.type == 'Feature') {
+                turfPolygons.push(zone.geojson)
+            }
         });
     });
 

@@ -1,0 +1,24 @@
+{
+    "berlin.json": "",
+    "frankfurt.json": "",
+    "london-congestion-zone.json": {
+        "address": "io1plep9qn0a8jxrlprkgqvpz4nqy7x4jjtg2m5g3", 
+        "privateKey": "adb32e43d74e6b65a6c320e311bafb14bfcfe4d3c5d52605bd76aa9939519794"
+    },
+    "port-of-southampton": {
+        "address": "io13nz4qd0e6x3g8wgnyyw2xnweczp29scuu6852n",
+        "privateKey": "0d9508e2470866f5dd9ab25cc6f871d902ac801b0b83372eca8d3818777b63f7"
+    },
+    "berlin.json": {
+        "address": "io1grj3e8wm0mcxfkwjquwp5elu3rczs28hkfe2js",
+        "privateKey": "72c5ffa2c146e3946b6bb7ab951f1c792c373f50a1a1d86226f473744d549483"
+    },
+    "a4-border-crossing": {
+        "address": "io167gv2qa6kkzcldeuae2tzlr324y74qwfum4m3l",
+        "privateKey": "da50a97825c8665cc055cb52323d88e5deffbad0ba71edd8263161c018971a14"
+    },
+    "c": {
+        "address": "io17dse6er3vvnsphtlcxhg02d5ltlu44yhhwnazy",
+        "privateKey": "1b4ebb7f33471e02a33e5d9910e3a7323863f612fffab0790e1884bdbe23a21b"
+    }
+}

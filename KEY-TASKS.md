@@ -27,10 +27,10 @@ Tasks to complete to finish development of MVP.
 
 ## Jurisdiction Registration
 
-- Sign in on metamask
-- Populate map, zone registration card with info from DID
-- Enable user to add, remove zones. Edit? 
-- Register Zones -> arweave -> Ethereum
+- ~~Sign in on metamask~~
+- ~~Populate map, zone registration card with info from DID~~
+- ~~Enable user to add~~, remove zones. 
+- ~~Register Zones -> arweave -> Ethereum~~
 - Test and make sure new zones appear on map from chain / arweave!!
 
 ## Documentation
@@ -38,8 +38,9 @@ Tasks to complete to finish development of MVP.
 - Write explainer on how to test the app.
 - Also use this copy on the Github
 
-## Github
+## ~~Github~~
 
+- *Make repo private*
 - Create README that explains what is happening and how to use the app.
 - Clean up
 - Mask any private scripts etc?
@@ -67,7 +68,8 @@ Tasks to complete to finish development of MVP.
 
 ### Vehicles
 
-- Make rendered vehicles start somewhere outside of zone boundaries not directly on 
+- Make rendered vehicles start somewhere outside of zone boundaries not directly on border
+- Make so vehicles starting inside zone are instantiated red.
 - On card click - zoom to car?
 - Confirm that all vehicles are being pulled in a visualized properly
 
