@@ -471,10 +471,11 @@ export class Dashboard extends React.Component {
                     <button className='btn btn-primary mx-2'
                             onClick={this.togglePrivacyMode}>{this.state.isPrivacyMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
                 </div>
-                <Topbar/>
-                <div ref={el => this.mapContainer = el} className='map' id='map'>
 
-                </div>
+                <Topbar/>
+
+                <div ref={el => this.mapContainer = el} className='map' id='map'></div>
+ 
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
                 <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%'}}>

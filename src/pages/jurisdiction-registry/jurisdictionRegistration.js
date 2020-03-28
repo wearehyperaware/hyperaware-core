@@ -10,13 +10,14 @@ import Web3 from 'web3'
 import Arweave from 'arweave/web'
 import zoneContract from './zone-contract-details.js'
 import {without} from 'lodash';
+import ZoneCard from './ZoneCard'
 
 // React Components
 import React from 'react'
-import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Alert from "react-bootstrap/Alert";
+import Spinner from "react-bootstrap/Spinner";
 import AnimateHeight from "react-animate-height";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
@@ -48,7 +49,7 @@ export class RegisterJurisdiction extends React.Component {
                 authentication: [],
                 service: []
             },
-            zones: [],
+            zones: undefined,
             zoneName: "",
             zoneAdmin: "",
             zoneBeneficiary: "",
@@ -67,6 +68,8 @@ export class RegisterJurisdiction extends React.Component {
         }
 
         this.deleteZone = this.deleteZone.bind(this);
+        this.truncateAddress = this.truncateAddress.bind(this);
+        this.zoomToZone = this.zoomToZone.bind(this);
     }
     async componentDidMount() {
 
@@ -140,7 +143,7 @@ export class RegisterJurisdiction extends React.Component {
                     );
 
                 zones.map((zone) => this.addGeojsonToMap(zone))
-                this.setState({ zones });// = [...this.state.zones, DIDdocument.service];
+                this.setState({ zones : zones});// = [...this.state.zones, DIDdocument.service];
 
                 console.log(DIDdocument)
                 //update based on DIDdocument
@@ -412,6 +415,10 @@ export class RegisterJurisdiction extends React.Component {
 
         
     }
+
+    zoomToZone = (geojson) => {
+        map.fitBounds(turf.bbox(geojson));
+    }
     
 
     loadGeojson =  async (event) => {
@@ -425,11 +432,11 @@ export class RegisterJurisdiction extends React.Component {
 
             console.log('VALID GEOJSON')
 
-            if (geojson.type == "FeatureCollection") {
-                if ((geojson.features[0].type == 'Feature') && 
-                (geojson.features[0].geometry.type == 'Polygon')) {
+            if (geojson.type === "FeatureCollection") {
+                if ((geojson.features[0].type === 'Feature') && 
+                (geojson.features[0].geometry.type === 'Polygon')) {
                     console.log("great!!")
-                } else if (geojson.features[0].type == 'Polygon') {
+                } else if (geojson.features[0].type === 'Polygon') {
                         geojson = {
                             type: "FeatureCollection",
                             features: {
@@ -447,14 +454,14 @@ export class RegisterJurisdiction extends React.Component {
                     return;
                 }
            
-            } else if (geojson.type == 'Feature' && geojson.geometry.type == 'Polygon') {
+            } else if (geojson.type === 'Feature' && geojson.geometry.type === 'Polygon') {
                 geojson = {
                     type: "FeatureCollection",
                     features: [
                         geojson
                     ]
                 }
-            } else if (geojson.type == "Polygon") {
+            } else if (geojson.type === "Polygon") {
                 geojson = {
                     type: "FeatureCollection", 
                     features: [
@@ -567,6 +574,7 @@ export class RegisterJurisdiction extends React.Component {
         let layerId = zone.layerId ; // Not sure exactly how to pull this need to revisit
         console.log("Layer ID for deleted zone: "+layerId);
 
+
         map.removeLayer('zone-border-' + layerId);
         map.removeLayer('zone-fill-' + layerId);
 
@@ -653,12 +661,15 @@ export class RegisterJurisdiction extends React.Component {
     }
 
     resetNewZoneStateVariables = () => {
-        this.state.zoneName =  "";
-        this.state.zoneAdmin = "";
-        this.state.zoneBeneficiary = "";
-        this.state.zoneCharge = "";
-        this.state.zoneCurrency = "";
-        this.state.zoneGeojson = {};
+        this.setState({
+            zoneName : "",
+            zoneAdmin : "",
+            zoneBeneficiary : "",
+            zoneCharge : "",
+            zoneCurrency : "",
+            zoneGeojson : {},
+        })
+
     }
 
 
@@ -787,10 +798,9 @@ export class RegisterJurisdiction extends React.Component {
     render() {
         return (
             <div>
-                
-
                 <Topbar/>
                 <div ref={el => this.mapContainer = el} className='map' id='map'>
+                    
 
                 </div>
                 <div ref={this.overlay} className='overlay' id='overlay'/>
@@ -906,72 +916,21 @@ export class RegisterJurisdiction extends React.Component {
                             </div>
                             <h4 className='d-flex' style={{marginLeft: 40}}>Zones<span className="text-primary">.</span></h4>
                                 {
-                                    !this.state.zones ? <div></div> : (
-                                        this.state.zones.map((zone) => {
-
-
+                                    !this.state.zones ? 
+                                    <Alert variant = 'primary'>
+                                        <Spinner animation="border" role="status" variant = "light">
+                                        </Spinner> 
+                                         Fetching zone geometries from the permaweb...
+                                    </Alert>
+                                  : (
+                                        this.state.zones.map((zone) => {                                 
                                             return (
-                                            <div /*onClick={ this.flyToZone(zone.geojson) }*/
-                                                    id={ (zone.serviceEndpoint ?  zone.id.split('#')[1] : String(zone.layerId) ) + '-card' }
-                                                    data-zoneid = { zone.serviceEndpoint ? zone.id.split('#')[1] : String(zone.layerId)  }
-                                                    key={ zone.id.split('#')[1]}
-                                                    className="zone-card event-schedule d-flex bg-white rounded p-3 border"
-                                                    style={{
-                                                        marginLeft: '40px',
-                                                        marginTop: '5px',
-                                                        marginRight: '20px',
-                                                        marginBottom: '20px'
-                                                    }}>
-                                                <div className="row">
-                                                    <div className="float-left col-2">
-                                                        <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                            <li className="day font-weight-bold mb-2">UK</li>
-                                                            {/* <- fix this */}
-                                                        </ul>
-                                                    </div>
-                                                    <div className="content col-8">
-                                                        <h4 className="text-dark title"
-                                                            style={{marginBottom: '0px'}}>{ zone.name }</h4>
-                                                        
-                                                        <p className="text-muted location-time">
-                                                            <span className="text-dark h6">Beneficiary: </span><a
-                                                            target="_blank"
-                                                            href= {"https://iotxplorer.io/address/" + zone.policies.beneficiary }>{ this.truncateAddress(zone.policies.beneficiary) }</a>
-                                                            <br/>
-                                                            <span
-                                                                className="text-dark h6">Charge: </span>{ zone.policies.currency} { zone.policies.chargePerMinute } / minute
-                                                            <br/>
-                                                        </p>
-            
-                                                    </div>
-                                                    <div className="floatRight col-2">
-                                                        <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled">
-                                                            <li className="delete-zone" 
-                                                            onClick= {e => this.deleteZone(zone) /* 
-                                                                            @TONY ^^^ Trying to get access to html element attributes 
-                                                                            inside the function call, mainly the data-zoneid on the parent div.
-                                                                            I've written code to be executed inside the deleteZone definition.
-
-                                                                            @John I think this should work, just not quite sure if removeLayer() works
-                                                                            Sorry my node doesnt work properly so can't test it locally
-                                                            */  }
-                                                            style={{
-                                                                fontSize: '18px',
-                                                                width: '30px',
-                                                                height: '30px',
-                                                                borderRadius: '30px',
-                                                                /* background: #e9edfa; */
-                                                                lineHeight: '25px',
-                                                                border: '2px solid #ffffff',
-                                                                boxShadow: '0px 0px 2px 0.25px #4466d8',
-                                                                cursor: 'pointer'
-                                                             }}
-                                                             
-                                                            >x</li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                <ZoneCard 
+                                                    zone={zone}
+                                                    deleteZone = {this.deleteZone}
+                                                    truncateAddress = {this.truncateAddress}
+                                                    zoomToZone = {this.zoomToZone}
+                                                />
                                             )
                                         })
                                     )
