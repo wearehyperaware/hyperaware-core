@@ -21,12 +21,12 @@ import Spinner from "react-bootstrap/Spinner";
 import AnimateHeight from "react-animate-height";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
-let socket
-if (process.env.NODE_ENV === 'production') {
-    socket = connect(window.location.hostname)
-} else {
-    socket = connect('http://localhost:3001');
-}
+// let socket
+// if (process.env.NODE_ENV === 'production') {
+    // socket = connect(window.location.hostname)
+// } else {
+    // socket = connect('http://localhost:3001');
+// }
 
 
 export var map 
@@ -98,8 +98,8 @@ export class RegisterJurisdiction extends React.Component {
         window.addEventListener("scroll", this.scrollNavigation, true);
 
         // Set up and add map:
-        var screenWidth = document.documentElement.clientWidth;
-        var screenHeight = document.documentElement.clientHeight;
+        // var screenWidth = document.documentElement.clientWidth;
+        // var screenHeight = document.documentElement.clientHeight;
 
         // map loads with different zoom / center depending on the type of device
         var zoom = 3.4;
@@ -148,7 +148,7 @@ export class RegisterJurisdiction extends React.Component {
                 console.log(DIDdocument)
                 //update based on DIDdocument
                 //do sth e.g.) let updatedDIDdocument = DIDdocument.service.push(...)
-                let updatedDIDdocument = {};
+                //let updatedDIDdocument = {};
 
                 // save to areweave
                 // let updatedDocumentURI = await this.saveToArweave(
@@ -930,6 +930,7 @@ export class RegisterJurisdiction extends React.Component {
                                                     deleteZone = {this.deleteZone}
                                                     truncateAddress = {this.truncateAddress}
                                                     zoomToZone = {this.zoomToZone}
+                                                    key={ zone.id.split('#')[1]}
                                                 />
                                             )
                                         })
