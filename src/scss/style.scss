@@ -267,6 +267,13 @@ circle.enter {
   animation: ripple .9s 1;
 }
 
+circle.highlight-vehicle:not([isPrivateVehicle=true]) {
+  r: 11px;
+  stroke: yellow;
+  stroke-width: 2px;
+  transition: unset;
+}
+
 .screen {
   height: 80vh;
   bottom: 0;
