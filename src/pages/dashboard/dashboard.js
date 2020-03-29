@@ -19,6 +19,8 @@ import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import {getStartEnd} from "./getPath";
 import {setLoadingText} from "./loadingText";
+import {htmlIDFromDID} from "../helperFunctions";
+
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 let socket
@@ -219,6 +221,16 @@ export class Dashboard extends React.Component {
                 right: 500
             }
         });
+    }
+
+    highlightVehicle = (vehicle) => {
+        d3.select('#' + htmlIDFromDID(vehicle.id))
+            .classed('highlight-vehicle', true);
+    }
+
+    unhighlightVehicle = (vehicle) => {
+        d3.select('#' + htmlIDFromDID(vehicle.id))
+            .classed('highlight-vehicle', false);
     }
 
     // flyToZone = (geojson) => {
@@ -528,7 +540,7 @@ export class Dashboard extends React.Component {
                                             })
                                             // set event listener to zoom to zone on click ...
                                             return (
-                                                <div /* onClick={ this.flyToZone(zone.geojson) } */
+                                                <div onClick={ e => this.flyToZone(zone.geojson) } 
                                                     className="zone-card event-schedule d-flex bg-white rounded p-3 border"
                                                     key={zone.id} style={{
                                                     marginLeft: '40px',
@@ -620,7 +632,10 @@ export class Dashboard extends React.Component {
                                 {!this.state.vehicles ? <div></div> : (
                                     this.state.vehicles.map((vehicle) => {
                                         return (
-                                            <div className="event-schedule d-flex bg-white rounded p-3 border"
+                                            <div 
+                                                onMouseEnter={e => this.highlightVehicle(vehicle)}
+                                                onMouseLeave={e => this.unhighlightVehicle(vehicle)}
+                                                className="event-schedule d-flex bg-white rounded p-3 border"
                                                  key={vehicle.id}
                                                  style={{marginLeft: '40px', marginTop: '25px', marginRight: '20px'}}>
                                                 <div className="float-left">

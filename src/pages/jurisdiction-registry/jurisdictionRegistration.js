@@ -44,7 +44,7 @@ export class RegisterJurisdiction extends React.Component {
         authentication: [],
         service: []
       },
-      zones: undefined,
+      zones: [],
       zoneName: "",
       zoneAdmin: "",
       zoneBeneficiary: "",
@@ -400,7 +400,15 @@ export class RegisterJurisdiction extends React.Component {
   };
 
   zoomToZone = geojson => {
-    map.fitBounds(turf.bbox(geojson));
+    map.fitBounds(turf.bbox(geojson), {
+      padding: {
+        top: 150,
+        bottom: 50,
+        left: 50,
+        right: 500
+      }
+    }
+    );
   };
 
   loadGeojson = async event => {
@@ -567,9 +575,10 @@ export class RegisterJurisdiction extends React.Component {
     };
 
     deleteZone = async zone => {
-        if (zone.serviceEndpoint){
-            await this.deregisterZone(zone.id)
-        }
+
+        // if (zone.serviceEndpoint){
+        //     await this.deregisterZone(zone.id)
+        // }
 
         let tempZones = this.state.zones;
 
@@ -611,7 +620,12 @@ export class RegisterJurisdiction extends React.Component {
     // Update this.state.zones by appending service object to .service
     // Check if object is not in zones.
     // if (this.state.zones.contains(zoneObject)) {
-    let zones = [...this.state.zones, zoneObject];
+      // let zones;
+      // if (this.state.zones.length > 0) {
+        let zones = [...this.state.zones, zoneObject];
+      // } else {
+      //   zones = [zoneObject];
+      // }
     await this.setState({ zones });
 
     // Zoom to bounding box including all zones

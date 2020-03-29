@@ -31,15 +31,7 @@ export default class ZoneCard extends React.Component{
                     >
                         <h4 className="text-dark title"
                             style={{marginBottom: '0px'}}>{ this.props.zone.name }</h4>
-                        {this.props.zone.serviceEndpoint ? 
-                        <Alert variant = "primary">
-                        Registered
-                        </Alert> 
-                        : 
-                        <Alert variant = "warning">
-                            To be registered
-                        </Alert>
-                        }
+                        
                         <p className="text-muted location-time">
                             <span className="text-dark h6">Beneficiary: </span><a
                             target="_blank"
@@ -50,7 +42,15 @@ export default class ZoneCard extends React.Component{
                                 className="text-dark h6">Charge: </span>{ this.props.zone.policies.currency} { this.props.zone.policies.chargePerMinute } / minute
                             <br/>
                         </p>
-        
+                        {this.props.zone.serviceEndpoint ? 
+                        <Alert variant = "primary">
+                        Registered
+                        </Alert> 
+                        : 
+                        <Alert variant = "warning">
+                            To be registered
+                        </Alert>
+                        }
                     </div>
                     <div className="floatRight col-2">
                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled"> 
