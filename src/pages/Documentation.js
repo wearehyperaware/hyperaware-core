@@ -75,12 +75,92 @@ export class Documentation extends Component {
                     <div className="container">
                         <Row>
                             <Col>
-                                <h1>Introduction</h1>
-                                <p className="text-muted h5 font-weight-normal">Get Started With <span
-                                    className="text-primary font-weight-bold">Hyperaware.</span></p>
+                                <h1><span
+                                    className="text-primary font-weight-bold">Hyperaware.</span></h1>
+                                <h3 className="mt-4 pt-2">Introduction</h3>
+                                <p>
+                                    <span className="text-primary font-weight-bold">Hyperaware</span> is a decentralized application 
+                                    for governing connected devices and their data based on physical location. Our system leverages
+                                    trusted computing, decentralized identity, a Private Location Analytics Engine and smart contracts 
+                                    to provide a decentralized and fully trusted system. 
+                                </p>
+                                <p>
+                                    <span className="text-primary font-weight-bold">Hyperaware</span> is formed of a number of custom-built
+                                    software architectures. Notably, the <span className="text-primary font-weight-bold">Hyperaware</span> Private Location 
+                                    Analytics Engine uses Intel SGX technology to securely analyze encrypted location data. With this technology 
+                                    we are able to enforce policies based on a device's location <em>without ever revealing the exact location of the device</em>. Crucially, 
+                                    the system works everywhere in the world - it transcends physical jurisdiction.
+                                    We believe there are significant applications of this technology in military, shipping and logistics, insurance, fisheries and other sectors.
+                                </p>
+                                <p>
+                                    Additionally, <span className="text-primary font-weight-bold">Hyperaware</span> has written smart contracts to enable 
+                                    sophisticated policy enforcement based on a vehicle's location on Earth. With our smart contracts we can levy congestion
+                                    charges based on <strong>how long</strong> a vehicle is inside a particular zone - and even on the <strong>vehicle type</strong>. We 
+                                    envision a smart city where payments and notifications are automated using <span className="text-primary font-weight-bold">Hyperaware</span> technology.                                 
+                                </p>
+                                <p>
+                                    With <span className="text-primary font-weight-bold">Hyperaware</span>, everyone can be sure 
+                                    that everyone else is playing by the rules, while keeping strategic information secret.
+                                </p>
+                                <p>So, how does it work?</p>
                                 <h3 className="mt-4 pt-2">DID Creation</h3>
+                                <p><span
+                                    className="text-primary font-weight-bold">Hyperaware</span> uses <a href='https://www.w3.org/TR/did-core/' target="_blank"> decentralized identifiers</a> to
+                                      enable users to control their own data. Vehicle owners need to register a DID document 
+                                     using an IoTeX address, which can be created on our <a href="/demo/tools">Tools</a> page.
+                                </p>
+                                <p>Register a decentralized identifier (or DID - which will look like "did:io:0x9655...") 
+                                    for your company with your IoTeX address and corresponding private key on 
+                                    the <a href="/demo/register-did">Register DID</a> page. Then, with the DID that is 
+                                    registered, create <em>another</em> DID for
+                                    each vehicle you want to register. You will need these two DIDs to register 
+                                    the vehicle on <span
+                                    className="text-primary font-weight-bold">Hyperaware</span>'s smart contracts.</p>
+                                    <p>In this way vehicle owners control the information coming of off each vehicle's IoTeX Pebble Tracker.
+                                        Because the Pebble Tracker has a secure element onboard, it can sign and encrypt location information 
+                                        at the edge - information that is fully controlled by the owner. In this way private location data 
+                                        can stay private - the owner is 'self sovereign'.
+                                    </p>
                                 <h3 className="mt-4 pt-2">Vehicle Registration</h3>
+                                    <p>With the owner DID and vehicle DID created in the step above, register your 
+                                    vehicle on the <a href="/demo/vehicle-registration">Register vehicle</a> page. You will need to stake some IoTeX
+                                    with the registration - the accounts generated on our Tools page were given some IoTeX for the demo. (This is running
+                                    on a testnet so the currency has no value.)</p>
                                 <h3 className="mt-4 pt-2">Jurisdiction Registration</h3>
+                                    <p>
+                                    <span
+                                    className="text-primary font-weight-bold">Hyperaware</span> also uses decentralized identifiers
+                                    to enable Jurisdictions to control their Zones. This means they have full autonomy over the borders they register, 
+                                    and the policies that vehicles have to comply with when they enter that Zone.  
+                                    </p>
+                                    <p>
+                                        To register a Zone, create a GeoJSON file that represents the boundaries of the 
+                                        polygon. (A handy tool for this is <a href="http://geojson.io/">geojson.io</a> - draw a polygon, then copy-paste
+                                        the JSON into a text editor and save it.)
+                                    </p>
+                                    <p><span
+                                        className="text-primary font-weight-bold">Hyperaware</span> will deploy the GeoJSON files and a DID document 
+                                        controlling them to the Arweave permaweb, then register that DID on the <span
+                                        className="text-primary font-weight-bold">Hyperaware</span> Zone Registry, running on Ethereum's Ropsten testnet.
+                                        Then, when you load the Dashboard, registered zones are visualized on the interactive map.
+                                    </p>
+                                    <p>
+                                        To register Zones, log onto the <a href="/demo/jurisdiction-registration">Jurisdiction Registration</a> page with <a href="https://metamask.io/" target="_blank">Metamask</a>. (Your Metamask account will need
+                                        to have test ether on the Ropsten testnet - you can get some at a faucet, <a href="https://faucet.ropsten.be/" target="_blank">here</a>.) A map and form 
+                                        interface should load, enabling you to upload the JSON file (with GeoJSON), input Zone information 
+                                        and policies. 
+                                    </p>
+                                    <p>
+                                        Once you've added (or removed) the Zones, click "Register zones." This will deploy geometries and the DID document 
+                                        to Arweave, then register the DID on Ethereum. 
+                                    </p>
+                                    <p>
+                                        <strong>NOTE!</strong> You will need to wait several minutes for the data to be mined on the permaweb 
+                                        before your Zones appear on the dashboard. 
+                                    </p>
+                                    <p>
+                                        If you have any questions email trust@hyperaware.io for personalized support. And please email any 
+                                    </p>
 
                             </Col>
                         </Row>
