@@ -117,6 +117,10 @@ export class RegisterJurisdiction extends React.Component {
 
       let exists = await this.isRegistered(selectedAddress);
 
+      this.setState(state => {
+        return { isAddressRegistered: exists };
+      });
+
       if (exists) {
         //fetch existing docuemnt from contract and read from arweave
         let documentURI = await this.getURI(selectedAddress);
