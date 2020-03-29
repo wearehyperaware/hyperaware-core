@@ -923,52 +923,52 @@ export class RegisterJurisdiction extends React.Component {
                                                     </div>
                                                 ) : <div></div>
                                             } */}
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                            <h4 className='d-flex' style={{marginLeft: 40}}>Zones<span className="text-primary">.</span></h4>
-                                {
-                                    !this.state.zones ? 
-                                    <Alert variant = 'primary'>
-                                        <Spinner animation="border" role="status" variant = "light">
-                                        </Spinner> 
-                                         Fetching zone geometries from the permaweb...
-                                    </Alert>
-                                  : (
-                                        this.state.zones.map((zone) => {                                 
-                                            return (
-                                                <ZoneCard 
-                                                    zone={zone}
-                                                    deleteZone = {this.deleteZone}
-                                                    truncateAddress = {this.truncateAddress}
-                                                    zoomToZone = {this.zoomToZone}
-                                                    key={ zone.id.split('#')[1]}
-                                                />
-                                            )
-                                        })
-                                    )
-                                }
-                                
-                            </div>
-                            <button className="btn btn-primary btn-lg"
-                                style={{
-                                    marginLeft: '40px',
-                                    marginTop: "30px"
-                                }}
-                                    onClick={e => this.registerDID(e)}
-                                    >Register zones.
-                            </button>
-                            
-
-                        </AnimateHeight>
-                    </div>
-                    
-                </Col>
-                
-            </div>
-        )
-    }
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <h4 className="d-flex" style={{ marginLeft: 40 }}>
+                  Zones<span className="text-primary">.</span>
+                </h4>
+                {!this.state.zones
+                  ? this.state.isAddressRegistered && (
+                      <Alert variant="primary">
+                        <Spinner
+                          animation="border"
+                          role="status"
+                          variant="light"
+                        ></Spinner>
+                        Fetching zone geometries from the permaweb...
+                      </Alert>
+                    )
+                  : this.state.zones.map(zone => {
+                      return (
+                        <ZoneCard
+                          zone={zone}
+                          deleteZone={this.deleteZone}
+                          truncateAddress={this.truncateAddress}
+                          zoomToZone={this.zoomToZone}
+                          key={ zone.id.split('#')[1]}
+                        />
+                      );
+                    })}
+              </div>
+              <button
+                className="btn btn-primary btn-lg"
+                style={{
+                  marginLeft: "40px",
+                  marginTop: "30px"
+                }}
+                onClick={e => this.registerDID(e)}
+              >
+                Register zones.
+              </button>
+            </AnimateHeight>
+          </div>
+        </Col>
+      </div>
+    );
+  }
 }
 
 //
