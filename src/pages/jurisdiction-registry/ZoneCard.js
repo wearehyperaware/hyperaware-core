@@ -7,7 +7,6 @@ export default class ZoneCard extends React.Component{
             <div /*onClick={ this.flyToZone(zone.geojson) }*/
                     id={ (this.props.zone.serviceEndpoint ?  this.props.zone.id.split('#')[1] : String(this.props.zone.layerId) ) + '-card' }
                     data-zoneid = { this.props.zone.serviceEndpoint ? this.props.zone.id.split('#')[1] : String(this.props.zone.layerId)  }
-                    key={ this.props.zone.id.split('#')[1]}
                     className="zone-card event-schedule d-flex bg-white rounded p-3 border"
                     style={{
                         marginLeft: '40px',
@@ -37,13 +36,14 @@ export default class ZoneCard extends React.Component{
                         Registered
                         </Alert> 
                         : 
-                        <Alert variant = "danger">
+                        <Alert variant = "warning">
                             To be registered
                         </Alert>
                         }
                         <p className="text-muted location-time">
                             <span className="text-dark h6">Beneficiary: </span><a
                             target="_blank"
+                            rel="noopener noreferrer"
                             href= {"https://iotxplorer.io/address/" + this.props.zone.policies.beneficiary }>{ this.props.truncateAddress(this.props.zone.policies.beneficiary) }</a>
                             <br/>
                             <span
@@ -54,7 +54,7 @@ export default class ZoneCard extends React.Component{
                     </div>
                     <div className="floatRight col-2">
                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled"> 
-                            <li className="delete-zone" 
+                            <li className={"delete-zone "+ this.props.zone.layerId+"-delete" }
                             onClick= {e => this.props.deleteZone(this.props.zone)}
                             style={{
                                 fontSize: '18px',
