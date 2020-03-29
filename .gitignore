@@ -1,5 +1,6 @@
 node_modules
 ArweaveKey.json
 .secret
-
 .DS_Store
+.env
+.idea

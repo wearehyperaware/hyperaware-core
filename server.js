@@ -26,7 +26,12 @@ const sampleJurisdictionDIDdocs = require('./data/sampleZoneDids.json')
 let turfPolygons = []
 let VEHICLE_REGISTER_ADDRESS = "io10m9n3kge7l9es3n4raq90m3thtr7futpp0t3ph"
 
-async function slash(did) {
+async function slash(did, enterTime, exitTime, rate) {
+    // Calculate charge
+    const TIME_MULTIPLIER = 5
+    let timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
+
+    // Connect to contract
     let antenna = new Antenna.default("http://api.testnet.iotex.one:80");
     let vehicleRegContract = new Contract(VEHICLE_REGISTER_ABI, VEHICLE_REGISTER_ADDRESS, {provider: antenna.iotx});
 
@@ -47,12 +52,12 @@ async function slash(did) {
         "eec04109aab7af268a1158b88717bd6f62026895920aeb296d4150a7a309dec8"
     );
     try {
-        let actionHash = await vehicleRegContract.methods.slash(toRau("0.1", "Iotx"), vehicleOwner, did, {
+        let actionHash = await vehicleRegContract.methods.slash(toRau((rate * timeElapsedInMinutes).toFixed(2).toString(), "Iotx"), vehicleOwner, did, {
             account: admin,
             gasLimit: "1000000",
             gasPrice: toRau("1", "Qev")
         });
-        console.log("Slash occurs now on:", vehicleOwner, "who owns", did, "Slashing action hash:", actionHash)
+    console.log("Slash occurs now on:", vehicleOwner, "who owns", did, "at a rate of", rate, "totalling", (rate * timeElapsedInMinutes).toFixed(2) , ". Slashing action hash:")
         return actionHash
     } catch (err) {
         console.log(err);
@@ -104,8 +109,8 @@ io.on('connection', async (client) => {
             client.emit('fetchNewPositionsFromServerResponse', message.notification)
         } else if (message.type === 'exitingNotification') {
             // If enclave detects a vehicle exiting a zone, send that to the client and slash vehicle
-
-            let hash = await slash(message.notification.vehicleDetails.id)
+            console.log(message.notification.rate)
+            let hash = await slash(message.notification.vehicleDetails.id, message.notification.vehicleDetails.enterTime, message.notification.vehicleDetails.exitTime, message.notification.rate)
             client.emit('fetchNewPositionsFromServerResponse', message.notification, hash)
         } else if (message.type === 'updatePositions') {
             // When enclave finishes, get the new positions updated vehicle info and send to client
@@ -131,7 +136,7 @@ server.get('/api/getAllVehicles', async (req, res) => {
                 method: "numberOfRegisteredVehicles"
             },
             0);
-        numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
+        numberOfRegisteredVehicles = parseInt(numberOfRegisteredVehicles.toString())
         let registeredVehicles = []
         // Iterate through the registered vehicles array and return each string
         for (let i = 0; i < numberOfRegisteredVehicles; i++) {
@@ -142,12 +147,11 @@ server.get('/api/getAllVehicles', async (req, res) => {
                     method: "allVehicles"
                 },
                 i);
-
+            //console.log(vehicleID)
             registeredVehicles.push(vehicleID)
         }
 
         let ret = []
-
         // Get the DID documents associated with each
         for (let i in registeredVehicles) {
             let uri = await antenna.iotx.readContractByMethod({
@@ -158,8 +162,12 @@ server.get('/api/getAllVehicles', async (req, res) => {
             }, registeredVehicles[i]);
             uri = uri.toString('hex');
             if (uri) {
-                let doc = await axios.get(uri)
-                ret.push(doc.data)
+                try {
+                    let doc = await axios.get(uri)
+                    ret.push(doc.data)
+                } catch (e) {
+                    ret.push({})
+                }
             }
         }
         res.send(ret)
@@ -200,15 +208,16 @@ server.get('/api/getAllPolygons', async (req, res) => {
         gasPrice: "80000000000"
     });
 
-    console.log(zoneAddresses);
-
     // Fetch Zone DID Docs from addresses, and geojson from DID docs:
+        // We should refactor this to maintain an up-to-date list of zones in the server
+        // Listening for an event from Ethereum. When an event happens, push the new zone
+        // to the list and push the new list to the browser. Auto-update in the browser 
+        // when a new zone is registered.
     zoneDIDDocs = await fetchDIDsAndGeometries(zoneAddresses, zoneContract);
-    console.log('Zone DID Docs and geometries loaded', zoneDIDDocs);
+    //console.log('Zone DID Docs and geometries loaded', zoneDIDDocs);
 
     zoneDIDDocs.map((did) => {
         did.service.map((zone) => {
-            console.log('service zone', zone)
             if (zone.geojson.type == 'FeatureCollection') {
                 turfPolygons.push(zone.geojson.features[0]);
             } else if (zone.geojson.type == 'Feature') {
@@ -216,10 +225,6 @@ server.get('/api/getAllPolygons', async (req, res) => {
             }
         });
     });
-
-    // console.log(zoneDIDDocs.map((doc) => {
-    //     return doc.service
-    // }));
 
     res.send(zoneDIDDocs)
 })
@@ -236,7 +241,7 @@ server.get('/api/getAllPoints', async (req, res) => {
                 method: "numberOfRegisteredVehicles"
             },
             0);
-        numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString('hex');
+        numberOfRegisteredVehicles = numberOfRegisteredVehicles.toString();
     } catch (err) {
         console.log(err)
     }

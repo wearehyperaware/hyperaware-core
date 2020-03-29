@@ -44,8 +44,7 @@ class FooterLight extends Component {
                                         className="mdi mdi-chevron-right mr-1"></i> Use Cases</a></li>
                                     <li><a href="#faq" className="text-muted"><i
                                         className="mdi mdi-chevron-right mr-1"></i> FAQ</a></li>
-                                    <li><Link to="#" className="text-muted"><i
-                                        className="mdi mdi-chevron-right mr-1"></i> Blog</Link></li>
+                                    
                                 </ul>
                             </Col>
 

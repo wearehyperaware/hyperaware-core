@@ -18,6 +18,7 @@ import ship from '../../images/icon/ship.svg'
 import plane from '../../images/icon/plane.svg'
 import arrowBottom from '../../images/shapes/arrow-bottom.png';
 import {getStartEnd} from "./getPath";
+import {setLoadingText} from "./loadingText";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 let socket
@@ -60,16 +61,15 @@ export class Dashboard extends React.Component {
         // Dismiss loading bar
         document.getElementById("pageLoader").style.display = "block";
         document.getElementById('topnav').classList.add('bg-white');
-        setTimeout(function () {
-            document.getElementById("pageLoader").style.display = "none";
-        }, 1000);
+
+        setLoadingText()
 
         var screenWidth = document.documentElement.clientWidth;
         var screenHeight = document.documentElement.clientHeight;
 
         // map loads with different zoom / center depending on the type of device
-        var zoom = screenWidth < 700 ? 8.5 : screenHeight <= 600 || screenWidth < 1000 ? 9.5 : 9;
-        var center = screenWidth < 700 ? [-0.149688720703125, 51.48865188163204] : [-0.15003204345703125, 51.50489601254001];
+        var zoom = 3.4;
+        var center =  [24.56900802672635, 51.27714197030792];
 
         map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -135,7 +135,7 @@ export class Dashboard extends React.Component {
         })
 
         socket.on('fetchNewPositionsFromServerResponse', (message, slashHash) => {
-            this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash)
+            this.addNotification(message.type, message.vehicleDetails.id, message.vehicleDetails.enterTime, message.vehicleDetails.exitTime, slashHash, message.rate)
         })
 
     }
@@ -159,34 +159,37 @@ export class Dashboard extends React.Component {
     }
 
     ellipsisText = (s, width) => {
+        try {
+            const NARROW_WIDTH_HOME = 1279;
+            const NARROW_WIDTH = 768;
+            const MIN_SUB_LENGTH = 6;
+            if (s.length >= 60) {
+                const length = s.length;
+                const newLen = Math.floor(width / length) - 5;
+                return `${s.substr(0, 8)}...${s.substr(length - 5, 5)}`;
+            }
 
-        console.log(s, width);
-        const NARROW_WIDTH_HOME = 1279;
-        const NARROW_WIDTH = 768;
-        const MIN_SUB_LENGTH = 6;
-        if (s.length >= 60) {
+            if (width > NARROW_WIDTH_HOME) {
+                return s;
+            }
             const length = s.length;
             const newLen = Math.floor(width / length) - 5;
-            return `${s.substr(0, 8)}...${s.substr(length - 5, 5)}`;
-        }
-
-        if (width > NARROW_WIDTH_HOME) {
+            const subLen = newLen >= MIN_SUB_LENGTH ? newLen : MIN_SUB_LENGTH;
+            if (length > 13) {
+                return `${s.substring(0, subLen)}...${s.substring(
+                    length - subLen,
+                    length
+                )}`;
+            }
             return s;
+        } catch(err) {
+            console.error(err)
+            return "...";
         }
-        const length = s.length;
-        const newLen = Math.floor(width / length) - 5;
-        const subLen = newLen >= MIN_SUB_LENGTH ? newLen : MIN_SUB_LENGTH;
-        if (length > 13) {
-            return `${s.substring(0, subLen)}...${s.substring(
-                length - subLen,
-                length
-            )}`;
-        }
-        return s;
     }
 
     addNotification = (type, did, enterTime, exitTime, hash, rate = 0.007) => {
-        const TIME_MULTIPLIER = 3.5
+        const TIME_MULTIPLIER = 5
         let timeElapsedInMinutes
         if (type === 'exit') {
             timeElapsedInMinutes = ((Date.parse(exitTime) - Date.parse(enterTime)) * TIME_MULTIPLIER) / 1000
@@ -201,7 +204,7 @@ export class Dashboard extends React.Component {
 
         var html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + '<strong>' + this.truncateDID(did) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> a zone.'
         html = type === 'exit' ? html + ` Detected in zone for <strong> ${timeElapsedInMinutes.toFixed(2)} minutes</strong>. Vehicle has been charged <strong>${(rate * timeElapsedInMinutes * 60).toFixed(2)}</strong> 
-        (Rate: ${rate} / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
+        (Rate: ${rate} IOTX / second) <a href="https://testnet.iotexscan.io/action/${hash}" target="_blank" style="color:blue">https://testnet.iotexscan.io/action/${this.ellipsisText(hash, 1278)}</a>` : html;
         
         ticker.insert('div', ':first-child').html(html).classed('expanded', true);
     }
@@ -258,9 +261,21 @@ export class Dashboard extends React.Component {
                 source: 'zone-' + zoneName.toLowerCase(),
                 type: 'line',
                 paint: {
-                    'line-width': 5,
                     'line-opacity': .5,
-                    'line-color': schemeCategory10[didIndex % 10]
+                    'line-color': schemeCategory10[didIndex % 10],
+                    'line-width': [
+                        'interpolate',
+                        ['exponential', 0.5],
+                        ['zoom'],
+                        3,
+                        1,
+                        7,
+                        2,
+                        15,
+                        3,
+                        22,
+                        5
+                    ]
                 }
             });
 
@@ -314,7 +329,14 @@ export class Dashboard extends React.Component {
             return zone.geojson
         }));
         // let bbox = turf.bbox(turfPolygons);
-        this.flyToZone(turfPolygons);
+        
+        document.getElementById("pageLoader").style.display = "none";
+        document.getElementById("loading-text").style.display = "none";
+
+        setTimeout( () => {
+            this.flyToZone(turfPolygons); 
+        }, 800)
+
 
  
 
@@ -335,7 +357,7 @@ export class Dashboard extends React.Component {
             let circles = d3.selectAll('circle')
             circles[0].forEach((circle) => {
                 if (circle.attributes['isPrivateVehicle'].value === 'true') {
-                    d3.select(circle).attr('fill', this.getRandomColor()).attr('stroke', '#fff')
+                    d3.select(circle).attr('fill', "#2f55d4").attr('stroke', '#fff')
                 }
             })
         }
@@ -348,17 +370,17 @@ export class Dashboard extends React.Component {
         return colors[Math.floor(Math.random() * max)];
     }
 
-    // getEntityCount = (vehicles) => {
-    //     let seen = {}
-    //     let counter = 0
-    //     vehicles.forEach((vehicle) => {
-    //         if (!(vehicle.creator in seen)) {
-    //             seen[vehicle.creator] = true
-    //             counter += 1
-    //         }
-    //     })
-    //     return counter
-    // }
+    getEntityCount = (vehicles) => {
+        let seen = {}
+        let counter = 0
+        vehicles.forEach((vehicle) => {
+            if (!(vehicle.creator in seen)) {
+                seen[vehicle.creator] = true
+                counter += 1
+            }
+        })
+        return counter
+    }
 
     getCtVehiclesInZones = () => {
 
@@ -374,7 +396,7 @@ export class Dashboard extends React.Component {
             return ct;
 
         } else {
-            return '...';
+            return 0;
         }
     }
 
@@ -393,22 +415,15 @@ export class Dashboard extends React.Component {
 
     handleAdvance = (e) => {
         e.preventDefault()
-
-        // OLD code ??? vv
-        // this.state.timestep += 1;
-
-        // // This hardcodes advance into the browser - there is no interaction
-        // // with the server ... this is NOT reflecting if the point is
-        // // inside a Zone in the browser
-        // updatePositions(this.state.positions[this.state.timestep % this.state.positions.length]);
-
-        // socket.emit('fetchNewPositionsFromServer', this.state.positions);
-
         socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zoneDIDs);
     }
 
     truncateDID = (did) => {
         return did.substr(0, 15) + "..." + did.substr(42, 8)
+    }
+
+    truncateZoneID = (did) => {
+        return did.substr(0, 15) + "..." + did.slice(42)
     }
 
     expandZonesCard = (e) => {
@@ -459,10 +474,10 @@ export class Dashboard extends React.Component {
                 <Topbar/>
 
                 <div ref={el => this.mapContainer = el} className='map' id='map'></div>
-                
+
                 <div ref={this.overlay} className='overlay' id='overlay'/>
 
-                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '72.5%'}}>
+                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%'}}>
 
                     <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
@@ -513,7 +528,7 @@ export class Dashboard extends React.Component {
                                             })
                                             // set event listener to zoom to zone on click ...
                                             return (
-                                                <div /*onClick={ this.flyToZone(zone.geojson) }*/
+                                                <div /* onClick={ this.flyToZone(zone.geojson) } */
                                                     className="zone-card event-schedule d-flex bg-white rounded p-3 border"
                                                     key={zone.id} style={{
                                                     marginLeft: '40px',
@@ -532,14 +547,14 @@ export class Dashboard extends React.Component {
                                                         <div style={{
                                                             fontSize: '10px',
                                                             marginBottom: '18px'
-                                                        }}>{zone.id}</div>
+                                                        }}>{this.truncateZoneID(zone.id)}</div>
                                                         <p className="text-muted location-time">
                                                             <span className="text-dark h6">Beneficiary: </span><a
                                                             target="_blank"
-                                                            href={"https://etherscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
+                                                            href={"https://testnet.iotexscan.io/address/" + zone.policies.beneficiary}> {this.truncateDID(zone.policies.beneficiary)}</a>
                                                             <br/>
                                                             <span
-                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " " + zone.policies.currency} /
+                                                                className="text-dark h6">Charge: </span>{zone.policies.chargePerMinute + " IOTX"} /
                                                             minute
                                                             <br/>
                                                             <span className="text-dark h6">Zone Geometry: </span><a
@@ -568,7 +583,7 @@ export class Dashboard extends React.Component {
                         </Row>
                     </div>
                 </Col>
-                <Col lg={7} style={{width: '550px', marginLeft: '72.5%'}}>
+                <Col lg={7} style={{width: '550px', marginLeft: '66.5%'}}>
                     <div className="studio-home bg-white shadow mt-5 " style={{paddingTop: '8px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span>
                         </h2>
@@ -583,7 +598,7 @@ export class Dashboard extends React.Component {
                             </div>
                             <div className='col-6 text-center'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.zoneDIDs ? this.state.zoneDIDs.length : "..."}
+                                    {this.state.vehicles ? this.getEntityCount(this.state.vehicles) : "..."}
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Entities.
@@ -593,7 +608,7 @@ export class Dashboard extends React.Component {
                         <div className='row'>
                             <div className='col'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    {this.state.totalStaked} IOTX
+                                    {Math.round(this.state.totalStaked).toLocaleString()} IOTX
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Staked in Contract.

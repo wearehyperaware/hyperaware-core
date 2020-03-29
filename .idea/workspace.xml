@@ -2,42 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3de503a0-c973-4a4f-8dbe-0317a201058e" name="Default Changelist" comment="add slashing">
-      <change afterPath="$PROJECT_DIR$/KEY-TASKS.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/sampleZoneDids.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/GBR.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/berlin.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/heathrow-restricted-airspace.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/london.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/paris.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/port-of-southampton.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/rotterdam-port-zone.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/zones/strait-of-dover.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/design/dashboard/wireframes/hyperaware-zone-registry-wireframes.ai" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/design/zone-registry/hyperaware-zone-registry-form.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/addGeometriesToDidDocs.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/fetchDIDsAndGeometries.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/modules/turfifyGeometries.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/dashboard/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/zone-contract-details.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/zone-dids/germany-zone-did.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/zone-dids/netherlands-zone-did.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/zone-dids/paris-zone-did.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/zone-dids/uk-zone-did.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/feature-collection-point.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/feature-collection-polygon.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/feature-point.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/feature.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/point.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/test/polygon.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/france/chamonix-mont-blanc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/france/cherbourg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/france/marseille.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/france/paris-urban-area.geojson" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/france/paris.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/germany/hamburg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/germany/lower-rheinland.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/germany/munich.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/germany/thuringia.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/netherlands/netherlands.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/uk/brecon-beacons.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/uk/dover-customs-zone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/uk/isle-of-man.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/uk/luton-enterprise-zone.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/zones/uk/sheffield-leeds.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/ZoneCard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/generateRandomRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/modules/generateRandomRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/zones/iotex-zone-accts.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/zones/luxembourg/luxembourg.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/zones/luxembourg/luxembourg.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Layout/FooterLight.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/FooterLight.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Layout/Topbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/Topbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/createCar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/dashboard/dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/jurisdiction-registry/jurisdictionRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/jurisdiction-registry/jurisdictionRegistration.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/landing/Feature.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/Feature.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/landing/Price.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/Price.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/landing/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/landing/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/vehicle-registration/vehicleRegistration.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scss/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/style.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scss/_menu.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/scss/_menu.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,9 +59,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="GithubDefaultAccount">
-    <option name="defaultAccountId" value="d5f48ea2-8bd7-44e3-8fbf-573036eca518" />
   </component>
   <component name="ProjectId" id="1XRjeDUMDuYI9RMagmcYIoNNqO7" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -159,6 +157,9 @@
       <workItem from="1583094580180" duration="2650000" />
       <workItem from="1584730582115" duration="1358000" />
       <workItem from="1584808717482" duration="7662000" />
+      <workItem from="1585391993276" duration="13000" />
+      <workItem from="1585396188087" duration="279000" />
+      <workItem from="1585401018332" duration="11437000" />
     </task>
     <task id="LOCAL-00003" summary="added websocket integration example">
       <created>1581716666640</created>
@@ -300,7 +301,21 @@
       <option name="project" value="LOCAL" />
       <updated>1584811320946</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="revert entities count, add .env to gitignore">
+      <created>1585335001282</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1585335001282</updated>
+    </task>
+    <task id="LOCAL-00024" summary="slashing based on real rate">
+      <created>1585414727651</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1585414727651</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -334,7 +349,9 @@
     <MESSAGE value="deploy" />
     <MESSAGE value="fixed routes bug" />
     <MESSAGE value="add slashing" />
-    <option name="LAST_COMMIT_MESSAGE" value="add slashing" />
+    <MESSAGE value="revert entities count, add .env to gitignore" />
+    <MESSAGE value="slashing based on real rate" />
+    <option name="LAST_COMMIT_MESSAGE" value="slashing based on real rate" />
   </component>
   <component name="WindowStateProjectService">
     <state x="479" y="212" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581716355680">
@@ -345,10 +362,10 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state x="787" y="346" key="#com.intellij.fileTypes.FileTypeChooser/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1582324717285" />
-    <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2" timestamp="1584816140944">
-      <screen x="67" y="27" width="2493" height="1413" />
+    <state x="647" y="65" width="929" height="807" key="CommitChangelistDialog2" timestamp="1585415847885">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073146269" />
+    <state x="647" y="65" key="CommitChangelistDialog2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585415847885" />
     <state x="855" y="110" width="929" height="807" key="CommitChangelistDialog2/67.27.2493.1413@67.27.2493.1413" timestamp="1584816140944" />
     <state x="1144" y="659" key="Github.Dialog.Accounts.Choose" timestamp="1584736071687">
       <screen x="67" y="27" width="2493" height="1413" />
@@ -370,13 +387,15 @@
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
     <state width="2027" height="285" key="GridCell.Tab.0.right/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1581197961643" />
-    <state x="306" y="152" width="1994" height="1160" key="MergeDialog" timestamp="1584812730148">
-      <screen x="67" y="27" width="2493" height="1413" />
+    <state x="196" y="98" width="1994" height="1160" key="MergeDialog" timestamp="1585415196400">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
+    <state x="196" y="98" key="MergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585415196400" />
     <state x="306" y="152" width="1994" height="1160" key="MergeDialog/67.27.2493.1413@67.27.2493.1413" timestamp="1584812730148" />
-    <state x="1018" y="450" width="580" height="564" key="MultipleFileMergeDialog" timestamp="1584812730150">
-      <screen x="67" y="27" width="2493" height="1413" />
+    <state x="781" y="333" width="580" height="564" key="MultipleFileMergeDialog" timestamp="1585415196407">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
+    <state x="781" y="333" key="MultipleFileMergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585415196407" />
     <state x="1018" y="450" width="580" height="564" key="MultipleFileMergeDialog/67.27.2493.1413@67.27.2493.1413" timestamp="1584812730150" />
     <state x="791" y="322" key="SettingsEditor" timestamp="1582819564028">
       <screen x="0" y="0" width="2048" height="1112" />
@@ -386,20 +405,24 @@
       <screen x="67" y="27" width="2493" height="1413" />
     </state>
     <state x="998" y="493" width="600" height="477" key="Vcs.Multiple.Commit.Info.Dialog.Key/67.27.2493.1413@67.27.2493.1413" timestamp="1584811750029" />
-    <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1584805237697">
-      <screen x="67" y="27" width="2493" height="1413" />
+    <state x="617" y="286" width="800" height="528" key="Vcs.Push.Dialog.v2" timestamp="1585414731316">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583073153503" />
+    <state x="617" y="286" key="Vcs.Push.Dialog.v2/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585414731316" />
     <state x="818" y="390" width="800" height="528" key="Vcs.Push.Dialog.v2/67.27.2493.1413@67.27.2493.1413" timestamp="1584805237697" />
-    <state x="851" y="328" width="927" height="811" key="find.popup" timestamp="1584816200323">
-      <screen x="67" y="27" width="2493" height="1413" />
+    <state x="644" y="237" width="761" height="638" key="find.popup" timestamp="1585415435512">
+      <screen x="0" y="0" width="2048" height="1112" />
     </state>
-    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1583069585002" />
+    <state x="644" y="237" width="761" height="638" key="find.popup/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585415435512" />
     <state x="851" y="328" width="927" height="811" key="find.popup/67.27.2493.1413@67.27.2493.1413" timestamp="1584816200323" />
     <state x="1021" y="446" width="575" height="572" key="git4idea.branch.GitSmartOperationDialog" timestamp="1584730628674">
       <screen x="67" y="27" width="2493" height="1413" />
     </state>
     <state x="1021" y="446" width="575" height="572" key="git4idea.branch.GitSmartOperationDialog/67.27.2493.1413@67.27.2493.1413" timestamp="1584730628674" />
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog" timestamp="1585414895437">
+      <screen x="0" y="0" width="2048" height="1112" />
+    </state>
+    <state x="800" y="335" key="git4idea.merge.GitMergeDialog/2560.-308.864.1496/0.0.2048.1112@0.0.2048.1112" timestamp="1585414895437" />
     <state x="681" y="259" key="run.anything.popup" timestamp="1582722006716">
       <screen x="0" y="0" width="2048" height="1112" />
     </state>
