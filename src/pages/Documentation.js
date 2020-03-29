@@ -56,7 +56,7 @@ export class Documentation extends Component {
                                                           className="text-uppercase font-weight-bold text-dark">Home</Link>
                                                 </li>
                                                 <li><Link to="#"
-                                                          className="text-uppercase font-weight-bold text-dark">Docs</Link>
+                                                          className="text-uppercase font-weight-bold text-dark">Demo</Link>
                                                 </li>
                                                 <li>
                                                     <span
@@ -79,16 +79,17 @@ export class Documentation extends Component {
                                     className="text-primary font-weight-bold">Hyperaware.</span></h1>
                                 <h3 className="mt-4 pt-2">Introduction</h3>
                                 <p>
-                                    <span className="text-primary font-weight-bold">Hyperaware</span> is a decentralized application 
+                                    <span className="text-primary font-weight-bold">Hyperaware</span> is a decentralised application
                                     for governing connected devices and their data based on physical location. Our system leverages
-                                    trusted computing, decentralized identity, a Private Location Analytics Engine and smart contracts 
-                                    to provide a decentralized and fully trusted system. 
+                                    trusted computing, decentralised identity, a Private Location Analytics Engine and smart contracts
+                                    to provide a decentralised and fully trusted system.
                                 </p>
                                 <p>
                                     <span className="text-primary font-weight-bold">Hyperaware</span> is formed of a number of custom-built
                                     software architectures. Notably, the <span className="text-primary font-weight-bold">Hyperaware</span> Private Location 
                                     Analytics Engine uses Intel SGX technology to securely analyze encrypted location data. With this technology 
-                                    we are able to enforce policies based on a device's location <em>without ever revealing the exact location of the device</em>. Crucially, 
+                                    we are able to enforce policies based on a device's location <em>without ever revealing the exact location of the device.</em> Note that for the sake of clarity we do
+                                    reveal the location of vehicles when they enter zones in this demo, because permanently hidden vehicles are not suited to a visual demonstration.</p><p> Crucially,
                                     the system works everywhere in the world - it transcends physical jurisdiction.
                                     We believe there are significant applications of this technology in military, shipping and logistics, insurance, fisheries and other sectors.
                                 </p>
@@ -105,11 +106,11 @@ export class Documentation extends Component {
                                 <p>So, how does it work?</p>
                                 <h3 className="mt-4 pt-2">DID Creation</h3>
                                 <p><span
-                                    className="text-primary font-weight-bold">Hyperaware</span> uses <a href='https://www.w3.org/TR/did-core/' target="_blank"> decentralized identifiers</a> to
+                                    className="text-primary font-weight-bold">Hyperaware</span> uses <a href='https://www.w3.org/TR/did-core/' target="_blank"> decentralised identifiers</a> to
                                       enable users to control their own data. Vehicle owners need to register a DID document 
                                      using an IoTeX address, which can be created on our <a href="/demo/tools">Tools</a> page.
                                 </p>
-                                <p>Register a decentralized identifier (or DID - which will look like "did:io:0x9655...") 
+                                <p>Register a decentralised identifier (or DID - which will look like "did:io:0x9655...")
                                     for your company with your IoTeX address and corresponding private key on 
                                     the <a href="/demo/register-did">Register DID</a> page. Then, with the DID that is 
                                     registered, create <em>another</em> DID for
@@ -124,12 +125,19 @@ export class Documentation extends Component {
                                 <h3 className="mt-4 pt-2">Vehicle Registration</h3>
                                     <p>With the owner DID and vehicle DID created in the step above, register your 
                                     vehicle on the <a href="/demo/vehicle-registration">Register vehicle</a> page. You will need to stake some IoTeX
-                                    with the registration - the accounts generated on our Tools page were given some IoTeX for the demo. (This is running
-                                    on a testnet so the currency has no value.)</p>
+                                    with the registration - the accounts generated on our Tools page are given 2 IOTX for the demo, which is enough to register 1 vehicle. (This is running
+                                        on a testnet so the currency has no value).</p>
+
+                                <p>Ensure you enter the DID
+                                    for the owner and the vehicle in the correct fields, because otherwise the DID documents will not be correctly fetched. Enter the owner DID into the 'View Registered Vehicles' field
+                                        after registering to check if it worked.
+                                    </p>
+                                <p> <strong>The minimum stake amount is 1 IOTX - if you do any less, the transaction will fail.</strong></p>
+                                <p><strong>Note:</strong> Arweave will take around 6-10 minutes to have the document mined and ready to be queried on the permaweb, so you might not see your vehicle on the dashboard until that time elapses.</p>
                                 <h3 className="mt-4 pt-2">Jurisdiction Registration</h3>
                                     <p>
                                     <span
-                                    className="text-primary font-weight-bold">Hyperaware</span> also uses decentralized identifiers
+                                    className="text-primary font-weight-bold">Hyperaware</span> also uses decentralised identifiers
                                     to enable Jurisdictions to control their Zones. This means they have full autonomy over the borders they register, 
                                     and the policies that vehicles have to comply with when they enter that Zone.  
                                     </p>
@@ -155,11 +163,10 @@ export class Documentation extends Component {
                                         to Arweave, then register the DID on Ethereum. 
                                     </p>
                                     <p>
-                                        <strong>NOTE!</strong> You will need to wait several minutes for the data to be mined on the permaweb 
-                                        before your Zones appear on the dashboard. 
+                                        <strong>Note:</strong> Arweave will take around 6-10 minutes to have the document mined and ready to be queried on the permaweb, so you may not see your Zones appear on the dashboard until that time elapses.
                                     </p>
                                     <p>
-                                        If you have any questions email trust@hyperaware.io for personalized support. And please email any 
+                                        If you have any questions please email trust@hyperaware.io for personalised support.
                                     </p>
 
                             </Col>

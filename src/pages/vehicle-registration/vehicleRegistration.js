@@ -251,7 +251,7 @@ export class VehicleRegistration extends React.Component {
                                         </div>
                                         <div className="form-row">
                                             <div className="form-group col-md">
-                                                <label htmlFor="inputEmailDID">Stake Amount</label>
+                                                <label htmlFor="inputEmailDID">Stake Amount<span className='text-danger'> (minimum amount 1 IOTX)</span></label>
                                                 <input type="text" className="form-control" id="inputEmailDID"
                                                        onChange={e => this.setState({stakeAmount: e.target.value})}/>
                                             </div>
