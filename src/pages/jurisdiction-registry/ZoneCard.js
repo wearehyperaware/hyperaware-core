@@ -54,7 +54,7 @@ export default class ZoneCard extends React.Component{
                     </div>
                     <div className="floatRight col-2">
                         <ul className="date text-center text-primary mr-md-4 mr-3 mb-0 list-unstyled"> 
-                            <li className="delete-zone" 
+                            <li className={"delete-zone "+ this.props.zone.layerId+"-delete" }
                             onClick= {e => this.props.deleteZone(this.props.zone)}
                             style={{
                                 fontSize: '18px',

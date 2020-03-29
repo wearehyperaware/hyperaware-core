@@ -126,7 +126,7 @@ export class RegisterJurisdiction extends React.Component {
         let documentURI = await this.getURI(selectedAddress);
 
         let DIDdocument = await this.readDocument(documentURI);
-        console.log(DIDdocument);
+        //console.log(DIDdocument);
         this.state.didDoc = DIDdocument;
         let zones = DIDdocument.service;
 
@@ -136,9 +136,11 @@ export class RegisterJurisdiction extends React.Component {
         );
 
         zones.map(zone => this.addGeojsonToMap(zone));
-        this.setState({ zones: zones }); // = [...this.state.zones, DIDdocument.service];
+        this.setState({ 
+            zones: zones,
+         }); // = [...this.state.zones, DIDdocument.service];
 
-        console.log(DIDdocument);
+        //console.log(DIDdocument);
         //update based on DIDdocument
         //do sth e.g.) let updatedDIDdocument = DIDdocument.service.push(...)
         let updatedDIDdocument = {};
@@ -488,7 +490,7 @@ export class RegisterJurisdiction extends React.Component {
 
     this.state.newZoneCt += 1;
 
-    console.log("geojson", JSON.stringify(geojson));
+    //console.log("geojson", JSON.stringify(geojson));
     map.fitBounds(turf.bbox(geojson), {
       padding: {
         top: 150,
@@ -519,39 +521,71 @@ export class RegisterJurisdiction extends React.Component {
       });
     }
 
-    async function processFile(file) {
-      try {
-        let contents = await readFileAsync(file);
-        return JSON.parse(contents);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-  };
+        async function processFile(file) {
+            try {
+                let contents = await readFileAsync(file);
+                return JSON.parse(contents);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    };
 
-  truncateAddress = address => {
-    return address.substr(0, 7) + "..." + address.substr(address.length - 8, 8);
-  };
+    truncateAddress = address => {
+        return address.substr(0, 7) + "..." + address.substr(address.length - 8, 8);
+    };
 
-  deleteZone = zone => {
-    // Delete zone from this.state.zones
-    let tempZones = this.state.zones;
+    deregisterZone = async (zoneID) => {
+        //fetch existing docuemnt from contract and read from arweave
+        let oldDoc = this.state.didDoc;
+        //delete serviceEndpoint with the given id
+        let matched = false;
 
-    tempZones = without(tempZones, zone);
+        /*
+            TODO:
+            pop up a modal or something to indicate the zone is being deregistered
+         */
 
-    this.setState({ zones: tempZones });
+        oldDoc.service = oldDoc.service.filter(endpoint => {
+            if (endpoint.id === zoneID) {
+                matched = true;
+            } else {
+                return endpoint.id !== zoneID;
+            }
+        });
+        if (!matched) {
+            console.log("Zone not found!");
+            return;
+        }
+        let newDoc = oldDoc;
+        let newURI = await this.saveToArweave(JSON.stringify(newDoc, null, 2));
+        let newHash = this.state.web3.utils.keccak256(JSON.stringify(newDoc));
 
-    let layerId = zone.layerId; // Not sure exactly how to pull this need to revisit
-    console.log("Layer ID for deleted zone: " + layerId);
+        console.log("deleting zone")
+        await this.register(newHash, newURI);
+        console.log("zone DELETED");
+    };
 
-    map.removeLayer("zone-border-" + layerId);
-    map.removeLayer("zone-fill-" + layerId);
+    deleteZone = async zone => {
+        if (zone.serviceEndpoint){
+            await this.deregisterZone(zone.id)
+        }
 
-    // Remove zone object from this.state.zones;
+        let tempZones = this.state.zones;
 
-    // Clear form
-    this.clearForm();
-  };
+        tempZones = without(tempZones, zone);
+
+        this.setState({ zones: tempZones });
+
+        let layerId = zone.layerId; 
+        console.log("Layer ID for deleted zone: " + layerId);
+
+        map.removeLayer("zone-border-" + layerId);
+        map.removeLayer("zone-fill-" + layerId);
+
+
+        this.clearForm();
+    };
 
   // isValidGeojson = (geojson) => {
   //     return true;
