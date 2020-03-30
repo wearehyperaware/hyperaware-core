@@ -302,7 +302,7 @@ class Index extends Component {
                                             </div>
                                             <div className="content mt-3 overflow-hidden d-block">
                                                 <h4 className="title font-weight-bold mb-0">Email</h4>
-                                                <a href="mailto:contact@example.com" className="text-primary h6">trust@hyperaware.io</a>
+                                                <a href="mailto:trust@hyperaware.io" className="text-primary h6">trust@hyperaware.io</a>
                                             </div>
                                         </div>
 
@@ -312,7 +312,7 @@ class Index extends Component {
                                             </div>
                                             <div className="content mt-3 overflow-hidden d-block">
                                                 <h4 className="title font-weight-bold mb-0">Location</h4>
-                                                <a href="mailto:contact@example.com" className="text-primary h6">London, England</a>
+                                                <a href="#" className="text-primary h6">London, England</a>
 
                                             </div>
                                         </div>
