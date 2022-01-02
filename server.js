@@ -205,7 +205,6 @@ server.get('/api/getAllPolygons', async (req, res) => {
 
     let zoneAddresses = await zoneContract.methods.getExistingDIDs().call({
         from: serverWallet.address,
-        gasPrice: "80000000000"
     });
 
     // Fetch Zone DID Docs from addresses, and geojson from DID docs:
@@ -263,24 +262,27 @@ server.get('/api/getAllPoints', async (req, res) => {
 })
 
 server.get('/api/getTotalStaked', async (req, res) => {
-    let meta = await axios({
-        url: "https://testnet.iotexscan.io/api-gateway/",
-        method: "post",
-        data: {
+    let meta;
+    try {
+        meta = await axios.post("https://testnet.iotexscan.io/api-gateway", {
+            operationName: null,
+            variables: {},
             query: `
-                  query {
-                          getAccount (address: "${VEHICLE_REGISTER_ADDRESS}"){
+                    {
+                        getAccount (address: "${VEHICLE_REGISTER_ADDRESS}"){
                             accountMeta {
-                              balance
+                                balance
                             }
-                          }
                         }
+                    }
                   `
-        },
-    });
-    res.send({
-        totalStaked: meta.data.data.getAccount.accountMeta.balance / 1e18
-    })
+        })
+        res.send({
+            totalStaked: meta.data.data.getAccount.accountMeta.balance / 1e18
+        })
+    } catch (e) {
+        console.log(e)
+    }
 })
 
 if (process.env.NODE_ENV === 'production') {
