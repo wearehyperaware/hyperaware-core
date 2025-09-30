@@ -21,7 +21,7 @@
     "ethers": "^4.0.46",
     "geojson-validation": "^0.2.1",
     "iotex-antenna": "0.25.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "lodash.template": "^4.2.1",
     "mapbox-gl": "1.7.0",
     "node-sass": "^4.13.1",
