@@ -5,8 +5,6 @@ import mapboxgl from 'mapbox-gl'
 import * as turf from '@turf/turf'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import geojsonMerge from '@mapbox/geojson-merge'
-import makeCar from './createCar'
-import updatePositions from './updatePositions'
 import axios from 'axios'
 import io from 'socket.io-client';
 import Topbar from "../../components/Layout/Topbar";
@@ -68,6 +66,81 @@ console.log('Socket instance created:', socket);
 
 export var map;
 export var zone;
+
+// Inline makeCar function based on original createCar.js
+function makeCar(coords, vehicle) {
+    const color = "#2f55d4";
+    const id = (vehicle.id || '').replace(/:/g, '_');
+    
+    let new_car;
+    if (vehicle.isPrivate === "true" || vehicle.isPrivate === true) {
+        new_car = d3.select('svg')
+            .append('circle')
+            .attr('id', id)
+            .classed('inzone', vehicle.within || false)
+            .attr('isPrivateVehicle', 'true')
+            .attr('data-coords', coords.toString())
+            .attr('fill', 'transparent')
+            .attr('stroke', 'transparent')
+            .attr('r', '5px') // Original size
+            .attr('transform', function () {
+                var pixelCoords = map.project(coords);
+                return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+            })
+            .on('click', function () {
+                console.log(id);
+            });
+    } else {
+        new_car = d3.select('svg')
+            .append('circle')
+            .attr('id', id)
+            .classed('inzone', vehicle.within || false)
+            .attr('isPrivateVehicle', 'false')
+            .attr('data-coords', coords.toString())
+            .attr('fill', color)
+            .attr('stroke', '#fff')
+            .attr('r', 5) // Original size
+            .attr('transform', function () {
+                var pixelCoords = map.project(coords);
+                return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+            })
+            .on('click', function () {
+                console.log(id);
+            });
+    }
+    return new_car;
+}
+
+// Inline updatePositions function based on original updatePositions.js
+function updatePositions(positions) {
+    positions.forEach((position) => {
+        const coords = position.coords || [position.lng, position.lat];
+        const id = (position.vehicle?.id || position.id || '').replace(/:/g, '_');
+        const within = position.vehicle?.within || position.within || false;
+        
+        const circle = d3.select('#' + id);
+        if (!circle.empty()) {
+            circle
+                .attr('data-coords', coords.toString())
+                .classed('inzone', within)
+                .transition()
+                .duration(400)
+                .attr('transform', function () {
+                    let pixelCoords = map.project(coords);
+                    return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+                });
+                
+            // Update color based on zone status (unless private)
+            if (circle.attr('isPrivateVehicle') !== 'true') {
+                if (within) {
+                    circle.attr('fill', 'red');
+                } else {
+                    circle.attr('fill', '#2f55d4');
+                }
+            }
+        }
+    });
+}
 
 export class Dashboard extends React.Component {
     constructor(props) {
@@ -292,7 +365,12 @@ export class Dashboard extends React.Component {
             }
             
             // Set up svg canvas for D3 vehicles (like original)
-            d3.select('#overlay').append('svg');
+            const svg = d3.select('#overlay').append('svg')
+                .attr('width', '100%')
+                .attr('height', '100%')
+                .style('position', 'absolute')
+                .style('top', 0)
+                .style('left', 0);
             
             // Add each vehicle using D3 (like original)
             vehicles.forEach((vehicle, index) => {
@@ -306,7 +384,7 @@ export class Dashboard extends React.Component {
                     
                     // Create vehicle using D3/SVG approach like original
                     const coords = [vehicle.position.lng, vehicle.position.lat];
-                    if (makeCar) {
+                    if (typeof makeCar === 'function') {
                         makeCar(coords, vehicle);
                     }
                     
@@ -351,12 +429,12 @@ export class Dashboard extends React.Component {
         // Listen for zone entry/exit events
         socket.on('zoneEntry', (entry) => {
             console.log('🟢 Zone entry:', entry);
-            // You could add visual notifications here
+            this.addNotification('enter', entry.vehicleId, entry.zone);
         });
         
         socket.on('zoneExit', (exit) => {
             console.log('🔴 Zone exit:', exit);
-            // You could add visual notifications here
+            this.addNotification('exit', exit.vehicleId, exit.zone);
         });
         
         // Force socket connection if not connected
@@ -367,28 +445,21 @@ export class Dashboard extends React.Component {
     }
 
     updateVehiclePositions(positions) {
-        const { vehicles } = this.state;
+        console.log('Updating vehicle positions:', positions);
         
-        console.log('Updating positions for', vehicles.length, 'vehicles');
-        
-        // Use the original updatePositions function if available
-        if (updatePositions && typeof updatePositions === 'function') {
+        // Transform positions to match original format if needed
+        if (Array.isArray(positions)) {
             updatePositions(positions);
-        } else {
-            // Fallback: update D3 circles directly
-            Object.keys(positions).forEach(vehicleId => {
-                const newPos = positions[vehicleId];
-                if (newPos) {
-                    console.log(`Moving vehicle ${vehicleId} to [${newPos.lng}, ${newPos.lat}]`);
-                    
-                    // Update D3 circle position
-                    const circle = d3.select(`#${vehicleId.replace(/:/g, '_')}`);
-                    if (!circle.empty()) {
-                        const pixelCoords = map.project([newPos.lng, newPos.lat]);
-                        circle.attr('transform', `translate(${pixelCoords.x}, ${pixelCoords.y})`);
-                    }
-                }
-            });
+        } else if (typeof positions === 'object') {
+            // Convert object format to array format
+            const positionsArray = Object.keys(positions).map(vehicleId => ({
+                id: vehicleId,
+                vehicle: { id: vehicleId, within: positions[vehicleId].within },
+                coords: [positions[vehicleId].lng, positions[vehicleId].lat],
+                lng: positions[vehicleId].lng,
+                lat: positions[vehicleId].lat
+            }));
+            updatePositions(positionsArray);
         }
     }
 
@@ -433,18 +504,56 @@ export class Dashboard extends React.Component {
         });
     }
 
+    addNotification = (type, vehicleId, zone) => {
+        const color = type === 'exit' ? "#2f55d4 !important" : "#6c757d";
+        const ticker = d3.selectAll('#ticker');
+        const notification_types = {
+            enter: {alert: '! Entering', message: 'entering'},
+            exit: {alert: '✓ Leaving', message: 'exiting'}
+        };
+
+        let html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + 
+            '<strong>' + this.truncateDID(vehicleId) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> ' + zone + '.';
+        
+        ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+    }
+
+    truncateDID = (did) => {
+        if (!did) return '...';
+        return did.substr(0, 15) + "..." + did.substr(-8);
+    }
+
     togglePrivateMode = () => {
-        const { privateMode, vehicles } = this.state;
+        const { privateMode } = this.state;
         const newMode = !privateMode;
         
-        // Hide/show private vehicles
-        vehicles.forEach(vehicle => {
-            if (vehicle.private && vehicle.element) {
-                vehicle.element.style.display = newMode ? 'none' : 'block';
-            }
-        });
+        // Hide/show private vehicles using D3
+        if (newMode) {
+            // Privacy mode ON - hide private vehicles
+            d3.selectAll('circle[isPrivateVehicle="true"]')
+                .attr('fill', 'transparent')
+                .attr('stroke', 'transparent');
+        } else {
+            // Privacy mode OFF - show private vehicles
+            d3.selectAll('circle[isPrivateVehicle="true"]')
+                .attr('fill', '#2f55d4')
+                .attr('stroke', '#fff');
+        }
         
         this.setState({ privateMode: newMode });
+    }
+
+    handleAdvance = (e) => {
+        if (e) e.preventDefault();
+        console.log('🎯 ADVANCE button clicked');
+        
+        // Original implementation sent positions and zones
+        if (socket && socket.connected) {
+            socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zones);
+            console.log('📡 Sent fetchNewPositionsFromServer to server');
+        } else {
+            console.warn('⚠️ Socket not connected');
+        }
     }
 
     render() {
@@ -465,7 +574,7 @@ export class Dashboard extends React.Component {
                 </div>
 
                 <div className='d-flex justify-content-center dashboard-main-buttons'>
-                    <button className='btn btn-primary mx-2'>ADVANCE</button>
+                    <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
                     <button className='btn btn-primary mx-2'
                             onClick={this.togglePrivateMode}>{privateMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
                 </div>

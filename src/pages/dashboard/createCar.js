@@ -1,14 +1,14 @@
 import getPath from './getPath'
 import {map} from './dashboard'
 import {zone} from './dashboard'
-import Antenna from 'iotex-antenna'
-import {Contract} from "iotex-antenna/lib/contract/contract";
-import {ABI as VehicleRegABI} from '../vehicle-registration/ABI'
-import DIDRegDetails from "../did-registration/did-contract-details";
-import {toRau} from "iotex-antenna/lib/account/utils";
+// import Antenna from 'iotex-antenna'
+// import {Contract} from "iotex-antenna/lib/contract/contract";
+// import {ABI as VehicleRegABI} from '../vehicle-registration/ABI'
+// import DIDRegDetails from "../did-registration/did-contract-details";
+// import {toRau} from "iotex-antenna/lib/account/utils";
 import axios from 'axios'
 import {readLog, htmlIDFromDID} from "../helperFunctions";
-import eventABI from "../vehicle-registration/vehicleEventABIs";
+// import eventABI from "../vehicle-registration/vehicleEventABIs";
 
 var d3 = require('d3');
 var turf = require('turf');
@@ -142,7 +142,7 @@ function addNotification(color, index, type, did) {
 }
 
 function getRandomColor() {
-    var colors = d3.scale.category10().range();
+    var colors = d3.schemeCategory10;
     var max = colors.length;
     return colors[Math.floor(Math.random() * max)];
 }

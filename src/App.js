@@ -5,8 +5,8 @@ import {Route, Switch, BrowserRouter as Router, withRouter} from 'react-router-d
 import './Apps.scss';
 import './css/materialdesignicons.min.css';
 
-// Include Routes 
-import {Dashboard} from "./pages/dashboard/dashboard-mock";
+// Include Routes
+import {Dashboard} from "./pages/dashboard/dashboard";
 import {VehicleRegistration} from "./pages/vehicle-registration/vehicleRegistration";
 import {RegisterDID} from "./pages/did-registration/registerDID";
 import {RegisterJurisdiction} from "./pages/jurisdiction-registry/jurisdictionRegistration";

@@ -1,14 +1,12 @@
 import React from 'react'
-import d3 from 'd3'
+import * as d3 from 'd3'
 import { schemeCategory10 } from 'd3-scale-chromatic';
 import mapboxgl from 'mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import * as turf from '@turf/turf'
 import geojsonMerge from '@mapbox/geojson-merge'
 import makeCar from './createCar'
 import updatePositions from './updatePositions'
-import axios from 'axios'
-import Antenna from 'iotex-antenna'
-import connect from 'socket.io-client';
 import Topbar from "../../components/Layout/Topbar";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -21,17 +19,88 @@ import {getStartEnd} from "./getPath";
 import {setLoadingText} from "./loadingText";
 import {htmlIDFromDID} from "../helperFunctions";
 
+// Mock implementations
+const mockAntenna = {
+    iotx: {
+        accounts: {
+            privateKeyToAccount: (pk) => ({
+                address: `io1${pk.slice(0, 40)}`
+            })
+        }
+    }
+};
+
+const mockSocket = {
+    on: () => {},
+    emit: () => {},
+    disconnect: () => {}
+};
+
+// Mock axios with static data
+const mockAxios = {
+    get: (url) => {
+        if (url.includes('/api/getAllPolygons')) {
+            return Promise.resolve({
+                data: [
+                    {
+                        id: "did:io:0xzonelondon",
+                        service: [
+                            {
+                                geojson: {
+                                    features: [
+                                        {
+                                            "type": "Feature",
+                                            "properties": {
+                                                "name": "London Congestion Zone",
+                                                "rate": 15
+                                            },
+                                            "geometry": {
+                                                "type": "Polygon",
+                                                "coordinates": [[
+                                                    [-0.1423, 51.5074],
+                                                    [-0.1123, 51.5074], 
+                                                    [-0.1123, 51.4974],
+                                                    [-0.1423, 51.4974],
+                                                    [-0.1423, 51.5074]
+                                                ]]
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
+            });
+        }
+        if (url.includes('/api/getAllVehicles')) {
+            return Promise.resolve({
+                data: [
+                    {
+                        id: "did:io:0xvehicle1",
+                        position: [-0.1276, 51.5074],
+                        balance: 100,
+                        type: "car"
+                    },
+                    {
+                        id: "did:io:0xvehicle2", 
+                        position: [-0.1200, 51.5000],
+                        balance: 85,
+                        type: "truck"
+                    }
+                ]
+            });
+        }
+        return Promise.resolve({ data: {} });
+    }
+};
+
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
-let socket
-if (process.env.NODE_ENV === 'production') {
-    socket = connect(window.location.hostname)
-} else {
-    socket = connect('http://localhost:3001');
-}
+let socket = mockSocket;
 
-export var map
-export var zone
+export var map;
+export var zone;
 
 // var buffered = turf.buffer(zones.length > 1 ? zones[1] : zones, 200, 'feet');
 
@@ -43,7 +112,7 @@ export class Dashboard extends React.Component {
             zoneDIDs: [],
             zones: [],
             vehicles: [],
-            antenna: new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST),
+            antenna: mockAntenna,
             buffered: null,
             positions: [],
             currentPos: 1,
@@ -80,11 +149,10 @@ export class Dashboard extends React.Component {
             center,
         });
 
-        let totalStaked = await axios.get('/api/getTotalStaked')
-        totalStaked = totalStaked.data.totalStaked
-        let vehicles = await axios.get('/api/getAllVehicles')
+        let totalStaked = 1500; // Mock total staked amount
+        let vehicles = await mockAxios.get('/api/getAllVehicles')
         vehicles = vehicles.data
-        let zoneDIDs = await axios.get('/api/getAllPolygons');
+        let zoneDIDs = await mockAxios.get('/api/getAllPolygons');
         zoneDIDs = zoneDIDs.data;
         let zones = zoneDIDs.map((did) => {
             return did.service.map((zone) => {
@@ -96,7 +164,7 @@ export class Dashboard extends React.Component {
                 return zone
             })
         }).flat();
-        let positions = await axios.get('/api/getAllPoints')
+        let positions = await mockAxios.get('/api/getAllPoints')
         positions = positions.data
 
         // Randomly assign a vehicle to a route
@@ -377,7 +445,7 @@ export class Dashboard extends React.Component {
     }
 
     getRandomColor = () => {
-        var colors = d3.scale.category10().range();
+        var colors = d3.schemeCategory10;
         var max = colors.length;
         return colors[Math.floor(Math.random() * max)];
     }

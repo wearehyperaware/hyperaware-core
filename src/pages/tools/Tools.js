@@ -2,14 +2,30 @@ import React from 'react'
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import AnimateHeight from "react-animate-height";
-import Antenna from 'iotex-antenna'
-import {toRau} from "iotex-antenna/lib/account/utils";
+
+// Mock implementations
+const mockAntenna = {
+    iotx: {
+        accounts: {
+            create: () => ({
+                address: `io1${Math.random().toString(36).substring(7)}`,
+                privateKey: Math.random().toString(36).substring(2)
+            }),
+            privateKeyToAccount: (pk) => ({
+                address: `io1${pk.slice(0, 40)}`
+            })
+        },
+        sendTransfer: () => Promise.resolve(`0x${Math.random().toString(36).substring(7)}`)
+    }
+};
+
+const mockToRau = (amount, unit) => `${amount}000000000000000000`;
 
 export class Tools extends React.Component {
 
     constructor(props) {
         super(props);
-        let antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
+        let antenna = mockAntenna;
         this.state = {
             accountsToCreate: 1,
             createdAccounts: [],
@@ -55,9 +71,9 @@ export class Tools extends React.Component {
             const actionHash = await this.state.antenna.iotx.sendTransfer({
                 from: senderWallet.address,
                 to: wallet.address,
-                value: toRau("2", "iotx"),
+                value: mockToRau("2", "iotx"),
                 gasLimit: "100000",
-                gasPrice: toRau("1", "Qev")
+                gasPrice: mockToRau("1", "Qev")
             });
             console.log("Sent 2 IOTX to", wallet.address, ". Hash: ", actionHash)
             tmp.push(wallet)

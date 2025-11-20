@@ -113,40 +113,38 @@ app.get('/api/getAllPolygons', (req, res) => {
 
 app.get('/api/getAllPoints', (req, res) => {
   console.log('Generating vehicle routes...');
-  const points = Object.keys(vehiclePositions).map(vehicleId => {
-    const currentPos = vehiclePositions[vehicleId];
+  
+  // Return data in the same format as samplePoints.json
+  // Array of timesteps, each timestep has positions for all vehicles
+  const numTimesteps = 20;
+  const numVehicles = Object.keys(vehiclePositions).length;
+  const vehicleIds = Object.keys(vehiclePositions);
+  
+  const timesteps = [];
+  
+  for (let t = 0; t < numTimesteps; t++) {
+    const timestep = [];
     
-    // Generate a route of 20 points
-    const route = [];
-    let lat = currentPos.lat;
-    let lng = currentPos.lng;
-    let heading = currentPos.heading;
-    
-    for (let i = 0; i < 20; i++) {
-      // Simulate realistic movement
-      heading += (Math.random() - 0.5) * 30; // Change direction slightly
-      const distance = 0.005 + Math.random() * 0.005; // Variable speed
+    for (let v = 0; v < numVehicles; v++) {
+      const vehicleId = vehicleIds[v];
+      const startPos = vehiclePositions[vehicleId];
       
-      lat += distance * Math.cos(heading * Math.PI / 180);
-      lng += distance * Math.sin(heading * Math.PI / 180);
+      // Generate movement for this timestep
+      const distance = 0.002 + (Math.random() * 0.003); // Small incremental movement
+      const angle = (t * 0.1 + v * 60) * Math.PI / 180; // Different paths for each vehicle
       
-      // Keep in London area
-      if (lat < 51.3 || lat > 51.7) heading += 180;
-      if (lng < -0.5 || lng > 0.2) heading += 180;
+      const lat = startPos.lat + distance * t * Math.cos(angle);
+      const lng = startPos.lng + distance * t * Math.sin(angle);
       
-      route.push({
-        lat,
-        lng,
-        timestamp: Date.now() + i * 3000 // 3 seconds between points
+      timestep.push({
+        coords: [lng, lat]
       });
     }
     
-    return {
-      vehicleId,
-      route
-    };
-  });
-  res.json(points);
+    timesteps.push(timestep);
+  }
+  
+  res.json(timesteps);
 });
 
 app.get('/api/getTotalStaked', (req, res) => {
@@ -186,6 +184,130 @@ io.on('connection', (socket) => {
   
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
+  });
+  
+  // Track current timestep for route advancement
+  let currentTimestep = 0;
+  
+  // Handle fetchNewPositionsFromServer - the original event from dashboard
+  socket.on('fetchNewPositionsFromServer', (positions, zones) => {
+    console.log('Received fetchNewPositionsFromServer request with', positions?.length || 0, 'timesteps');
+    
+    if (!positions || positions.length === 0) {
+      console.log('No positions data provided');
+      return;
+    }
+    
+    // Advance to next timestep
+    currentTimestep = (currentTimestep + 1) % positions.length;
+    const currentPositions = positions[currentTimestep];
+    
+    console.log(`Advancing to timestep ${currentTimestep}, ${currentPositions.length} vehicles`);
+    
+    // Update vehicle positions and create response
+    const newPositions = [];
+    currentPositions.forEach((pos, vehicleIndex) => {
+      if (pos.vehicle && pos.vehicle.id) {
+        const vehicleId = pos.vehicle.id;
+        const coords = pos.coords;
+        
+        // Update vehicle position
+        vehiclePositions[vehicleId] = {
+          lat: coords[1],
+          lng: coords[0],
+          speed: 30,
+          heading: 0
+        };
+        
+        // Check zone status
+        const currentZones = checkPointInZones(coords[1], coords[0]);
+        const within = currentZones.length > 0;
+        
+        // Add to positions array for updatePositions
+        newPositions.push({
+          id: vehicleId,
+          vehicle: { ...pos.vehicle, id: vehicleId, within },
+          coords: coords,
+          lng: coords[0],
+          lat: coords[1],
+          within
+        });
+        
+        // Emit zone entry/exit if changed
+        const previousZones = vehicleInZones[vehicleId] || new Set();
+        const currentZoneNames = new Set(currentZones.map(z => z.name));
+        
+        currentZoneNames.forEach(zoneName => {
+          if (!previousZones.has(zoneName)) {
+            socket.emit('fetchNewPositionsFromServerResponse', {
+              type: 'enter',
+              vehicleDetails: {
+                id: vehicleId,
+                enterTime: new Date().toISOString()
+              },
+              rate: currentZones.find(z => z.name === zoneName)?.rate || 0.007
+            }, '0x' + Math.random().toString(16).slice(2, 10));
+          }
+        });
+        
+        previousZones.forEach(zoneName => {
+          if (!currentZoneNames.has(zoneName)) {
+            socket.emit('fetchNewPositionsFromServerResponse', {
+              type: 'exit',
+              vehicleDetails: {
+                id: vehicleId,
+                enterTime: new Date(Date.now() - 60000).toISOString(), // 1 minute ago
+                exitTime: new Date().toISOString()
+              },
+              rate: 0.007
+            }, '0x' + Math.random().toString(16).slice(2, 10));
+          }
+        });
+        
+        vehicleInZones[vehicleId] = currentZoneNames;
+      }
+    });
+    
+    // Emit the new positions to update the map  
+    if (newPositions.length > 0) {
+      socket.emit('updatePositions', newPositions, positions);
+      console.log(`Emitted ${newPositions.length} position updates`);
+    }
+  });
+  
+  // Handle manual advance request (keeping for compatibility)
+  socket.on('advancePositions', () => {
+    console.log('Received advance request from client');
+    
+    // Manually trigger one step of vehicle movement
+    Object.keys(vehiclePositions).forEach(vehicleId => {
+      const pos = vehiclePositions[vehicleId];
+      
+      // Update position based on speed and heading (5x normal speed for ADVANCE)
+      const speedKmh = pos.speed;
+      const speedMs = speedKmh / 3.6;
+      const distanceM = speedMs * 5; // 5 seconds worth of movement
+      const distanceDeg = distanceM / 111320;
+      
+      pos.lat += distanceDeg * Math.cos(pos.heading * Math.PI / 180);
+      pos.lng += distanceDeg * Math.sin(pos.heading * Math.PI / 180);
+      
+      // Randomly change heading slightly
+      pos.heading += (Math.random() - 0.5) * 20;
+      
+      // Keep vehicles in London area
+      if (pos.lat < 51.3 || pos.lat > 51.7) {
+        pos.heading = (pos.heading + 180) % 360;
+        pos.lat = Math.max(51.3, Math.min(51.7, pos.lat));
+      }
+      if (pos.lng < -0.5 || pos.lng > 0.2) {
+        pos.heading = (pos.heading + 180) % 360;
+        pos.lng = Math.max(-0.5, Math.min(0.2, pos.lng));
+      }
+    });
+    
+    // Emit updated positions immediately
+    io.emit('vehiclePositions', vehiclePositions);
   });
 });
 
@@ -282,7 +404,7 @@ setInterval(() => {
 // For development, let React dev server handle routing
 // In production, you would serve the built React app here
 
-const PORT = process.env.PORT || 8001;
+const PORT = process.env.PORT || 8002;
 server.listen(PORT, () => {
   console.log(`Enhanced mock server running on port ${PORT}`);
   console.log(`Vehicles loaded: ${Object.keys(vehiclePositions).length}`);

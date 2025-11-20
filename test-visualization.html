@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hyperaware Visualization Test</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.7.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        #info { 
+            position: absolute; 
+            top: 10px; 
+            right: 10px; 
+            background: rgba(255,255,255,0.9); 
+            padding: 10px; 
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div id='map'></div>
+    <div id='info'>
+        <h3>Hyperaware Test</h3>
+        <p id='status'>Loading...</p>
+        <p>Vehicles: <span id='vehicles'>0</span></p>
+        <p>Zones: <span id='zones'>0</span></p>
+        <p>Server: <span id='server'>Checking...</span></p>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA';
+        
+        // Initialize map
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [-0.1278, 51.5074], // London
+            zoom: 10
+        });
+
+        // Check server health
+        fetch('http://localhost:3001/api/health')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('server').textContent = data.status;
+                document.getElementById('vehicles').textContent = data.vehicles;
+                document.getElementById('zones').textContent = data.zones;
+                document.getElementById('status').textContent = 'Server connected!';
+            })
+            .catch(err => {
+                document.getElementById('server').textContent = 'Error: ' + err.message;
+                document.getElementById('status').textContent = 'Server connection failed!';
+            });
+
+        map.on('load', () => {
+            // Load zones
+            fetch('http://localhost:3001/api/getAllPolygons')
+                .then(res => res.json())
+                .then(zones => {
+                    document.getElementById('status').textContent = `Loaded ${zones.length} zones`;
+                    
+                    zones.forEach((zone, i) => {
+                        map.addSource(`zone-${i}`, {
+                            type: 'geojson',
+                            data: zone
+                        });
+                        
+                        map.addLayer({
+                            id: `zone-${i}-fill`,
+                            type: 'fill',
+                            source: `zone-${i}`,
+                            paint: {
+                                'fill-color': ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'][i % 5],
+                                'fill-opacity': 0.3
+                            }
+                        });
+                    });
+                });
+
+            // Load vehicles
+            fetch('http://localhost:3001/api/getAllVehicles')
+                .then(res => res.json())
+                .then(vehicles => {
+                    vehicles.forEach(vehicle => {
+                        new mapboxgl.Marker()
+                            .setLngLat([vehicle.position.lng, vehicle.position.lat])
+                            .addTo(map);
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

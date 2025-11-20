@@ -1,22 +1,46 @@
 //jshint esversion:8
 import React from 'react'
-import Antenna from "iotex-antenna";
-import {readLog} from "../helperFunctions";
-import {Contract} from "iotex-antenna/lib/contract/contract";
-import ABI from './ABI'
-import Web3 from 'web3'
-import contractInfo from "../did-registration/did-contract-details";
-import eventABI from "./vehicleEventABIs";
-import {toRau} from "iotex-antenna/lib/account/utils";
 import AnimateHeight from 'react-animate-height'
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import {Spinner} from "react-bootstrap";
 
-let CONTRACT_ADDRESS = process.env.REACT_APP_VEHICLE_REG_CONTRACT_ADDRESS;
-let contract;
-let antenna
-let unlockedWallet
+// Mock implementations to replace blockchain dependencies
+const mockAntenna = {
+    iotx: {
+        accounts: {
+            privateKeyToAccount: (privateKey) => ({
+                address: `io1${privateKey.slice(0, 40)}`,
+                sign: () => Buffer.from('mock-signature', 'hex')
+            })
+        },
+        readContractByMethod: () => Promise.resolve("mock-did-string")
+    }
+};
+
+const mockContract = {
+    methods: {
+        registerVehicle: () => Promise.resolve("0xmockhash"),
+        updateHash: () => Promise.resolve("0xmockhash"),
+        getVehicleCountOfOwner: () => Promise.resolve(2),
+        getSingleVehicleOfOwner: () => Promise.resolve(["did:io:0xmockvehicle", "1000000000000000000", "1735689600"])
+    }
+};
+
+const mockWeb3 = {
+    eth: {
+        accounts: {
+            sign: (message, privateKey) => ({
+                signature: "0xmocksignature"
+            })
+        }
+    }
+};
+
+let CONTRACT_ADDRESS = "0xmockcontract";
+let contract = mockContract;
+let antenna = mockAntenna;
+let unlockedWallet = { address: "io1mockwallet" };
 
 function Loader() {
     return (
@@ -66,15 +90,8 @@ export class VehicleRegistration extends React.Component {
         document.getElementById('topnav').classList.add('bg-white');
         window.addEventListener("scroll", this.scrollNavigation, true);
 
-        antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
-
-        contract = new Contract(
-            ABI,
-            CONTRACT_ADDRESS,
-            {
-                provider: antenna.iotx
-            }
-        );
+        antenna = mockAntenna;
+        contract = mockContract;
     }
 
 
@@ -95,22 +112,10 @@ export class VehicleRegistration extends React.Component {
 
     signProof = async (e, ownerDID, vehiclePK) => {
         e.preventDefault()
-        let web3 = new Web3()
-        let did
+        let web3 = mockWeb3;
+        let did = "did:io:0xmockdevice";
 
-        let wallet = await antenna.iotx.accounts.privateKeyToAccount(
-            vehiclePK
-        );
-        try {
-            did = await antenna.iotx.readContractByMethod({
-                from: wallet.address,
-                contractAddress: contractInfo.contractAddress,
-                abi: contractInfo.abi,
-                method: "remindDIDString"
-            });
-        } catch (err) {
-            console.log(err);
-        }
+        let wallet = await antenna.iotx.accounts.privateKeyToAccount(vehiclePK);
         let message = `${ownerDID.split(":")[2].toLowerCase()} is the owner of the device ${did.toLowerCase()}`
         let signedMessage = await web3.eth.accounts.sign(message, vehiclePK);
         let signed = await wallet.sign(message, vehiclePK)
@@ -128,24 +133,17 @@ export class VehicleRegistration extends React.Component {
             this.state.ownerPrivateKey
         );
         try {
-            let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime, {
-                amount: toRau(this.state.stakeAmount, "iotx"),
-                account: wallet,
-                gasLimit: "1000000",
-                gasPrice: toRau("1", "Qev")
-            });
+            let actionHash = await contract.methods.registerVehicle(ownerDID, vehicleDID, lockTime);
             console.log(actionHash);
-            //wait till the block is mined
+            // Simulate blockchain mining delay
             window.setTimeout(async () => {
-                let log = await readLog(eventABI.RegisterEvent, actionHash, antenna);
-                console.log(log);
+                console.log("Mock registration completed");
                 await this.setState({
                     registrationLoading: false,
                     registrationLoaded: true,
-                    registrationMessage: "Registration successful!"
+                    registrationMessage: "Registration successful! (Mock)"
                 })
-
-            }, 11000)
+            }, 3000) // Reduced from 11 seconds to 3 for demo
 
         } catch (err) {
             this.setState({registrationMessage: "Something went wrong, try again."})
@@ -156,23 +154,19 @@ export class VehicleRegistration extends React.Component {
     getVehicles = async (e) => {
         e.preventDefault()
         try {
-            // Get vehicle count of owner
+            // Mock vehicle data
             let vehicles = []
-            let vehicleCount = await antenna.iotx.readContractByMethod({
-                "from": "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
-                "abi": ABI,
-                "contractAddress": CONTRACT_ADDRESS,
-                "method": "getVehicleCountOfOwner",
-            }, this.state.getVehiclesOwnerDID);
+            let vehicleCount = 2; // Mock count
             console.log(vehicleCount.toString())
-            let res
+            
+            // Mock vehicle data
+            const mockVehicles = [
+                ["did:io:0xmockvehicle1", "1000000000000000000", "1735689600"],
+                ["did:io:0xmockvehicle2", "2000000000000000000", "1767225600"]
+            ];
+            
             for (let i = 0; i < vehicleCount; i++) {
-                res = await antenna.iotx.readContractByMethod({
-                    "from": "io1y3cncf05k0wh4jfhp9rl9enpw9c4d9sltedhld", // It doesn't matter who its from, only the DID (but we still need it here because of the function definition)
-                    "abi": ABI,
-                    "contractAddress": CONTRACT_ADDRESS,
-                    "method": "getSingleVehicleOfOwner",
-                }, this.state.getVehiclesOwnerDID, i);
+                let res = mockVehicles[i];
                 vehicles.push({
                     did: res[0],
                     amount: res[1].toString(),
@@ -186,13 +180,8 @@ export class VehicleRegistration extends React.Component {
     }
 
     withdrawStake = async (ownerDID, vehicleDID, withdrawAmount) => {
-
         try {
-            let actionHash = await contract.methods.updateHash(ownerDID, vehicleDID, withdrawAmount, {
-                account: unlockedWallet.address,
-                gasLimit: "500000000",
-                gasPrice: "1"
-            });
+            let actionHash = await contract.methods.updateHash(ownerDID, vehicleDID, withdrawAmount);
             return actionHash;
         } catch (err) {
             console.log(err);
