@@ -6,7 +6,7 @@ import './Apps.scss';
 import './css/materialdesignicons.min.css';
 
 // Include Routes
-import {Dashboard} from "./pages/dashboard/dashboard";
+import {Dashboard} from "./pages/dashboard/dashboard-mock";
 import {VehicleRegistration} from "./pages/vehicle-registration/vehicleRegistration";
 import {RegisterDID} from "./pages/did-registration/registerDID";
 import {RegisterJurisdiction} from "./pages/jurisdiction-registry/jurisdictionRegistration";
