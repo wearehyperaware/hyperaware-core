@@ -120,6 +120,13 @@ function updatePositions(positions) {
         
         const circle = d3.select('#' + id);
         if (!circle.empty()) {
+            // Update color immediately BEFORE transition to prevent flickering
+            if (circle.attr('isPrivateVehicle') !== 'true') {
+                const newColor = within ? 'red' : '#2f55d4';
+                circle.attr('fill', newColor);
+                console.log(`Vehicle ${id} color update: within=${within}, color=${newColor}`);
+            }
+
             circle
                 .attr('data-coords', coords.toString())
                 .classed('inzone', within)
@@ -128,16 +135,14 @@ function updatePositions(positions) {
                 .attr('transform', function () {
                     let pixelCoords = map.project(coords);
                     return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
+                })
+                .on('end', function() {
+                    // Re-apply color after transition to ensure it sticks
+                    if (circle.attr('isPrivateVehicle') !== 'true') {
+                        const newColor = within ? 'red' : '#2f55d4';
+                        d3.select(this).attr('fill', newColor);
+                    }
                 });
-                
-            // Update color based on zone status (unless private)
-            if (circle.attr('isPrivateVehicle') !== 'true') {
-                if (within) {
-                    circle.attr('fill', 'red');
-                } else {
-                    circle.attr('fill', '#2f55d4');
-                }
-            }
         }
     });
 }
@@ -225,6 +230,78 @@ export class Dashboard extends React.Component {
                         this.updateMapElements();
                     });
                     
+                    // Add the route LineString to the map for visualization (exact user-provided coordinates)
+                    const routeCoordinates = [
+                        [-0.21736251996773603, 51.45971970324189],
+                        [-0.21404191091170333, 51.46528673135887],
+                        [-0.20963455707340017, 51.469348728696104],
+                        [-0.20824593874021957, 51.46946155679373],
+                        [-0.20613282388680432, 51.47141719948428],
+                        [-0.20015572758580902, 51.472695843611746],
+                        [-0.1904957739676547, 51.47765965175668],
+                        [-0.18335375799054532, 51.481269304680495],
+                        [-0.19271183805778946, 51.48875100836108],
+                        [-0.18516499929398833, 51.491156923544196],
+                        [-0.18045577190477502, 51.491044149106045],
+                        [-0.17393530321308504, 51.49390101555227],
+                        [-0.1742371767639952, 51.49491591184761],
+                        [-0.17073544357745618, 51.49638183327187],
+                        [-0.16062600386496229, 51.50167938127865],
+                        [-0.151932045608703, 51.503145085183405],
+                        [-0.14915480894330813, 51.50340815525331],
+                        [-0.13796786557307428, 51.508623579443764],
+                        [-0.13434538296615983, 51.50982602849572],
+                        [-0.1326548910830354, 51.50986360451725],
+                        [-0.13048140151948928, 51.50775929958502],
+                        [-0.12734191659302496, 51.50760898837095],
+                        [-0.12233081565389625, 51.50640648080537],
+                        [-0.11846683420725412, 51.510013908293274],
+                        [-0.11357648268747766, 51.50486572160659],
+                        [-0.10785605810312404, 51.50695878098031],
+                        [-0.10435432491757979, 51.50707151604607],
+                        [-0.10429395020739207, 51.51161826453543],
+                        [-0.09578111608172435, 51.51173098807246],
+                        [-0.09089076456194789, 51.513008501997405],
+                        [-0.08787202905682534, 51.513459380711424],
+                        [-0.0844306705804172, 51.513459380711424],
+                        [-0.07930432575378177, 51.519586848829675],
+                        [-0.07731196031977561, 51.52311810260133],
+                        [-0.07797608213175522, 51.52743788108879],
+                        [-0.07711910323908455, 51.53457958102658],
+                        [-0.07435267601294981, 51.55673837318699]
+                    ];
+
+                    map.addSource('route', {
+                        type: 'geojson',
+                        data: {
+                            type: 'Feature',
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: routeCoordinates
+                            }
+                        }
+                    });
+
+                    map.addLayer({
+                        id: 'route-line',
+                        type: 'line',
+                        source: 'route',
+                        paint: {
+                            'line-color': '#888',
+                            'line-width': 4,
+                            'line-opacity': 0.6
+                        }
+                    });
+
+                    console.log('🛣️ Route LineString added to map');
+
+                    // Auto-advance through waypoints every 800ms
+                    this.autoAdvanceInterval = setInterval(() => {
+                        if (this.state.positions && this.state.positions.length > 0) {
+                            this.handleAdvance();
+                        }
+                    }, 800);
+
                     // Start vehicle movement simulation
                     setTimeout(() => {
                         console.log('🎬 Starting vehicle simulation...');
@@ -551,18 +628,142 @@ export class Dashboard extends React.Component {
         });
     }
 
-    addNotification = (type, vehicleId, zone) => {
-        const color = type === 'exit' ? "#2f55d4 !important" : "#6c757d";
-        const ticker = d3.selectAll('#ticker');
-        const notification_types = {
-            enter: {alert: '! Entering', message: 'entering'},
-            exit: {alert: '✓ Leaving', message: 'exiting'}
+    generateTxHash = () => {
+        // Generate a random Ethereum-style transaction hash
+        return '0x' + Array.from({length: 64}, () =>
+            Math.floor(Math.random() * 16).toString(16)
+        ).join('');
+    }
+
+    addNotification = (type, vehicleId, zoneName) => {
+        const txHash = this.generateTxHash();
+        const timestamp = new Date().toLocaleTimeString();
+
+        // Always use "London Congestion Zone" as the zone name
+        const displayZone = "London Congestion Zone";
+
+        const notification_config = {
+            enter: {
+                iconSvg: 'data:image/svg+xml;base64,' + btoa(`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#10b981" stroke="#059669" stroke-width="2"/><path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`),
+                title: 'Zone Entry Detected',
+                message: 'Vehicle has entered the congestion zone',
+                borderColor: '#10b981',
+                bgColor: '#f0fdf4'
+            },
+            exit: {
+                iconSvg: 'data:image/svg+xml;base64,' + btoa(`<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" fill="#6366f1" stroke="#4f46e5" stroke-width="2"/><path d="M8 12L16 12M16 12L13 9M16 12L13 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`),
+                title: 'Zone Exit Confirmed',
+                message: 'Vehicle has exited the congestion zone',
+                borderColor: '#6366f1',
+                bgColor: '#eef2ff'
+            }
         };
 
-        let html = '<strong class="strongpad" style="background:' + color + '"">' + notification_types[type].alert + '</strong> ' + 
-            '<strong>' + this.truncateDID(vehicleId) + '</strong>' + ' is <strong>' + notification_types[type].message + '</strong> ' + zone + '.';
-        
-        ticker.insert('div', ':first-child').html(html).classed('expanded', true);
+        const config = notification_config[type];
+
+        const toastHTML = `
+            <div class="eth-toast" style="
+                background: ${config.bgColor};
+                border-left: 4px solid ${config.borderColor};
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.08);
+                padding: 16px;
+                margin-bottom: 12px;
+                min-width: 340px;
+                max-width: 420px;
+                animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            ">
+                <div style="display: flex; align-items: start; gap: 14px;">
+                    <div style="flex-shrink: 0; margin-top: 2px;">
+                        <img src="${config.iconSvg}" width="24" height="24" alt="" />
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="
+                            font-weight: 600;
+                            font-size: 15px;
+                            color: #111827;
+                            margin-bottom: 4px;
+                            letter-spacing: -0.01em;
+                        ">${config.title}</div>
+                        <div style="
+                            font-size: 13px;
+                            color: #6b7280;
+                            margin-bottom: 12px;
+                            line-height: 1.4;
+                        ">${config.message}</div>
+
+                        <div style="
+                            font-size: 11px;
+                            color: #374151;
+                            font-family: 'SF Mono', 'Roboto Mono', monospace;
+                            background: white;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 6px;
+                            border: 1px solid #e5e7eb;
+                        ">
+                            <div style="color: #9ca3af; font-size: 10px; margin-bottom: 3px;">VEHICLE DID</div>
+                            <div style="font-weight: 500;">${this.truncateDID(vehicleId)}</div>
+                        </div>
+
+                        <div style="
+                            font-size: 11px;
+                            color: #374151;
+                            font-family: 'SF Mono', 'Roboto Mono', monospace;
+                            background: white;
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            margin-bottom: 6px;
+                            border: 1px solid #e5e7eb;
+                        ">
+                            <div style="color: #9ca3af; font-size: 10px; margin-bottom: 3px;">ZONE</div>
+                            <div style="font-weight: 500;">${displayZone}</div>
+                        </div>
+
+                        <div style="
+                            font-size: 10px;
+                            color: #374151;
+                            font-family: 'SF Mono', 'Roboto Mono', monospace;
+                            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+                            padding: 8px 10px;
+                            border-radius: 6px;
+                            border: 1px solid rgba(99, 102, 241, 0.2);
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <div style="width: 14px; height: 14px; flex-shrink: 0;">✓</div>
+                            <div style="flex: 1; overflow: hidden;">
+                                <div style="color: #9ca3af; font-size: 9px; margin-bottom: 2px;">TX HASH</div>
+                                <div style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                    ${txHash.substring(0, 10)}...${txHash.substring(58)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="
+                            font-size: 10px;
+                            color: #9ca3af;
+                            margin-top: 8px;
+                        ">
+                            🕐 ${timestamp}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const toastContainer = d3.select('#toast-container');
+        const toast = toastContainer.insert('div', ':first-child').html(toastHTML);
+
+        // Auto-remove after 8 seconds
+        setTimeout(() => {
+            toast.style('animation', 'slideOutLeft 0.3s ease-in')
+                .transition()
+                .duration(300)
+                .style('opacity', 0)
+                .remove();
+        }, 8000);
     }
 
     truncateDID = (did) => {
@@ -608,6 +809,38 @@ export class Dashboard extends React.Component {
         
         return (
             <div>
+                <style>{`
+                    @keyframes slideInLeft {
+                        from {
+                            transform: translateX(-100%);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                    }
+                    @keyframes slideOutLeft {
+                        from {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
+                        to {
+                            transform: translateX(-100%);
+                            opacity: 0;
+                        }
+                    }
+                    #toast-container {
+                        position: fixed;
+                        bottom: 20px;
+                        left: 20px;
+                        z-index: 10000;
+                        pointer-events: none;
+                    }
+                `}</style>
+
+                <div id="toast-container"></div>
+
                 <div id='sidebar' className='sidebar'>
                     <div className='clearfix'>
                         <div className='screen'>
