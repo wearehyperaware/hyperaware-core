@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 // Load sample data
 const sampleVehicles = require('./data/sampleVehicles.json');
 const samplePolygons = require('./data/samplePolygons.json');
+const samplePoints = require('./data/samplePoints.json');
 
 // Track active vehicles and their positions
 let vehiclePositions = {};
@@ -112,39 +113,13 @@ app.get('/api/getAllPolygons', (req, res) => {
 });
 
 app.get('/api/getAllPoints', (req, res) => {
-  console.log('Generating vehicle routes...');
-  
-  // Return data in the same format as samplePoints.json
-  // Array of timesteps, each timestep has positions for all vehicles
-  const numTimesteps = 20;
-  const numVehicles = Object.keys(vehiclePositions).length;
-  const vehicleIds = Object.keys(vehiclePositions);
-  
-  const timesteps = [];
-  
-  for (let t = 0; t < numTimesteps; t++) {
-    const timestep = [];
-    
-    for (let v = 0; v < numVehicles; v++) {
-      const vehicleId = vehicleIds[v];
-      const startPos = vehiclePositions[vehicleId];
-      
-      // Generate movement for this timestep
-      const distance = 0.002 + (Math.random() * 0.003); // Small incremental movement
-      const angle = (t * 0.1 + v * 60) * Math.PI / 180; // Different paths for each vehicle
-      
-      const lat = startPos.lat + distance * t * Math.cos(angle);
-      const lng = startPos.lng + distance * t * Math.sin(angle);
-      
-      timestep.push({
-        coords: [lng, lat]
-      });
-    }
-    
-    timesteps.push(timestep);
-  }
-  
-  res.json(timesteps);
+  console.log('Loading pre-generated vehicle routes from samplePoints.json...');
+
+  // samplePoints.json has pre-generated route data
+  // It's an array of timesteps, each with coords for vehicles
+  // We'll use it directly since it has better route data than random generation
+
+  res.json(samplePoints);
 });
 
 app.get('/api/getTotalStaked', (req, res) => {
