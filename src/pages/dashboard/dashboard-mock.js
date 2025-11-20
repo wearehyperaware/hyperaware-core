@@ -209,7 +209,12 @@ export class Dashboard extends React.Component {
                     console.log('🚗 Starting to load vehicles...');
                     await this.loadVehicles();
                     console.log('✅ Vehicles loaded successfully');
-                    
+
+                    // Load position/route data
+                    console.log('📍 Loading vehicle route data...');
+                    await this.loadPositions();
+                    console.log('✅ Route data loaded successfully');
+
                     // Setup WebSocket listeners
                     console.log('🔌 Setting up WebSocket listeners...');
                     this.setupSocketListeners();
@@ -411,6 +416,47 @@ export class Dashboard extends React.Component {
         }
     }
 
+    async loadPositions() {
+        try {
+            console.log('🗺️ Fetching route/position data from API...');
+            console.log('Making request to:', '/api/getAllPoints');
+            const response = await axios.get('/api/getAllPoints');
+            console.log('📊 Position data response:', response.status, response.data?.length || 0, 'timesteps');
+            const positions = response.data;
+
+            if (!positions || positions.length === 0) {
+                console.warn('⚠️ No position data received from API');
+                return;
+            }
+
+            // Add vehicle IDs to position data to match original format
+            const vehicles = this.state.vehicles;
+            const enhancedPositions = positions.map((timestep, timestepIndex) => {
+                return timestep.map((pos, vehicleIndex) => {
+                    const vehicle = vehicles[vehicleIndex];
+                    return {
+                        ...pos,
+                        vehicle: {
+                            id: vehicle?.id || `vehicle_${vehicleIndex}`,
+                            within: false
+                        }
+                    };
+                });
+            });
+
+            this.setState({
+                positions: enhancedPositions,
+                currentPos: 0
+            });
+
+            console.log(`✅ Successfully loaded ${enhancedPositions.length} position timesteps`);
+        } catch (error) {
+            console.error('❌ Error loading positions:', error);
+            console.error('Position loading error stack:', error.stack);
+            throw error;
+        }
+    }
+
     setupSocketListeners() {
         console.log('🔧 Setting up socket listeners...');
         
@@ -436,7 +482,29 @@ export class Dashboard extends React.Component {
             console.log('🔴 Zone exit:', exit);
             this.addNotification('exit', exit.vehicleId, exit.zone);
         });
-        
+
+        // Listen for position updates from ADVANCE button
+        socket.on('updatePositions', (newPositions, allPositions) => {
+            console.log('📍 Received updatePositions from server:', newPositions?.length || 0, 'positions');
+            if (newPositions && newPositions.length > 0) {
+                updatePositions(newPositions);
+                // Update state with new positions array
+                if (allPositions) {
+                    this.setState({ positions: allPositions });
+                }
+            }
+        });
+
+        // Listen for fetchNewPositionsFromServerResponse (zone entry/exit from ADVANCE)
+        socket.on('fetchNewPositionsFromServerResponse', (notification, hash) => {
+            console.log('📢 Zone event notification:', notification.type, notification.vehicleDetails?.id);
+            if (notification.type === 'enter') {
+                this.addNotification('enter', notification.vehicleDetails.id, 'zone');
+            } else if (notification.type === 'exit') {
+                this.addNotification('exit', notification.vehicleDetails.id, 'zone');
+            }
+        });
+
         // Force socket connection if not connected
         if (!socket.connected) {
             console.log('🔄 Socket not connected, attempting to connect...');
@@ -481,13 +549,13 @@ export class Dashboard extends React.Component {
 
     handleZoneCharge(charge) {
         const { zoneCharges, vehicleBalances, recentCharges } = this.state;
-        
-        // Update balances
+
+        // Update balances - parse to ensure numbers
         const newBalances = {
             ...vehicleBalances,
-            [charge.vehicleId]: charge.newBalance
+            [charge.vehicleId]: parseFloat(charge.newBalance)
         };
-        
+
         // Add to recent charges (keep last 5)
         const newRecentCharges = [
             {
@@ -496,9 +564,9 @@ export class Dashboard extends React.Component {
             },
             ...recentCharges
         ].slice(0, 5);
-        
+
         this.setState({
-            zoneCharges: zoneCharges + charge.charge,
+            zoneCharges: zoneCharges + parseFloat(charge.charge),
             vehicleBalances: newBalances,
             recentCharges: newRecentCharges
         });
