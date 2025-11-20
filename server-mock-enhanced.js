@@ -82,17 +82,31 @@ function checkPointInZones(lat, lng) {
 
 // API endpoints
 app.get('/api/getAllVehicles', (req, res) => {
-  console.log('Fetching all vehicles...');
-  const vehiclesWithPositions = sampleVehicles.map((vehicle, index) => {
-    const vehicleId = vehicle.id || `vehicle_${index}`;
-    return {
-      ...vehicle,
-      id: vehicleId,
-      position: vehiclePositions[vehicleId],
-      balance: vehicleBalances[vehicleId],
-      currentZones: Array.from(vehicleInZones[vehicleId] || [])
-    };
-  });
+  console.log('Fetching vehicles (single vehicle mode)...');
+
+  // Only return the FIRST vehicle for debugging
+  const firstVehicle = sampleVehicles[0];
+  const vehicleId = firstVehicle.id || 'vehicle_0';
+
+  // Set initial position to the route start
+  const routeStart = [-0.217, 51.459];
+  vehiclePositions[vehicleId] = {
+    lat: routeStart[1],
+    lng: routeStart[0],
+    speed: 30,
+    heading: 0
+  };
+
+  const vehiclesWithPositions = [{
+    ...firstVehicle,
+    id: vehicleId,
+    isPrivate: false,  // Make vehicle visible (not transparent)
+    position: vehiclePositions[vehicleId],
+    balance: vehicleBalances[vehicleId],
+    currentZones: Array.from(vehicleInZones[vehicleId] || [])
+  }];
+
+  console.log(`Returning 1 vehicle at position [${routeStart[0]}, ${routeStart[1]}]`);
   res.json(vehiclesWithPositions);
 });
 
@@ -113,54 +127,34 @@ app.get('/api/getAllPolygons', (req, res) => {
 });
 
 app.get('/api/getAllPoints', (req, res) => {
-  console.log('Generating London-only vehicle routes...');
+  console.log('Generating single-vehicle route animation...');
 
-  // London bounding box
-  const LONDON_BBOX = {
-    west: -0.5,
-    east: 0.2,
-    south: 51.3,
-    north: 51.7
-  };
+  // User-provided LineString route through London
+  const routeCoordinates = [
+    [-0.217, 51.459], [-0.210, 51.465], [-0.202, 51.472], [-0.195, 51.478],
+    [-0.188, 51.485], [-0.180, 51.490], [-0.172, 51.495], [-0.165, 51.500],
+    [-0.158, 51.505], [-0.150, 51.510], [-0.143, 51.514], [-0.136, 51.518],
+    [-0.129, 51.522], [-0.122, 51.526], [-0.115, 51.530], [-0.108, 51.533],
+    [-0.101, 51.536], [-0.094, 51.540], [-0.087, 51.543], [-0.080, 51.547],
+    [-0.074, 51.556]
+  ];
 
-  const numTimesteps = 50; // More timesteps for smoother animation
-  const numVehicles = Object.keys(vehiclePositions).length;
   const vehicleIds = Object.keys(vehiclePositions);
+  const singleVehicleId = vehicleIds[0];
 
-  const timesteps = [];
+  console.log(`Route has ${routeCoordinates.length} coordinate points`);
+  console.log(`Using single vehicle: ${singleVehicleId}`);
 
-  // For each timestep
-  for (let t = 0; t < numTimesteps; t++) {
-    const timestep = [];
+  // Use the actual LineString coordinates as timesteps
+  // This will make the vehicle follow the exact path
+  const timesteps = routeCoordinates.map((coord, index) => {
+    console.log(`Point ${index}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}]`);
+    return [{
+      coords: coord
+    }];
+  });
 
-    // For each vehicle
-    for (let v = 0; v < numVehicles; v++) {
-      const vehicleId = vehicleIds[v];
-      const startPos = vehiclePositions[vehicleId];
-
-      // Create a simple route that stays in London
-      // Using a circular/sinusoidal pattern for smooth movement
-      const progress = t / numTimesteps;
-      const angle = (v * 60 + progress * 360) * Math.PI / 180;
-
-      // Small radius movement around starting position
-      const radius = 0.02; // About 2km
-      const lng = startPos.lng + radius * Math.cos(angle);
-      const lat = startPos.lat + radius * Math.sin(angle) * 0.5; // Narrower in lat
-
-      // Clamp to London bounds
-      const clampedLng = Math.max(LONDON_BBOX.west, Math.min(LONDON_BBOX.east, lng));
-      const clampedLat = Math.max(LONDON_BBOX.south, Math.min(LONDON_BBOX.north, lat));
-
-      timestep.push({
-        coords: [clampedLng, clampedLat]
-      });
-    }
-
-    timesteps.push(timestep);
-  }
-
-  console.log(`Generated ${timesteps.length} timesteps for ${numVehicles} vehicles`);
+  console.log(`Generated ${timesteps.length} timesteps following exact LineString path`);
   res.json(timesteps);
 });
 
