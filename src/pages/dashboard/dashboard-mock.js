@@ -182,12 +182,12 @@ export class Dashboard extends React.Component {
                 return;
             }
 
-            // Initialize map
+            // Initialize map centered on London
             map = new mapboxgl.Map({
                 container: this.mapContainer,
                 style: 'mapbox://styles/mapbox/light-v10',
-                center: [24.56900802672635, 51.27714197030792],
-                zoom: 3.4
+                center: [-0.1278, 51.5074], // London
+                zoom: 11
             });
 
             console.log('Map created:', map);
@@ -241,28 +241,7 @@ export class Dashboard extends React.Component {
                         loadingTextEl.style.display = "none";
                     }
                     setLoadingText("");
-                    
-                    // Zoom to show all zones like original
-                    if (this.state.zones && this.state.zones.length > 0) {
-                        setTimeout(() => {
-                            try {
-                                const turfPolygons = geojsonMerge.merge(this.state.zones);
-                                if (turfPolygons) {
-                                    map.fitBounds(turf.bbox(turfPolygons), {
-                                        padding: {
-                                            left: 100,
-                                            top: 100,
-                                            bottom: 100,
-                                            right: 500
-                                        }
-                                    });
-                                }
-                            } catch (e) {
-                                console.log('Could not auto-zoom to zones:', e);
-                            }
-                        }, 800);
-                    }
-                    
+
                     console.log('✅ Dashboard initialization complete');
                     console.log('Map sources after loading:', Object.keys(map.getStyle().sources || {}));
                     console.log('Map layers after loading:', map.getStyle().layers?.map(l => l.id) || []);

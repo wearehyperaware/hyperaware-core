@@ -113,13 +113,55 @@ app.get('/api/getAllPolygons', (req, res) => {
 });
 
 app.get('/api/getAllPoints', (req, res) => {
-  console.log('Loading pre-generated vehicle routes from samplePoints.json...');
+  console.log('Generating London-only vehicle routes...');
 
-  // samplePoints.json has pre-generated route data
-  // It's an array of timesteps, each with coords for vehicles
-  // We'll use it directly since it has better route data than random generation
+  // London bounding box
+  const LONDON_BBOX = {
+    west: -0.5,
+    east: 0.2,
+    south: 51.3,
+    north: 51.7
+  };
 
-  res.json(samplePoints);
+  const numTimesteps = 50; // More timesteps for smoother animation
+  const numVehicles = Object.keys(vehiclePositions).length;
+  const vehicleIds = Object.keys(vehiclePositions);
+
+  const timesteps = [];
+
+  // For each timestep
+  for (let t = 0; t < numTimesteps; t++) {
+    const timestep = [];
+
+    // For each vehicle
+    for (let v = 0; v < numVehicles; v++) {
+      const vehicleId = vehicleIds[v];
+      const startPos = vehiclePositions[vehicleId];
+
+      // Create a simple route that stays in London
+      // Using a circular/sinusoidal pattern for smooth movement
+      const progress = t / numTimesteps;
+      const angle = (v * 60 + progress * 360) * Math.PI / 180;
+
+      // Small radius movement around starting position
+      const radius = 0.02; // About 2km
+      const lng = startPos.lng + radius * Math.cos(angle);
+      const lat = startPos.lat + radius * Math.sin(angle) * 0.5; // Narrower in lat
+
+      // Clamp to London bounds
+      const clampedLng = Math.max(LONDON_BBOX.west, Math.min(LONDON_BBOX.east, lng));
+      const clampedLat = Math.max(LONDON_BBOX.south, Math.min(LONDON_BBOX.north, lat));
+
+      timestep.push({
+        coords: [clampedLng, clampedLat]
+      });
+    }
+
+    timesteps.push(timestep);
+  }
+
+  console.log(`Generated ${timesteps.length} timesteps for ${numVehicles} vehicles`);
+  res.json(timesteps);
 });
 
 app.get('/api/getTotalStaked', (req, res) => {
