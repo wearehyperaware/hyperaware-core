@@ -173,19 +173,28 @@ app.get('/api/getAllPoints', (req, res) => {
   const vehicleIds = Object.keys(vehiclePositions);
   const singleVehicleId = vehicleIds[0];
 
-  console.log(`Route has ${routeCoordinates.length} coordinate points`);
+  console.log(`Route has ${routeCoordinates.length} vertices`);
   console.log(`Using single vehicle: ${singleVehicleId}`);
 
-  // Use the actual LineString coordinates as timesteps
-  // This will make the vehicle follow the exact path
-  const timesteps = routeCoordinates.map((coord, index) => {
-    console.log(`Point ${index}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}]`);
-    return [{
-      coords: coord
-    }];
-  });
+  // Create a LineString and interpolate at fixed distance intervals
+  const line = turf.lineString(routeCoordinates);
+  const totalLength = turf.length(line, { units: 'kilometers' });
+  const numSteps = 100; // More steps = smoother path following
+  const stepDistance = totalLength / numSteps;
 
-  console.log(`Generated ${timesteps.length} timesteps following exact LineString path`);
+  console.log(`Total route length: ${totalLength.toFixed(2)} km`);
+  console.log(`Step distance: ${stepDistance.toFixed(2)} km`);
+
+  const timesteps = [];
+  for (let i = 0; i <= numSteps; i++) {
+    const distance = i * stepDistance;
+    const point = turf.along(line, distance, { units: 'kilometers' });
+    const coord = point.geometry.coordinates;
+    console.log(`Step ${i}: [${coord[0].toFixed(4)}, ${coord[1].toFixed(4)}] at ${distance.toFixed(2)} km`);
+    timesteps.push([{ coords: coord }]);
+  }
+
+  console.log(`Generated ${timesteps.length} timesteps at equal ${stepDistance.toFixed(2)} km intervals`);
   res.json(timesteps);
 });
 

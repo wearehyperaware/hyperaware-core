@@ -117,32 +117,27 @@ function updatePositions(positions) {
         const coords = position.coords || [position.lng, position.lat];
         const id = (position.vehicle?.id || position.id || '').replace(/:/g, '_');
         const within = position.vehicle?.within || position.within || false;
-        
+
         const circle = d3.select('#' + id);
         if (!circle.empty()) {
-            // Update color immediately BEFORE transition to prevent flickering
+            // Stop any existing transitions
+            circle.interrupt();
+
+            // Update class for radius change (CSS handles r attribute only)
+            circle.classed('inzone', within);
+
+            // Set fill color directly via D3 attribute (not CSS, not inline style)
             if (circle.attr('isPrivateVehicle') !== 'true') {
                 const newColor = within ? 'red' : '#2f55d4';
                 circle.attr('fill', newColor);
-                console.log(`Vehicle ${id} color update: within=${within}, color=${newColor}`);
             }
 
+            // Calculate new position and transition
+            let pixelCoords = map.project(coords);
             circle
-                .attr('data-coords', coords.toString())
-                .classed('inzone', within)
                 .transition()
                 .duration(400)
-                .attr('transform', function () {
-                    let pixelCoords = map.project(coords);
-                    return 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')';
-                })
-                .on('end', function() {
-                    // Re-apply color after transition to ensure it sticks
-                    if (circle.attr('isPrivateVehicle') !== 'true') {
-                        const newColor = within ? 'red' : '#2f55d4';
-                        d3.select(this).attr('fill', newColor);
-                    }
-                });
+                .attr('transform', 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')');
         }
     });
 }
@@ -162,8 +157,10 @@ export class Dashboard extends React.Component {
             totalVehicles: 0,
             privateMode: false,
             vehicleBalances: {},
-            recentCharges: []
+            recentCharges: [],
+            isPlaying: false
         };
+        this.playInterval = null;
     }
 
     async componentDidMount() {
@@ -225,10 +222,10 @@ export class Dashboard extends React.Component {
                     this.setupSocketListeners();
                     console.log('✅ Socket listeners set up');
                     
-                    // Add map move handler like original
-                    map.on('move', () => {
-                        this.updateMapElements();
-                    });
+                    // DISABLED: Conflicts with smooth animation
+                    // map.on('move', () => {
+                    //     this.updateMapElements();
+                    // });
                     
                     // Add the route LineString to the map for visualization (exact user-provided coordinates)
                     const routeCoordinates = [
@@ -295,18 +292,120 @@ export class Dashboard extends React.Component {
 
                     console.log('🛣️ Route LineString added to map');
 
-                    // Auto-advance through waypoints every 800ms
-                    this.autoAdvanceInterval = setInterval(() => {
-                        if (this.state.positions && this.state.positions.length > 0) {
-                            this.handleAdvance();
-                        }
-                    }, 800);
+                    // Store route info for step-based animation
+                    const line = turf.lineString(routeCoordinates);
+                    const totalLength = turf.length(line, { units: 'kilometers' });
+                    const numSteps = 20; // Number of discrete steps
+                    const stepLength = totalLength / numSteps;
 
-                    // Start vehicle movement simulation
-                    setTimeout(() => {
-                        console.log('🎬 Starting vehicle simulation...');
-                        socket.emit('startSimulation');
-                    }, 2000);
+                    // Store on window for access from button handlers
+                    window.routeAnimation = {
+                        line,
+                        totalLength,
+                        numSteps,
+                        stepLength,
+                        currentStep: 0,
+                        animationId: null,
+                        isAnimating: false,
+                        inZone: false  // Track zone state
+                    };
+
+                    // Store reference to addNotification for zone events
+                    window.addNotification = this.addNotification.bind(this);
+
+                    console.log(`Route: ${totalLength.toFixed(2)} km, ${numSteps} steps, ${stepLength.toFixed(2)} km/step`);
+
+                    // Function to animate smoothly between two distances
+                    window.animateToStep = (targetStep) => {
+                        const ra = window.routeAnimation;
+                        if (ra.isAnimating) return; // Don't interrupt ongoing animation
+
+                        const startDistance = ra.currentStep * ra.stepLength;
+                        const endDistance = Math.min(targetStep * ra.stepLength, ra.totalLength);
+                        const duration = 500; // 500ms per step
+                        let startTime = null;
+
+                        ra.isAnimating = true;
+
+                        const animate = (timestamp) => {
+                            if (!startTime) startTime = timestamp;
+                            const elapsed = timestamp - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+
+                            // Lerp between start and end distance
+                            const currentDistance = startDistance + (endDistance - startDistance) * progress;
+                            const point = turf.along(ra.line, currentDistance, { units: 'kilometers' });
+                            const coords = point.geometry.coordinates;
+
+                            // Update vehicle position
+                            const vehicleId = 'did_io_0xb9006455c064207da1c613d8448efff729977f72';
+                            const circle = d3.select('#' + vehicleId);
+                            if (!circle.empty()) {
+                                const pixelCoords = map.project(coords);
+                                circle.attr('transform', 'translate(' + pixelCoords.x + ',' + pixelCoords.y + ')');
+                                circle.attr('data-coords', coords.join(','));
+
+                                // Zone detection
+                                if (window.zonePolygons) {
+                                    const vehiclePoint = turf.point(coords);
+                                    let nowInZone = false;
+
+                                    for (const zone of window.zonePolygons) {
+                                        // Zone is a FeatureCollection, check each feature
+                                        if (zone.features) {
+                                            for (const feature of zone.features) {
+                                                if (feature.geometry && turf.booleanPointInPolygon(vehiclePoint, feature)) {
+                                                    nowInZone = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (nowInZone) break;
+                                    }
+
+                                    // Detect transitions
+                                    if (nowInZone && !ra.inZone) {
+                                        // Entering zone
+                                        console.log('🟢 Entering congestion zone!');
+                                        circle.attr('fill', 'red');
+                                        circle.classed('inzone', true);
+                                        if (window.addNotification) {
+                                            window.addNotification('enter', vehicleId.replace(/_/g, ':'), 'Congestion Zone');
+                                        }
+                                        ra.inZone = true;
+                                    } else if (!nowInZone && ra.inZone) {
+                                        // Exiting zone
+                                        console.log('🔴 Exiting congestion zone!');
+                                        circle.attr('fill', '#2f55d4');
+                                        circle.classed('inzone', false);
+                                        if (window.addNotification) {
+                                            window.addNotification('exit', vehicleId.replace(/_/g, ':'), 'Congestion Zone');
+                                        }
+                                        ra.inZone = false;
+                                    }
+                                }
+                            }
+
+                            if (progress < 1) {
+                                ra.animationId = requestAnimationFrame(animate);
+                            } else {
+                                ra.currentStep = targetStep;
+                                ra.isAnimating = false;
+                                // If playing, continue to next step
+                                if (window.isPlaying && ra.currentStep < ra.numSteps) {
+                                    window.animateToStep(ra.currentStep + 1);
+                                } else if (window.isPlaying && ra.currentStep >= ra.numSteps) {
+                                    // Loop back to start
+                                    ra.currentStep = 0;
+                                    window.animateToStep(1);
+                                }
+                            }
+                        };
+
+                        ra.animationId = requestAnimationFrame(animate);
+                    };
+
+                    window.isPlaying = false;
                     
                     // Hide page loader and loading text like original
                     const pageLoader = document.getElementById("pageLoader");
@@ -404,6 +503,8 @@ export class Dashboard extends React.Component {
             });
             
             this.setState({ zones });
+            // Store zones on window for animation zone detection
+            window.zonePolygons = zones;
             console.log(`✅ Successfully loaded ${zones.length} zones to map`);
         } catch (error) {
             console.error('❌ Error loading zones:', error);
@@ -515,51 +616,50 @@ export class Dashboard extends React.Component {
 
     setupSocketListeners() {
         console.log('🔧 Setting up socket listeners...');
-        
-        // Listen for vehicle position updates
-        socket.on('vehiclePositions', (positions) => {
-            console.log('🚗 Received vehicle positions:', Object.keys(positions).length, 'vehicles');
-            this.updateVehiclePositions(positions);
-        });
-        
+
+        // DISABLED: Position updates now handled by client-side smooth animation
+        // socket.on('vehiclePositions', (positions) => {
+        //     console.log('🚗 Received vehicle positions:', Object.keys(positions).length, 'vehicles');
+        //     this.updateVehiclePositions(positions);
+        // });
+
         // Listen for zone charge events
         socket.on('zoneCharge', (charge) => {
             console.log('💰 Zone charge event:', charge);
             this.handleZoneCharge(charge);
         });
-        
+
         // Listen for zone entry/exit events
         socket.on('zoneEntry', (entry) => {
             console.log('🟢 Zone entry:', entry);
             this.addNotification('enter', entry.vehicleId, entry.zone);
         });
-        
+
         socket.on('zoneExit', (exit) => {
             console.log('🔴 Zone exit:', exit);
             this.addNotification('exit', exit.vehicleId, exit.zone);
         });
 
-        // Listen for position updates from ADVANCE button
-        socket.on('updatePositions', (newPositions, allPositions) => {
-            console.log('📍 Received updatePositions from server:', newPositions?.length || 0, 'positions');
-            if (newPositions && newPositions.length > 0) {
-                updatePositions(newPositions);
-                // Update state with new positions array
-                if (allPositions) {
-                    this.setState({ positions: allPositions });
-                }
-            }
-        });
+        // DISABLED: Position updates now handled by client-side smooth animation
+        // socket.on('updatePositions', (newPositions, allPositions) => {
+        //     console.log('📍 Received updatePositions from server:', newPositions?.length || 0, 'positions');
+        //     if (newPositions && newPositions.length > 0) {
+        //         updatePositions(newPositions);
+        //         if (allPositions) {
+        //             this.setState({ positions: allPositions });
+        //         }
+        //     }
+        // });
 
-        // Listen for fetchNewPositionsFromServerResponse (zone entry/exit from ADVANCE)
-        socket.on('fetchNewPositionsFromServerResponse', (notification, hash) => {
-            console.log('📢 Zone event notification:', notification.type, notification.vehicleDetails?.id);
-            if (notification.type === 'enter') {
-                this.addNotification('enter', notification.vehicleDetails.id, 'zone');
-            } else if (notification.type === 'exit') {
-                this.addNotification('exit', notification.vehicleDetails.id, 'zone');
-            }
-        });
+        // DISABLED: Zone notifications from ADVANCE (using client-side detection instead)
+        // socket.on('fetchNewPositionsFromServerResponse', (notification, hash) => {
+        //     console.log('📢 Zone event notification:', notification.type, notification.vehicleDetails?.id);
+        //     if (notification.type === 'enter') {
+        //         this.addNotification('enter', notification.vehicleDetails.id, 'zone');
+        //     } else if (notification.type === 'exit') {
+        //         this.addNotification('exit', notification.vehicleDetails.id, 'zone');
+        //     }
+        // });
 
         // Force socket connection if not connected
         if (!socket.connected) {
@@ -794,18 +894,50 @@ export class Dashboard extends React.Component {
     handleAdvance = (e) => {
         if (e) e.preventDefault();
         console.log('🎯 ADVANCE button clicked');
-        
-        // Original implementation sent positions and zones
-        if (socket && socket.connected) {
-            socket.emit('fetchNewPositionsFromServer', this.state.positions, this.state.zones);
-            console.log('📡 Sent fetchNewPositionsFromServer to server');
+
+        // Smoothly animate to next step
+        if (window.routeAnimation && window.animateToStep) {
+            const ra = window.routeAnimation;
+            if (ra.currentStep < ra.numSteps) {
+                window.animateToStep(ra.currentStep + 1);
+                console.log(`Advancing to step ${ra.currentStep + 1}/${ra.numSteps}`);
+            } else {
+                // Loop back to start
+                ra.currentStep = 0;
+                window.animateToStep(1);
+                console.log('Looping back to start');
+            }
+        }
+    }
+
+    handlePlayPause = (e) => {
+        if (e) e.preventDefault();
+        const { isPlaying } = this.state;
+
+        if (isPlaying) {
+            // Stop playing
+            window.isPlaying = false;
+            if (window.routeAnimation) {
+                cancelAnimationFrame(window.routeAnimation.animationId);
+                window.routeAnimation.isAnimating = false;
+            }
+            this.setState({ isPlaying: false });
+            console.log('⏸️ Animation paused');
         } else {
-            console.warn('⚠️ Socket not connected');
+            // Start playing
+            window.isPlaying = true;
+            this.setState({ isPlaying: true });
+            console.log('▶️ Animation playing');
+            // Kick off the animation
+            if (window.routeAnimation && window.animateToStep) {
+                const ra = window.routeAnimation;
+                window.animateToStep(ra.currentStep + 1);
+            }
         }
     }
 
     render() {
-        const { zones, vehicles, totalVehicles, zoneCharges, privateMode, recentCharges } = this.state;
+        const { zones, vehicles, totalVehicles, zoneCharges, privateMode, recentCharges, isPlaying } = this.state;
         
         return (
             <div>
@@ -854,6 +986,9 @@ export class Dashboard extends React.Component {
                 </div>
 
                 <div className='d-flex justify-content-center dashboard-main-buttons'>
+                    <button className='btn btn-primary mx-2' onClick={this.handlePlayPause}>
+                        {isPlaying ? '⏸ PAUSE' : '▶ PLAY'}
+                    </button>
                     <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
                     <button className='btn btn-primary mx-2'
                             onClick={this.togglePrivateMode}>{privateMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>

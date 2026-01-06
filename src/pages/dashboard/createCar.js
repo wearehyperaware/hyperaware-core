@@ -69,13 +69,10 @@ function createCar(coords, id, color, vehicle) {
         new_car = d3.select('svg')
             .append('circle')
             .attr('id', id)
-            .classed('inzone', function () {
-                if ( vehicle.within) { 
-                    return  true
-                } else {return false; }  })            
+            .classed('inzone', vehicle.within)
             .attr('isPrivateVehicle', vehicle.isPrivateVehicle)
             .attr('data-coords', coords.toString())
-            .attr('fill', color)
+            .attr('fill', vehicle.within ? 'red' : color)
             .attr('r', 50)
             .attr('transform', function () {
                 var pixelCoords = map.project(coords);
