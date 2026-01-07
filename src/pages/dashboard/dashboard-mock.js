@@ -222,10 +222,10 @@ export class Dashboard extends React.Component {
                     this.setupSocketListeners();
                     console.log('✅ Socket listeners set up');
                     
-                    // DISABLED: Conflicts with smooth animation
-                    // map.on('move', () => {
-                    //     this.updateMapElements();
-                    // });
+                    // Keep vehicle markers synced with map pan/zoom
+                    map.on('move', () => {
+                        this.updateMapElements();
+                    });
                     
                     // Add the route LineString to the map for visualization (exact user-provided coordinates)
                     const routeCoordinates = [
@@ -990,8 +990,6 @@ export class Dashboard extends React.Component {
                         {isPlaying ? '⏸ PAUSE' : '▶ PLAY'}
                     </button>
                     <button className='btn btn-primary mx-2' onClick={this.handleAdvance}>ADVANCE</button>
-                    <button className='btn btn-primary mx-2'
-                            onClick={this.togglePrivateMode}>{privateMode ? 'Privacy Mode Off' : 'Privacy Mode On'}</button>
                 </div>
 
                 <Topbar/>
@@ -1012,7 +1010,7 @@ export class Dashboard extends React.Component {
                     pointerEvents: 'none'
                 }}/>
 
-                <Col lg={7} style={{width: '550px', marginTop: '110px', marginLeft: '66.5%'}}>
+                <Col lg={4} style={{position: 'absolute', right: '20px', top: '110px', width: '320px', zIndex: 10}}>
                     <div className="studio-home bg-white shadow mt-4 " style={{paddingTop: '16px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Zones<span className="text-primary">.</span></h2>
                         <div className='row d-flex justify-content-center'>
@@ -1054,7 +1052,7 @@ export class Dashboard extends React.Component {
                     </div>
                 </Col>
 
-                <Col lg={7} style={{width: '550px', marginLeft: '66.5%'}}>
+                <Col lg={4} style={{position: 'absolute', right: '20px', top: '380px', width: '320px', zIndex: 10}}>
                     <div className="studio-home bg-white shadow mt-5 " style={{paddingTop: '8px', paddingLeft: '8px'}}>
                         <h2 className='d-flex justify-content-center'>Vehicles<span className="text-primary">.</span></h2>
                         <div className='row d-flex justify-content-center'>
@@ -1078,7 +1076,7 @@ export class Dashboard extends React.Component {
                         <div className='row'>
                             <div className='col'>
                                 <h2 className='row heading text-primary d-flex justify-content-center'>
-                                    1500 IOTX
+                                    150 USDC
                                 </h2>
                                 <div className='row d-flex justify-content-center'>
                                     Staked in Contract.
