@@ -2,12 +2,11 @@
 import mapboxgl from "mapbox-gl";
 import connect from "socket.io-client";
 import * as turf from "@turf/turf";
-import d3 from "d3";
+import * as d3 from "d3";
 import axios from "axios";
 import GJV from "geojson-validation";
 import geojsonMerge from "@mapbox/geojson-merge";
-import Web3 from "web3";
-import Arweave from "arweave/web";
+// import Arweave from "arweave/web";
 import zoneContract from "./zone-contract-details.js";
 import { without } from "lodash";
 import ZoneCard from "./ZoneCard";
@@ -19,6 +18,9 @@ import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 import Spinner from "react-bootstrap/Spinner";
 import AnimateHeight from "react-animate-height";
+
+// Mock Web3 to avoid blockchain dependencies
+const Web3 = { utils: { keccak256: (str) => `0x${Math.random().toString(36).substring(7)}` } };
 
 mapboxgl.accessToken = "pk.eyJ1IjoiamdqYW1lcyIsImEiOiJjazd5cHlucXUwMDF1M2VtZzM1bjVwZ2hnIn0.Oavbw2oHnexn0hiVOoZwuA";
 // let socket
@@ -746,60 +748,12 @@ export class RegisterJurisdiction extends React.Component {
   };
 
   saveToArweave = async document => {
-    // Initialize Arweave
-    let arw = Arweave.init();
-    // let jwk = await axios.get("../ArweaveKey.json");
-    let jwk = {
-      kty: "RSA",
-      ext: true,
-      e: "AQAB",
-      n:
-        "qmuBH3Yv3hUUy51gn7lWneraru1Fv8Uq7s5g7qo2xfNApnAn7ZBYLozMVidGrEZrBCHgxnnaK2UXjfxCt5LcOCIKV9yvaplx_Xmw6V6KMV2KULejHCsxldSaaqZg70AJWJf3K6sN5K8yOw8zsipgpyOyKpQIp0HvzYKUfe8EM-UgqTRK7WnlOBrDjm43HbB9tBbx1qZrmG_QaiC2KbdLDGz6yIOP58GNc1gc9fUulUL0iVbbdcsguvh9FZqBtYlXA5MF2d5FGSvdBUkcdBrXTKKmIkSn8PZ7fwLndTCnGytoWTAnLyz9mblYRuNtwrMeAD7j13wtq5EVYViv841pWtrm_vnpZVACuaxsnZ4EOXqqhtg_9hAtrHQzhHuMQC356T3n_jjfk5EE6gXs2Cwoa2b5R342UP32qM9P0dYXW9jkqt5RGBmlukpqsJRkXMAAkpVWUeBBjnelt-KAjexOrSwLZoTjsja5mseHQpJ3S9Ysjg5dtJOTNWCcdzXwXaJ_TVI9LBqW5h-48YzLuZKTeGKGvko1wiBIWWb8daM53Ft1Qh2BgYPCOYuZCgan2j_ho76sJxKbGOeENZuH_XaUXC7NPJQFxmtNnXnsalSU1u3XaH3Y4WqTEux2PZi0apxjSjkLNsNY68Za4sALR-W0yosjhGVvwnlN8nKJHKPrSqc",
-      d:
-        "P9QX_pKjhwhaS5DcObaPDIKD-XSA5TyRwfOmNn2mGinrkur66W1gub6eYb5AKBIPzvJpX60P26T3V4Sd8Gee9584RIQxZzmligxkCGQSWj7wqR6-hrRe1AFW_I7oS3OujHIOb1qXz4kWxSwCbr6UiMVD29KqEwsNJ-m6eBhneJBe1UDyt00sPwE3MUdyeTo7OpJFbeHS9rsaUkWCNMmj4DmJDETKR0ElG4hrAGweUGVNdYsEk2_LCHw9TTQbVMTlxD7yuBEZzD2zgGFLuOi8rsVUeA1C4WtQAdgynJ_mVrTBVnZEltTA_yx-Nb7Ew2GW4PytFW47JMEoQteWvx-9z18k9Th2VNS3iSHPacqNQhCVUzahagMARfL7egWyyvIqfPwgAjZJveQgMRuPiWlt6B51ORRfv191HOG4UycLYk62s145vIb1MEYkLuwMaydsaVqsJ7-YnU-t079vUnWL_18UTSdxTwiUUoOt3WfnkEb3mUeZZUuMKD0p5mqrXC91Zo-CZRmeZ3LUuzgScqRimkt2_3F-DqjClyI54eakKYN3D10It1DkvlDEdb67kU6MAYRV3Ot52rpaTJTtnH3rm7IcGv4Rbw2krPWa0rALq7Qn_j_pevL21WhjuqU7AhhecYLZNPjBbMI39nRWflDV_5sCxorQLlzkG9ajhwApByE",
-      p:
-        "1JJ0glcj2Fru4T2pGEY4-l9CrQjaraDQ40aZewjFkM1DSedWNUo_fTCaMrW6CmQy6dwKHazPELlpWQs1WuYuWMbeSfTm1QY9zKZ4GJwxGMvAswI85W8yui7GknVPQ3uFU2nzvfTNs7Z_-F7LFeY1EDlj0zsRGDp9OyuGYbt9heWAqhnxWifVo6bWxM_NmAlS9MsFqYYNZltNeauo7GZSSkD2SBCxSFKSD76i4AydHL2TRep2UKneTPsxwjNj91anAexx3-Tddvood16HrX6gI1Livi3Tyx-Jj8ezDQRkvR7UfPwVhYOrz3ZbLZxKViayc0DP9Ph3Gt1H_4rLm0CWOQ",
-      q:
-        "zTx8pMxAJHIlGSXdaUekiU-2GZqYw0pUPfSFXZ5mpGBoZHZ77687seV8kdukSR0AGoWEh9jrav3qxD8YbkZghSIDAuZ1IqWgdXW9H0ewS7666EHo2Fv0UbI6s5zXG3sZ4WUPSIYn2FoobhPIy-yi5agSGxF7vGkt3AmhqfLuju6hyFARzkS1vGsRHXzdCPtW_QpkH6NgeBUjZ88JKFGBBLQxl6f13ZIptdp1zVaCOGyMSTR78zPkOagAX6NjqlWS_Z03-yX3i1i1CyZ8OhiILxTBvVW1_YwwEtnFS3ziWym9tHAqtjnQr7xej3uKaAY8deRmKRm6_na_vPx2v_Pn3w",
-      dp:
-        "OHNcNXDmuAIOBgrV6PhdEUBS-JitWgam8nRBNgcyUC3yfKHOpwA8tAZALM9NxIyvaKNinFbT9mEGtPrhBG60SCcnyQQceN3bc4mRwxdXgno5hlBF07ggBIl_ek1k60rWMTyl2gA00FDa0x55WCt2VASpmeLJu2Fs-FWqrjGYOAKmlIWnLoX9miQoTMPSmVmAijmQG2DaFiCRBoqrpXvWxplRzfmA2u_ykfPSVSWEY6mEfsCxAuLZgiADKsty9LAyUbR02TxyA7KTJIAaD9zcsgTE6jRJVlvdsC0cQ4yzI_YX_8kB_h7ldYa81_P1WcOVCD5h-3AwURYKlLZLM8OHIQ",
-      dq:
-        "DYJ_yfFP_5Yr7v3ZF0cKA6flmsXcbG6GIRXpeYIly4g1FvfdrKdiTJGIo6lLpSxth1FmqfKTfJV-ULC-kPO9AsZ8YEJ_T2qLp2-6pUZ4ymOhtgwwoZ1b9cy_pHcciciOqZGXcfSyxsEYjDZtL09CYc-wcWuzM3HQ_Pz9UUyWe34l1CPBKEzJkb-SfthrTF4PGdUHRjXg8caicADm32qODZs28H6z5oPqjvf0bTHWnJQ4n9D-n8G4sjrm22TL-LhtVph0yOl05A1QzY0Y_FIFFORO5IGx2yDRQUxoelGcLNgQjsIbbadcn1TM_LDrKXHPpQsF1orFDl8OvAf6YSRTDQ",
-      qi:
-        "mSKGlhQQ8vwrPjVyfoCftK77bVTQOTMBAVXalQH6Z9Cw_Nr6Q08w9CoHjmHppFROZK4LK8SbOQQY9HrO2Zur3WbVf9rpgB3OY_bPwcaXrpnj_z3nD1yyFubNvSpLbJCdaY3PYRijwdL0TX-xB1-MIyi3mKZKPDH3wjA6PSmJAHlhUL0VTe1yAUrEtFphKL9qMavb35NZPaGVDlJ3MQ5aN2nyAAG82mDHx_JNljAKy2W1Vy-Qag6xcZ74qCBraZA1Uwcs0sZRTMnoRN8koAyHVhk5XgYBnoL7MeA5vsbFJhwR8GYg8X_n-7M14sF07ZHhg3foART4KRb_KTlzLw7DWw"
-    };
-
-    let arweaveURL;
-
-    try {
-      // Create new transaction
-      let transaction = await arw.createTransaction(
-        {
-          data: document
-        },
-        jwk
-      );
-
-      // Document to be rendered as txt
-      transaction.addTag("Content-Type", "text/plain");
-
-      // Sign transaction
-      await arw.transactions.sign(transaction, jwk);
-
-      // Submit transaction
-      try {
-        await arw.transactions.post(transaction);
-      } catch (err) {
-        console.log("Error occurred on submit: ", err);
-      }
-
-      arweaveURL = "https://arweave.net/tx/" + transaction.id + "/data.txt";
-      console.log(arweaveURL);
-
-      return Promise.resolve(arweaveURL);
-    } catch (err) {
-      return Promise.reject(err);
-    }
+    // Mock implementation for development - returns a fake URL
+    console.log("Mock Arweave save:", document);
+    const mockId = Math.random().toString(36).substring(7);
+    const arweaveURL = `https://arweave.net/tx/${mockId}/data.txt`;
+    console.log("Mock Arweave URL:", arweaveURL);
+    return Promise.resolve(arweaveURL);
   };
 
   render() {

@@ -1,13 +1,14 @@
-const toRau = require("iotex-antenna/lib/account/utils").toRau;
-const Contract = require("iotex-antenna/lib/contract/contract").Contract
+// Mock blockchain dependencies
+const toRau = (amount, unit) => `${amount}000000000000000000`;
+const Contract = class { constructor() {} };
 const turf = require('./modules/turfModules')
 const buffer = require('@turf/buffer')
 const express = require('express');
 const bodyParser = require('body-parser');
 const server = express();
 const path = require('path');
-const Web3 = require('web3');
-const Antenna = require('iotex-antenna')
+const Web3 = { utils: { keccak256: (str) => `0x${Math.random().toString(36).substring(7)}` } };
+const Antenna = class { constructor() {} };
 const VEHICLE_REGISTER_ABI = require('./src/pages/vehicle-registration/ABI')
 const DID_REGISTER_ABI = require('./src/pages/did-registration/did-contract-details').abi
 const ZONE_REGISTER_ABI = require('./src/pages/jurisdiction-registry/zone-contract-details.js').abi

@@ -2,8 +2,8 @@
 import React, {Component} from 'react';
 import {Row, Col} from 'reactstrap';
 
-// Modal Video
-import '../../../node_modules/react-modal-video/scss/modal-video.scss';
+// Modal Video (commented out due to import path issues)
+// import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 
 // import images
 import database from '../../images/icon/server.svg'
