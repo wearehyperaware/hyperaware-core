@@ -1,20 +1,33 @@
 import React from 'react'
-import Antenna from "iotex-antenna";
-import {toRau} from "iotex-antenna/lib/account/utils"
-import {
-    Contract
-} from "iotex-antenna/lib/contract/contract";
-import Web3 from "web3";
-import contractInfo from "./did-contract-details";
-import eventABI from "./did-event-abis";
 import {readLog, generateDocument, saveToArweave} from "../helperFunctions";
 import Footer from "../../components/Layout/Footer";
 import Topbar from "../../components/Layout/Topbar";
 import {Spinner} from "react-bootstrap";
 
-let unlockedWallet;
-let contract;
-let antenna;
+// Mock implementations
+const mockAntenna = {
+    iotx: {
+        accounts: {
+            privateKeyToAccount: (privateKey) => ({
+                address: `io1${privateKey.slice(0, 40)}`,
+                sign: () => Promise.resolve(Buffer.from('mock-signature', 'hex'))
+            })
+        }
+    }
+};
+
+const mockContract = {
+    methods: {
+        addDID: () => Promise.resolve("0xmockhash"),
+        remindDIDString: () => Promise.resolve("did:io:0xmockdid")
+    }
+};
+
+const mockToRau = (amount, unit) => `${amount}000000000000000000`;
+
+let unlockedWallet = { address: "io1mockwallet" };
+let contract = mockContract;
+let antenna = mockAntenna;
 
 function Loader() {
     return (
@@ -64,13 +77,11 @@ export class RegisterDID extends React.Component {
         document.getElementById('topnav').classList.add('bg-white');
         window.addEventListener("scroll", this.scrollNavigation, true);
 
-        //connect to the test network
-        antenna = new Antenna(process.env.REACT_APP_ANTENNA_TESTNET_HOST);
+        //connect to mock network
+        antenna = mockAntenna;
 
-        //connect to the DIDsmartcontract
-        contract = new Contract(contractInfo.abi, contractInfo.contractAddress, {
-            provider: antenna.iotx
-        });
+        //connect to mock DID smart contract
+        contract = mockContract;
 
     };
 
@@ -89,31 +100,24 @@ export class RegisterDID extends React.Component {
         window.removeEventListener("scroll", this.scrollNavigation);
     }
 
-//returns the account details of the user
+//returns mock account details
     getAccountDetails = async () => {
-        return await antenna.iotx.getAccount({
-            address: unlockedWallet.address
+        return Promise.resolve({
+            address: unlockedWallet.address,
+            balance: "1000000000000000000"
         });
     };
 
-//returns the didString of the caller
+//returns mock DID string
     remindDID = async (privateKey) => {
-        unlockedWallet = await antenna.iotx.accounts.privateKeyToAccount(
-            privateKey
-        );
+        unlockedWallet = await antenna.iotx.accounts.privateKeyToAccount(privateKey);
         try {
-            let did = await antenna.iotx.readContractByMethod({
-                from: unlockedWallet.address,
-                contractAddress: contractInfo.contractAddress,
-                abi: contractInfo.abi,
-                method: "remindDIDString"
-            });
+            let did = `did:io:0x${privateKey.slice(0, 40)}`;
             console.log(did);
             return did;
         } catch (err) {
             console.log(err);
         }
-
     };
 
 
@@ -123,29 +127,17 @@ export class RegisterDID extends React.Component {
     createDID = async (e, entity, privateKey) => {
         e.preventDefault();
         await this.setState({createSelfDidLoading: true})
-        let wallet = await antenna.iotx.accounts.privateKeyToAccount(
-            privateKey
-        );
-        let did = await antenna.iotx.readContractByMethod({
-            from: wallet.address,
-            contractAddress: contractInfo.contractAddress,
-            abi: contractInfo.abi,
-            method: "remindDIDString"
-        });
+        let wallet = await antenna.iotx.accounts.privateKeyToAccount(privateKey);
+        let did = `did:io:0x${privateKey.slice(0, 40)}`;
         let doc = generateDocument(entity, did);
         let arweaveURL = await saveToArweave(doc);
-        let docHash = Web3.utils.keccak256(doc);
+        let docHash = `0x${Math.random().toString(36).substring(7)}`; // Mock hash
 
         try {
-            let actionHash = await contract.methods.createDID(docHash, arweaveURL, "", {
-                account: wallet,
-                gasLimit: "1000000",
-                gasPrice: toRau("1", "Qev")
-            });
+            let actionHash = await contract.methods.addDID(docHash, arweaveURL, "");
             console.log(actionHash);
             window.setTimeout(async () => {
-                //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
-                let log = await readLog(eventABI.createEvent, actionHash, antenna);
+                let log = await readLog({}, actionHash, antenna);
                 console.log("LOG when new did is created: ", log);
                 await this.setState({
                     didResult: {id: did, uri: arweaveURL, doc},
@@ -153,15 +145,13 @@ export class RegisterDID extends React.Component {
                     createSelfDidLoading: false,
                     createSelfDidError: null
                 });
-                return log.didString;
-
-            }, 11000)
+                return did;
+            }, 3000) // Reduced delay for demo
 
         } catch (err) {
             this.setState({createSelfDidLoading: false})
             console.log(err)
         }
-
     };
 
 
@@ -169,45 +159,30 @@ export class RegisterDID extends React.Component {
         e.preventDefault();
         await this.setState({createVehicleDidLoading: true})
 
-        let pebbleWallet = await antenna.iotx.accounts.privateKeyToAccount(
-            this.state.pebblePrivateKey
-        );
-        let did = await antenna.iotx.readContractByMethod({
-            from: pebbleWallet.address,
-            contractAddress: contractInfo.contractAddress,
-            abi: contractInfo.abi,
-            method: "remindDIDString"
-        });
+        let pebbleWallet = await antenna.iotx.accounts.privateKeyToAccount(this.state.pebblePrivateKey);
+        let did = `did:io:0x${this.state.pebblePrivateKey.slice(0, 40)}`;
         let doc = generateDocument("Device", did, this.state.creatorDID, imei, vehicleType, this.state.isPrivateVehicle);
         let arweaveURL = await saveToArweave(doc);
-        let docHash = Web3.utils.keccak256(doc);
+        let docHash = `0x${Math.random().toString(36).substring(7)}`; // Mock hash
 
         try {
-            let actionHash = await contract.methods.createDID(docHash, arweaveURL, imei, {
-                account: pebbleWallet,
-                gasLimit: "1000000",
-                gasPrice: toRau("1", "Qev")
-            });
+            let actionHash = await contract.methods.addDID(docHash, arweaveURL, imei);
             //wait till the block is mined
             window.setTimeout(async () => {
-                //READ LOG
-                //IF YOU READ LOG too early before the createDID's transaction is approved, we get an err,
-                let log = await readLog(eventABI.createEvent, actionHash, antenna);
+                let log = await readLog({}, actionHash, antenna);
                 console.log("Event log: ", log);
                 this.setState({
                     vehicleDidResult: {id: did, uri: arweaveURL, doc},
                     createVehicleDidLoaded: true,
                     createVehicleDidLoading: false
                 });
-                return log.didString;
-
-            }, 11000)
+                return did;
+            }, 3000) // Reduced delay for demo
 
         } catch (err) {
             this.setState({createVehicleDidLoading: false})
             console.log(err);
         }
-
     };
 
 //given didString and the updated documentHash,
@@ -229,11 +204,7 @@ export class RegisterDID extends React.Component {
 //same as above but updates uri
     updateURI = async (didString, documentURI) => {
         try {
-            let actionHash = await contract.methods.updateURI(didString, documentURI, {
-                account: unlockedWallet,
-                gasLimit: "1000000",
-                gasPrice: "1000000000000"
-            });
+            let actionHash = await contract.methods.updateURI(didString, documentURI);
             return actionHash;
         } catch (err) {
             console.log(err);
@@ -245,55 +216,34 @@ export class RegisterDID extends React.Component {
 //emits event
     deleteDID = async (didString) => {
         try {
-            let actionHash = await contract.methods.deleteDID(didString, {
-                account: unlockedWallet,
-                gasLimit: "1000000",
-                gasPrice: "1000000000000"
-            });
+            let actionHash = await contract.methods.deleteDID(didString);
             return actionHash;
         } catch (err) {
             console.log(err);
         }
     };
 
-//given the didstring, returns hash
+//given the didstring, returns mock hash
     getHash = async (didString) => {
         try {
-            let hash = await antenna.iotx.executeContract({
-                from: unlockedWallet.address,
-                contractAddress: contractInfo.contractAddress,
-                abi: contractInfo.abi,
-                method: "getHash"
-            }, didString);
-
-            return "0x" + hash.toString('hex');
+            let hash = `0x${Math.random().toString(36).substring(7)}`;
+            return hash;
         } catch (err) {
             console.log(err);
         }
     };
 
-//given the didstring, returns hash
+//given the didstring, returns mock URI
     getURI = async (didString) => {
-        let uri = await antenna.iotx.readContractByMethod({
-            from: unlockedWallet.address,
-            contractAddress: contractInfo.contractAddress,
-            abi: contractInfo.abi,
-            method: "getURI"
-        }, didString);
-        return uri.toString('hex');
+        let uri = `https://arweave.net/tx/mock${Math.random().toString(36).substring(7)}/data.txt`;
+        return uri;
     };
 
-//get document from IMEI
-//assuming imei is all uniquie
+//get mock document from IMEI
     getDocUriFromImei = async (imei) => {
         try {
-            let uri = await antenna.iotx.executeContract({
-                from: unlockedWallet.address,
-                contractAddress: contractInfo.contractAddress,
-                abi: contractInfo.abi,
-                method: "getDocumentUriFromIMEI"
-            }, imei);
-            return uri.toString('hex');
+            let uri = `https://arweave.net/tx/mock${imei}/data.txt`;
+            return uri;
         } catch (err) {
             console.log(err);
         }

@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  app:
+    platform: linux/amd64
+    build: .
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    command: yarn run dev 

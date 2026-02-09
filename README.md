@@ -1,27 +1,30 @@
-# Hyperaware
+# Hyperaware — Visualization Demo
 
-Ensure you are running Node version 13.1.0.
+> **This is an illustrative demo only.** The codebase is deprecated and exists solely to demonstrate the core concept of Hyperaware: real-time geospatial vehicle tracking with automated congestion zone detection and charging.
 
-To manage node versions, download nvm.
+## What This Shows
 
-    NVM Windows: https://github.com/coreybutler/nvm-windows
-    NVM MacOS/Linux: https://github.com/nvm-sh/nvm
+A single vehicle animates smoothly along a real London route (LineString), passing through congestion zones. When the vehicle enters a zone it activates (turns red), stays active while inside, and deactivates on exit. Toast notifications display on entry/exit events.
 
-Then run `nvm install 13.1.0` followed by `nvm use 13.1.0`
+This is the *concept* — the underlying code (IoTeX/Web3 contracts, socket architecture, React class components) is legacy and will be rebuilt on the [Astral SDK](https://github.com/AstralProtocol).
 
-Then `yarn` or `npm install` to install the packages
+## Running the Demo
 
-After installing node modules you may see some errors coming from the Secureworker module. This is because your system may not have
-Intel SGX configured, but they are fine to ignore because the app will run in 'Mock' mode.
+```
+npm install
+npm run dev-mock
+```
 
-In the project directory, you can then run:
+Open [http://localhost:3000](http://localhost:3000). Use **PLAY** to animate the vehicle through the route, **ADVANCE** to step through one segment at a time, and **PAUSE** to stop.
 
-`yarn run dev` or `npm run dev`
+## What You're Seeing
 
-To run the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-<hr>
+- **Map**: Mapbox GL rendering of London with congestion zone overlays
+- **Vehicle**: Blue dot animating along a LineString route using Turf.js interpolation
+- **Zone detection**: Client-side point-in-polygon check — dot turns red inside zones
+- **Notifications**: Ethereum-style toasts on zone entry/exit
+- **Panels**: Zone and vehicle statistics (placeholder data)
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Status
 
+This code is **not under active development**. It serves as a reference for the visualization pattern that will be re-implemented using Astral.

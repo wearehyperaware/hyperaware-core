@@ -7,8 +7,8 @@ import {Row, Col, Alert, Collapse} from 'reactstrap';
 import Feature from './Feature';
 import Price from './Price';
 
-// Modal Video
-import '../../../node_modules/react-modal-video/scss/modal-video.scss';
+// Modal Video (commented out due to import path issues)
+// import '../../../node_modules/react-modal-video/scss/modal-video.scss';
 
 //Import Images
 import london_3d from '../../images/london_3d.png';
